@@ -21,3 +21,67 @@
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+body {
+    position: relative; /* Required for the ::before element */
+    margin: 0;
+    padding: 0;
+    background-image: 
+        url('/static/img/soybean.png'),
+        url('/static/img/soybean.png');
+    background-color: #cc9b6d;
+    background-size: 100px 100px, 100px 100px;
+    background-repeat: repeat, repeat;
+    background-position:  0 0, 50px 50px;
+    background-blend-mode: overlay, overlay;
+    animation: movePattern 10s linear infinite; /* Animate staggering */
+}
+
+@keyframes movePattern {
+    0% {
+        background-position: 0 0, 50px 50px; /* Start staggered */
+    }
+    100% {
+        background-position: 50px 50px, 100px 100px; /* Swap the staggering */
+    }
+}
+
+.text-container {
+    width: 60%; /* Example text region width */
+    height: 100%; /* Full height (adjust as needed) */
+    margin: 0 auto; /* Center the text region */
+    padding: 20px;
+    background-color: #ffffff;
+    z-index: 2; /* Ensure it sits above the pseudo-element */
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 50%; /* Start at the vertical center */
+    left: 50%; /* Start at the horizontal center */
+    transform: translate(-50%, -50%); /* Center the element */
+    width: 60%; /* Half the width of the body */
+    height: 100%; /* Full height (adjust as needed) */
+    background-color: #ffffff;
+    padding: 20px;
+    z-index: -1; /* Ensure it stays behind other content */
+}
+
+header {
+    background-color: #ffffff; /* White background */
+    color: #000; /* Optional: Adjust text color for contrast */
+    padding: 20px 20px; /* Optional: Add spacing */
+}
+
+footer {
+    background-color: #ffffff; /* White background */
+    color: #000; /* Optional: Adjust text color for contrast */
+}
+
+.site-footer {
+    position: relative; /* or absolute, fixed, sticky */
+    top: 150px;
+    background-color: #ffffff;
+    padding: 20px;
+}
