@@ -47,3 +47,20 @@
     transform: scale(1.03); /* Zoom effect on hover */
     transition: transform 0.2s ease-in-out;
 }
+
+.banner-container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+img.banner {
+    width: 100%;       /* Full width */
+    height: auto;      /* Maintain aspect ratio */
+    z-index: 1;        /* Ensure it stays on top */
+}
+
+.custom-page-content {
+    padding: 0;
+    text-align: start;
+}
