@@ -21,7 +21,7 @@
 title: Cyber Spatula
 email: kolynlin@protonmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Hello there! I hope you are having a nice day.
+
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://cyberspatula.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: Kolyn090
@@ -58,3 +58,12 @@ collections:
     output: true
     permalink: /:categories/:year/:month/:day/:title/
     directory: static/_posts
+  pages:
+    output: true
+    directory: _pages
+
+nav:
+  - title: Home
+    url: /
+  - title: Credits
+    url: /credits/
