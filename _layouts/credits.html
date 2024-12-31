@@ -8,15 +8,17 @@
         {%- include header.html -%}
 
         <main class="page-content" aria-label="Content">
-        <div class="text-container">
-            <body>
-                <main>
-                    {{ content }}
-                </main>
-                <footer>
-                    <p>&copy; {{ site.time | date: "%Y" }} {{ site.title }}</p>
-                </footer>
-            </body>
+        <div class="center-container">
+            <div class="center-inner-container">
+                <body>
+                    <main>
+                        {{ content }}
+                    </main>
+                    <footer>
+                        <p>&copy; {{ site.time | date: "%Y" }} {{ site.title }}</p>
+                    </footer>
+                </body>
+            </div>
         </div>
         </main>
         

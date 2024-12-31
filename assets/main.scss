@@ -5,7 +5,7 @@
 @import "minima";
 
 .site-logo {
-    max-width: 300px;
+    max-width: 200px;
     height: auto;
 }
 
@@ -44,13 +44,18 @@ body {
     }
 }
 
-.text-container {
+.center-container {
     width: 60%;
     height: 100%;
     margin: 0 auto;
     padding: 0px;
     background-color: #ffffff;
     z-index: 2;
+    border-top: 1px solid #cccccc;
+}
+
+.center-inner-container {
+    padding: 20px
 }
 
 body::before {
@@ -87,11 +92,9 @@ footer {
 }
 
 .site-header {
-    width: 60%;
+    position: relative;
+    display: flex;
     margin: 0 auto;
     padding: 0;
-    position: relative;
-    display: flex-start;
     border-color: #ffffff;
-    background-color: #ffffff;
 }

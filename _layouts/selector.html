@@ -4,12 +4,16 @@ layout: default
 
 <div class="home">
   {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
+    <div class="center-inner-container">
+      <h1 class="page-heading">{{ page.title }}</h1>
+    </div>
   {%- endif -%}
 
   <main class="page-content" aria-label="Content">
-    <h2>{{ page.header }}</h2>
-    {% include image-buttons.html %}
+    <div class="center-inner-container">
+      <h2>{{ page.header }}</h2>
+      {% include image-buttons.html %}
+    </div>
   </main>
 
   <!-- {%- if site.posts.size > 0 -%}

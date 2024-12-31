@@ -27,17 +27,19 @@
     left: 0;
     right: 0;
     height: 20%; /* Overlay covers the bottom half */
-    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
     display: flex;
     align-items: center;
     justify-content: center;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .overlay p {
     margin: 0;
-    font-size: 24px;
+    font-size: calc(1vw + 1vh);
     font-weight: bold;
     color: #000; /* Black text for contrast */
     text-align: center;
