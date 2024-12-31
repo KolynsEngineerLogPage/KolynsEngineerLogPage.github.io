@@ -7,7 +7,6 @@
 .site-logo {
     max-width: 300px;
     height: auto;
-    display: inline-block;
 }
 
 .sr-only {
@@ -88,7 +87,11 @@ footer {
 }
 
 .site-header {
+    width: 60%;
+    margin: 0 auto;
+    padding: 0;
     position: relative;
+    display: flex-start;
     border-color: #ffffff;
     background-color: #ffffff;
 }
