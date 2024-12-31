@@ -1,0 +1,12 @@
+<div class="image-buttons">
+    {% for button in page.buttons %}
+    <div class="image-button">
+        <a href="{{ button.url | relative_url }}">
+            <img src="{{ button.image | relative_url }}" alt="{{ button.alt }}" class="button-image">
+            <div class="overlay">
+                <p>{{ button.description }}</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>

@@ -4,7 +4,6 @@
 
 @import "minima";
 
-/* Custom styles */
 .site-logo {
     max-width: 300px;
     height: auto;
@@ -23,7 +22,7 @@
 }
 
 body {
-    position: relative; /* Required for the ::before element */
+    position: relative;
     margin: 0;
     padding: 0;
     background-image: 
@@ -34,53 +33,55 @@ body {
     background-repeat: repeat, repeat;
     background-position:  0 0, 50px 50px;
     background-blend-mode: overlay, overlay;
-    animation: movePattern 10s linear infinite; /* Animate staggering */
+    animation: movePattern 10s linear infinite;
 }
 
 @keyframes movePattern {
     0% {
-        background-position: 0 0, 50px 50px; /* Start staggered */
+        background-position: 0 0, 50px 50px;
     }
     100% {
-        background-position: 50px 50px, 100px 100px; /* Swap the staggering */
+        background-position: 50px 50px, 100px 100px;
     }
 }
 
 .text-container {
-    width: 60%; /* Example text region width */
-    height: 100%; /* Full height (adjust as needed) */
-    margin: 0 auto; /* Center the text region */
+    width: 60%;
+    height: 100%;
+    margin: 0 auto;
     padding: 20px;
     background-color: #ffffff;
-    z-index: 2; /* Ensure it sits above the pseudo-element */
+    z-index: 2;
 }
 
 body::before {
     content: '';
     position: absolute;
-    top: 50%; /* Start at the vertical center */
-    left: 50%; /* Start at the horizontal center */
-    transform: translate(-50%, -50%); /* Center the element */
-    width: 60%; /* Half the width of the body */
-    height: 100%; /* Full height (adjust as needed) */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 100%;
     background-color: #ffffff;
     padding: 20px;
-    z-index: -1; /* Ensure it stays behind other content */
+    z-index: -1;
 }
 
 header {
-    background-color: #ffffff; /* White background */
-    color: #000; /* Optional: Adjust text color for contrast */
-    padding: 20px 20px; /* Optional: Add spacing */
+    position: relative;
+    bottom: 10px;
+    background-color: #ffffff;
+    color: #000;
+    padding: 20px 20px;
 }
 
 footer {
-    background-color: #ffffff; /* White background */
-    color: #000; /* Optional: Adjust text color for contrast */
+    background-color: #ffffff;
+    color: #000;
 }
 
 .site-footer {
-    position: relative; /* or absolute, fixed, sticky */
+    position: relative;
     top: 150px;
     background-color: #ffffff;
     padding: 20px;

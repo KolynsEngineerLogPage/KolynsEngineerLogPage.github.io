@@ -7,9 +7,12 @@ layout: default
     <h1 class="page-heading">{{ page.title }}</h1>
   {%- endif -%}
 
-  {{ content }}
+  <main class="page-content" aria-label="Content">
+    <h2>{{ page.header }}</h2>
+    {% include image-buttons.html %}
+  </main>
 
-  {%- if site.posts.size > 0 -%}
+  <!-- {%- if site.posts.size > 0 -%}
     <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
     <ul class="post-list">
       {%- for post in site.posts -%}
@@ -29,6 +32,6 @@ layout: default
     </ul>
 
     <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a></p>
-  {%- endif -%}
+  {%- endif -%} -->
 
 </div>

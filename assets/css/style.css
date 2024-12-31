@@ -1,0 +1,49 @@
+.image-buttons {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.image-button {
+    position: relative;
+    display: inline-block;
+    width: 500px;
+    height: auto;
+}
+
+.button-image {
+    width: 100%;
+    height: auto;
+    border: 0px solid #ccc;
+    border-radius: 8px;
+    display: block;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%; /* Overlay covers the bottom half */
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.overlay p {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000; /* Black text for contrast */
+    text-align: center;
+}
+
+.image-button:hover {
+    transform: scale(1.03); /* Zoom effect on hover */
+    transition: transform 0.2s ease-in-out;
+}
