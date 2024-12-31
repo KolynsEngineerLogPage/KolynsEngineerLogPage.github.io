@@ -3,13 +3,14 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 layout: selector
-title: Welcome
-header: All my projects will be here soon.
+title: Welcome to my space of
+header: Gaming, Automation, Computer Vision, and Machine Learning
 permalink: /
 buttons:
-  - url: /battle-cats-main/
-    image: /static/img/The_Battle_Cats-title.jpg
-    description: AFK The Battle Cats
+  - url: /egg-inc-main/
+    image: /static/img/egg-inc.jpg
+    alt: Egg Inc. Main
+    description: Egg Inc - Auto Prestige 
   - url: /page2/
     image: /static/img/svz.png
     alt: Page 2
@@ -18,10 +19,10 @@ buttons:
     image: /static/img/pvz2-main-menu.png
     alt: Page 3
     description: AI PvZ2
-  - url: /page4/
-    image: /static/img/egg-inc.jpg
-    alt: Page 4
-    description: Egg Inc - Auto Prestige 
+  - url: /battle-cats-main/
+    image: /static/img/The_Battle_Cats-title.jpg
+    alt: The Battle Cats Main
+    description: AFK The Battle Cats
   - url: /page5/
     image: /static/img/The_Escapists_3D-thumbnail.png
     alt: Page 5

@@ -20,30 +20,6 @@
     border: 0;
 }
 
-body {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    background-image: 
-        url('/static/img/soybean.png'),
-        url('/static/img/soybean.png');
-    background-color: #cc9b6d;
-    background-size: 100px 100px, 100px 100px;
-    background-repeat: repeat, repeat;
-    background-position:  0 0, 50px 50px;
-    background-blend-mode: overlay, overlay;
-    animation: movePattern 10s linear infinite;
-}
-
-@keyframes movePattern {
-    0% {
-        background-position: 0 0, 50px 50px;
-    }
-    100% {
-        background-position: 50px 50px, 100px 100px;
-    }
-}
-
 .center-container {
     width: 60%;
     height: 100%;
