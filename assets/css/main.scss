@@ -80,10 +80,10 @@ footer {
 
 @media only screen and (max-width: 768px) and (pointer: coarse) {
     .center-container {
-        min-width: 600px;
+        min-width: 550px;
     }
 
     body::before {
-        min-width: 600px;
+        min-width: 550px;
     }
 }
