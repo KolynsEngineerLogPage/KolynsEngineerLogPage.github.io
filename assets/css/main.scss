@@ -22,6 +22,7 @@
 
 .center-container {
     width: 60%;
+    min-width: 400px;
     height: 100%;
     margin: 0 auto;
     padding: 0px;
@@ -41,6 +42,7 @@ body::before {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 60%;
+    min-width: 400px;
     height: 100%;
     background-color: #ffffff;
     padding: 0px;
