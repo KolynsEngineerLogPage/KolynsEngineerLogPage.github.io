@@ -2,6 +2,7 @@
 layout: selector
 permalink: /battle-cats-main/
 title: The Battle Cats
+theme: cat
 buttons:
   - url: /battle-cats-afk/
     image: /static/img/battle-cats-accessibility-afk-thumbnail.jpg

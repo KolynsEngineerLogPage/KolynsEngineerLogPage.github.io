@@ -19,7 +19,7 @@ body.egg {
     padding: 0;
     background-image: 
         url('/static/img/egg.png');
-    background-color: #62b2d6;
+    background-color: #cc62d6;
     background-size: 100px 100px;
     background-repeat: repeat;
     background-position:  0 0;
@@ -27,18 +27,48 @@ body.egg {
     animation: movePattern-single 20s linear infinite;
 }
 
-body.katana {
+body.sushi {
     position: relative;
     margin: 0;
     padding: 0;
     background-image: 
-        url('/static/img/katana.png');
-    background-color: #d66262;
+        url('/static/img/sushi.png'),
+        url('/static/img/sushi.png');
+    background-color: #e4a78e;
+    background-size: 100px 100px, 100px 100px;
+    background-repeat: repeat, repeat;
+    background-position:  0 0, 50px 50px;
+    background-blend-mode: overlay, overlay;
+    animation: movePattern 10s linear infinite;
+}
+
+body.sunflower {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-image: 
+        url('/static/img/sunflower.png');
+    background-color: #dfd54a;
     background-size: 100px 100px;
     background-repeat: repeat;
     background-position:  0 0;
     background-blend-mode: overlay;
     animation: movePattern-single 20s linear infinite;
+}
+
+body.cat {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-image: 
+        url('/static/img/cat.png'),
+        url('/static/img/tank-cat.png');
+    background-color: #82dbc1;
+    background-size: 100px 100px, 100px 100px;
+    background-repeat: repeat, repeat;
+    background-position:  0 0, 50px 50px;
+    background-blend-mode: overlay, overlay;
+    animation: movePattern-long 10s linear infinite;
 }
 
 @keyframes movePattern {
@@ -56,5 +86,14 @@ body.katana {
     }
     100% {
         background-position: 100px 100px;
+    }
+}
+
+@keyframes movePattern-long {
+    0% {
+        background-position: 0 0, 50px 50px;
+    }
+    100% {
+        background-position: 100px 100px, 150px 150px;
     }
 }

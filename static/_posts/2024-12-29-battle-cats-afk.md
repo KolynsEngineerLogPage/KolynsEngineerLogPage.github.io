@@ -7,6 +7,7 @@ date: 2024-12-29 21:29:16 -0500
 layout: post
 permalink: /battle-cats-afk/
 title: The Battle Cats AFK Farm
+theme: cat
 ---
 
 
