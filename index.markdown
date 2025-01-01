@@ -19,7 +19,7 @@ buttons:
 
   - url: /pvz2-main/
     image: /static/img/pvz2-main-menu.png
-    alt: 
+    alt: Use AI to beat PvZ2
     description: AI PvZ2
 
   - url: /battle-cats-main/
