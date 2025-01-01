@@ -76,3 +76,14 @@ footer {
     padding: 0;
     border-color: #ffffff;
 }
+
+
+@media only screen and (max-width: 768px) and (pointer: coarse) {
+    .center-container {
+        min-width: 500px;
+    }
+
+    body::before {
+        min-width: 500px;
+    }
+}
