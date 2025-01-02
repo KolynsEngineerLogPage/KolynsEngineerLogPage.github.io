@@ -11,6 +11,8 @@ title: SvZ Pachinko and Slot Machine
 ---
 
 Category: Log
+
+
 Platform: Windows
 
 ## What is the Pachinko mini game?
