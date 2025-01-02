@@ -11,6 +11,7 @@ title: Install SvZ on PC emulator
 ---
 
 Category: Tutorial
+Platform: Windows
 
 
 Content Rating: PG-13

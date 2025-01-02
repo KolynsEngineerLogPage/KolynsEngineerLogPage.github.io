@@ -10,6 +10,7 @@ title: The Battle Cats AFK Farm
 theme: cat
 ---
 Category: Tutorial
+Platform: iOS
 
 This tutorial will teach you how to utilize the Switch Control feature in iOS Accessibility to automate battles in The Battle Cats. **Disclaimer: Use at your own risk! I won't be responsible for any damage caused by following this tutorial.** Please read carefully if you intend to use this approach and ensure the maximum safety.
 
