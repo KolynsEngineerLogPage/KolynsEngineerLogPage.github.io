@@ -63,7 +63,7 @@ Here is a list of good stages you can farm materials:
 - Bones: Walk of Fame - Paparazzi Paradise (Bahamut)
 - Sprockets: The Legend Begins - Earthshaker (Manic Lion)
 
-This list is far from exhaustive. You are welcome to write an issue if you have found more stages that are farmable, and I will add them here: [https://github.com/cyberspatula/cyberspatula.github.io/issues](https://github.com/cyberspatula/cyberspatula.github.io/issues)
+This list is far from exhaustive. You are welcome to write an issue if you have found more stages that are farmable, and I will add them here: [GitHub issues](https://github.com/cyberspatula/cyberspatula.github.io/issues)
 
 <br>
 <br>
