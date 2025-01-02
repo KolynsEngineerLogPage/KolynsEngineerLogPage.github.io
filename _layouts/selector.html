@@ -5,13 +5,13 @@ layout: default
 <div class="home">
   {%- if page.title -%}
     <div class="center-inner-container">
-      <h1 class="page-heading">{{ page.title }}</h1>
+      <h1 class="page-title">{{ page.title }}</h1>
     </div>
   {%- endif -%}
 
   <main class="page-content" aria-label="Content">
     <div class="center-inner-container">
-      <h2>{{ page.header }}</h2>
+      <h2 class="page-heading">{{ page.header }}</h2>
       {% include image-buttons.html %}
     </div>
   </main>

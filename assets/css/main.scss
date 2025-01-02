@@ -88,3 +88,11 @@ footer {
         min-width: 350px;
     }
 }
+
+.page-title {
+    font-size: clamp(1.5rem, 5vw, 3rem); 
+}
+
+.page-heading {
+    font-size: clamp(0.8rem, 2.5vw, 1.2rem);
+}

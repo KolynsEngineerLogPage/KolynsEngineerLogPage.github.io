@@ -3,7 +3,7 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 layout: selector
-title: Welcome to my space of
+title: Kolyn090's Dev Log
 header: Gaming, Automation, Computer Graphics, and Machine Learning
 permalink: /
 buttons:
