@@ -4,6 +4,10 @@ permalink: /svz-main/
 theme: sushi
 title: Samurai VS Zombies Defense
 buttons:
+  - url: /svz-installation/
+    image: /static/img/svz/svz-blue-stacks.png
+    alt: Install SvZ on PC emulator.
+    description: Install SvZ on PC emulator.
   - url: /svz-pachinko/
     image: /static/img/svz/svz-pachinko.png
     alt: Pachinko machine.
