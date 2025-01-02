@@ -58,7 +58,7 @@ Generally, the battle should be completed **within 40 seconds** because <u>the l
 
 Also, the maximum number of units you can deploy per battle is **four** (3 if you use Cat Cannon). That's because of the Custom Gesture will only allow 10 clicks and 6 of them are already taken by automation process not matter what stage you are farming. (What 6, You wonder? Check out the video [4:50](https://www.youtube.com/watch?v=pwu47d9wgiE&t=4m50s), [5:41](https://www.youtube.com/watch?v=pwu47d9wgiE&t=5m41s))
 
-Here is a list of good stages you can farm materials:
+Here is a list of good stages where you can farm materials:
 - Gold/Meteorite: Beyond the Savannah - Dry Season (Cancan, Bahamut)
 - Bones: Walk of Fame - Paparazzi Paradise (Bahamut)
 - Sprockets: The Legend Begins - Earthshaker (Manic Lion)
@@ -68,4 +68,3 @@ This list is far from exhaustive. You are welcome to write an issue if you have 
 <br>
 <br>
  👾 Happy Gaming 👾
- 
