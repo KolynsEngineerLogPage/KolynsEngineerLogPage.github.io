@@ -3,8 +3,8 @@ body {
     margin: 0;
     padding: 0;
     background-image: 
-        url('/static/img/soybean.png'),
-        url('/static/img/soybean.png');
+        url('/static/img/1-default/soybean.png'),
+        url('/static/img/1-default/soybean.png');
     background-color: #cc9b6d;
     background-size: 100px 100px, 100px 100px;
     background-repeat: repeat, repeat;
@@ -18,7 +18,7 @@ body.egg {
     margin: 0;
     padding: 0;
     background-image: 
-        url('/static/img/egg.png');
+        url('/static/img/egg-inc/egg.png');
     background-color: #cc62d6;
     background-size: 100px 100px;
     background-repeat: repeat;
@@ -32,8 +32,8 @@ body.sushi {
     margin: 0;
     padding: 0;
     background-image: 
-        url('/static/img/sushi.png'),
-        url('/static/img/sushi.png');
+        url('/static/img/svz/sushi.png'),
+        url('/static/img/svz/sushi.png');
     background-color: #e4a78e;
     background-size: 100px 100px, 100px 100px;
     background-repeat: repeat, repeat;
@@ -47,7 +47,7 @@ body.sunflower {
     margin: 0;
     padding: 0;
     background-image: 
-        url('/static/img/sunflower.png');
+        url('/static/img/pvz2/sunflower.png');
     background-color: #dfd54a;
     background-size: 100px 100px;
     background-repeat: repeat;
@@ -61,8 +61,8 @@ body.cat {
     margin: 0;
     padding: 0;
     background-image: 
-        url('/static/img/cat.png'),
-        url('/static/img/tank-cat.png');
+        url('/static/img/battle-cats/cat.png'),
+        url('/static/img/battle-cats/tank-cat.png');
     background-color: #82dbc1;
     background-size: 100px 100px, 100px 100px;
     background-repeat: repeat, repeat;

@@ -1,6 +1,6 @@
 ---
 author: Kolyn090
-banner: /static/img/battle-cats-accessibility-afk-thumbnail.jpg
+banner: /static/img/battle-cats/accessibility-afk-thumb.jpg
 categories: Game Tutorial
 custom_class: custom-page-content
 date: 2024-12-29 21:29:16 -0500
