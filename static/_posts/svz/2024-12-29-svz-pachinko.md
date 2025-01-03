@@ -693,7 +693,8 @@ The next step will be building a game simulator. This time I will give you some 
 ![diagram](/static/img/svz/diagram.jpeg)
 Currently we have done phase 1 and phase 6 (sort of) in the diagram. Based on this diagram, we see that the game simulator has relations to many components. Don't worry, you just need to know one single most important thing about the game simulator - **it produces a score in the end of each interval!**
 
-<br>
+---
+
 Now we will refine the puller a little bit by giving it its own script.
 Create `puller.py` under `pachinko`, put
 {% highlight python %}
@@ -718,7 +719,8 @@ class Puller:
 {% endhighlight %}
 done!
 
-<br>
+---
+
 Now create `game_simulator.py` under `pachinko`, put
 {% highlight python %}
 import time
@@ -739,7 +741,7 @@ class Game_Simulator:
 
 Again, we start analyzing from the parameters.
 - `window`: The emulator window.
-- `winner_observer`: Reference to door observer.
+- `winner_observer`: Reference to winner observer (Bound_Observer).
 - `interval`: (Seconds) Produces a score every x seconds.
 
 
@@ -751,3 +753,72 @@ The fields.
 - `self._curr_coins`: Used to track the current number of coins.
 - `self._winner_observer`: For getting reward ratio.
 
+<br>
+Let's write our first function in this class.
+{% highlight python %}
+def reset(self):
+    self._start_time = time.time()
+    self._curr_coins = self._get_coins()
+    print(f"Reset current coins: {self._curr_coins}")
+    self._winner_observer.reset()
+{% endhighlight %}
+🤓 The `reset` function is called on each episode starts.
+
+<br>
+Our next function is the core of this class.
+{% highlight python %}
+def play(self, action):
+    drag_from = [action[0], action[1]]
+    drag_to = [action[2], action[3]]
+    speed = action[4]
+    self._puller.perform_pull(drag_from, drag_to, speed)
+
+    if self._time_elapsed() >= self._interval:
+        self._start_time = time.time()
+        curr_coins = self._get_coins()
+        score = self._calculate_score(curr_coins)
+        return score, True
+
+    return 0, False
+{% endhighlight %}
+🤓 It has one parameter `action`, which is a list of five numbers. The first two elements are `drag_from`, the next two are `drag_to`, and the last one is `speed`. We will let the puller pull using these three values instead of our preset values (from Step 3). The next if statement is just checking if the time is up: if yes, calculate a new score, otherwise return 0.
+
+<br>
+It is easy to get the elapsed time.
+{% highlight python %}
+def _time_elapsed(self):
+    return time.time() - self._start_time
+{% endhighlight %}
+
+<br>
+Getting the coins amount is also quite easy now, but we need to handle when the function fails to get a result.
+{% highlight python %}
+def _get_coins(self):
+    result = self._coin_reader.extract_coin_amount()
+    if not result:
+        result = 0
+    return result
+{% endhighlight %}
+
+<br>
+The last function in this class.
+{% highlight python %}
+# We have two things to consider:
+# 1. the winner ratio within interval
+# 2. the score increment within interval
+# Here is just a random formula to calculate the score
+def _calculate_score(self, curr_coins):
+    increased = curr_coins - self._curr_coins
+    print(f"Increased coins: {increased}")
+    result = max(increased + 20 * self._winner_observer.get_ratio(), 0)
+    if result == 0:
+        return -5  # Test negative rewards
+    return math.log(min(result, 5000))
+{% endhighlight %}
+Here I came up with a random formula for calculating the score.
+My forumla: 
+
+
+$$
+\log \left( \min \left( \max \left( \text{increased} + 20 \cdot \text{ratio}, 0 \right), 5000 \right) \right)
+$$
