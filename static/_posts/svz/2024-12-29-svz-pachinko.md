@@ -353,6 +353,9 @@ Run the code and you should expect the window moved to the specified location.
 📍 Trouble shooting: If the window moved to a wrong location / not moving at all. Try manually dragging it to somewhere else and run the code again until it gets right. I speculate that there are some unknown issues with the pygetwindow's `move` / `moveTo` functions.
 
 
+⭐ Hint: Check the print result `Left: ..., Top: ...`; if they don't match your set values, that means the window has not moved to the expected location.
+
+
 <br>
 <br>
 🎉 Excellent! Now we can get perfect screenshots. Let's move onto the next step.
