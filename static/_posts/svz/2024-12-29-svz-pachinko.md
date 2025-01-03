@@ -1,7 +1,7 @@
 ---
 author: Kolyn090
 banner: /static/img/svz/svz-pachinko.png
-categories: Log
+categories: Tutorial
 custom_class: custom-page-content
 date: 2024-12-29 17:00:00 -0500
 layout: post
@@ -10,7 +10,7 @@ theme: sushi
 title: SvZ Pachinko and Slot Machine
 ---
 
-Category: Log
+Category: Tutorial
 
 
 Platform: Windows
@@ -426,7 +426,7 @@ if __name__ == '__main__':
 <br>
 🎉 That's actually all we need to get the most optimal rewards in the Pachinko game! Run this program to test it out and adjust the dragging positions as needed.
 
-## Step 4 (Machine Learning)
+## Step 4 (Collecting data)
 Before we do ML, we should design the data we are going to collect. Recall that we care about the amount of coins and game items we can get. I think the simplest and the most efficient way is to get the coins difference every x seconds. For game items, let's observe the Winner region:
 
 ![winner](/static/img/svz/winner.gif)
@@ -436,3 +436,249 @@ If we get an item from the Slot machine, the door will open and the item will be
 
 
 I think these two pieces of information are enough to solve our problem.
+
+---
+
+Our current idea is very high-level. That's why we will start by getting actual data. 
+
+
+Let's do coins amount extraction first.
+
+
+I approached this problem in two different ways: with pytesseract library to recognize digits or write a template matching program. Here I am going to introduce the pytesseract approach and I will be writing another post about writing custom template matching program. (TODO)
+
+Create `coins_pytesseract.py` under `pachinko`, put
+{% highlight python %}
+import re
+import pytesseract
+from src.util.screen_getter import get_window_with_title, get_screen_of_chosen_window
+from src.pachinko.location.ui_position import coin_bound
+{% endhighlight %}
+
+Install the required package
+{% highlight shell %}
+pip install pytesseract
+{% endhighlight %}
+
+🤓 Pytesseract is a powerful text recognition library. I like it a lot but in my experience it only works for 90% of times and it's significantly slower compared custom template matching. That's why if your case is specific (like this one), I would highly recommend writing a custom tempalte matching program. 
+
+
+Another thing you need to do is to figure out the coins amount bounds with mouse coordinate. **Here is mine, yours could be different.**
+
+
+In `ui_position.py`, add
+{% highlight python %}
+coin_bound = (351, 121, 412, 136)
+{% endhighlight %}
+If you crop with `coin_bound` from the game screenshot, you should get something look like this:
+![pachinko-8](/static/img/svz/pachinko-8.png)
+<br>
+<br>
+👨‍🔬 This will be your first exercise. Remember, use mouse coordinate to get the positions of top-left and bottom-right marked dots. If you hid the ads, you will have to add the x-coordinates with the width of ads widget. Keep trying until you get it right!
+
+<br>
+<br>
+After you have successfully got a screenshot of the coins amount, add this line to `coins_pytesseract.py`
+{% highlight python %}
+pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
+{% endhighlight %}
+🤓 It's a necessary component for pytesseract.
+
+
+Next we want to create a class that takes in a window and read coins amount from it.
+In `coins_pytesseract.py`
+{% highlight python %}
+class Coins_Pytesseract:
+    def __init__(self, window):
+        self._window = window
+
+    def extract_coin_amount(self):
+        screen = get_screen_of_chosen_window(self._window)
+        coin_region = screen.crop(coin_bound)
+        extracted_text = pytesseract.image_to_string(coin_region, config='--psm 7')
+
+        # Use regular expression to find the integer
+        match = re.search(r'\d+', extracted_text)
+
+        # Return the integer if found, otherwise None
+        return int(match.group()) if match else None
+{% endhighlight %}
+🤓 The idea is to give ![pachinko-8](/static/img/svz/pachinko-8.png) to pytesseract and ask it to find all integers in the image. Pytesseract will return `str` and we use `re` to find all integers and in the end we convert the match to an integer.
+
+
+Let's try with ![pachinko-8](/static/img/svz/pachinko-8.png)
+{% highlight python %}
+from PIL import Image
+
+if __name__ == '__main__':
+    img = Image.open('test.png')
+    extracted_text = pytesseract.image_to_string(img, config='--psm 7')
+    match = re.search(r'\d+', extracted_text)
+    print(int(match.group()))
+{% endhighlight %}
+and we get result
+{% highlight shell %}
+149756
+{% endhighlight %}
+
+🎉 Now we can read coins amount.
+
+---
+
+Now moving onto game items. Again, I want you to do the same thing again; this time get the bound for Winner:
+
+
+![no-winner](/static/img/svz/no_winner.png)
+
+
+Record your `winner_bound` in `ui_position.py`. **Here is mine, yours could be different.**
+{% highlight python %}
+winner_bound = (338, 213, 405, 273)
+{% endhighlight %}
+
+
+This idea is so important that it's worth being mentioned again: we will be creating a while loop that continuously checks whether a given region has changed. In our case, the default region will be:
+![no-winner](/static/img/svz/no_winner.png), anything different will be considered as a change. If we check every 0.1 seconds, then in 5 seconds we would be checking 50 times. If 37 times of them were different, we say there is 37/50 `reward_ratio`. The higher the better.
+
+
+This is a template matching problem. In this problem, you will have to own a reference. Therefore, the first thing I want you to do is to store the default door image under `pachinko` and name it `no_winner.png`
+
+
+![no-winner](/static/img/svz/no_winner.png)
+
+
+📍 You should be getting your own default door image.
+
+<br>
+Next I will show you how to write a class that observes a given bound. It will work for many cases. Create `bound_observer.py` under `pachinko`, put
+{% highlight python %}
+import cv2
+import time
+import threading
+import numpy as np
+from src.util.screen_getter import get_screen_of_chosen_window
+{% endhighlight %}
+Install the necessary packages
+{% highlight shell %}
+pip install opencv-python
+pip install numpy
+{% endhighlight %}
+🤓 cv2 is another powerful image library. It reads images as numpy arrays and manipulates them efficiently. We import numpy here just to later convert PIL image to cv2.
+
+<br>
+Now we create the class
+{% highlight python %}
+# Observes a region (bound) in the screenshot
+# Outputs a ratio [0,1] of the time when the region
+# has changes occurred until reset
+class Bound_Observer:
+    def __init__(self, window, bound, reference, similarity=0.9, check_exist=False):
+        self._change_checks = 0  # within interval
+        self._total_checks = 0  # within interval
+        self._verbal = False
+        self._name = 'default'
+{% endhighlight %}
+
+
+Let's start with the parameters.
+- `window`: The emulator window.
+- `bound`: The bound to be observed, later we will put `winner_bound`.
+- `reference`: This is going to be the reference, later we will put the default door here. This is a `cv2` image.
+- `similarity`: The threshold of the program recoginzing a change. If their similarity is less than this ratio, it will be marked as a change.
+- `check_exist`: This value essentially toggles the result. In our case, we want to check if a change occurs so we should set it to `False`. As discussed earlier, if we got 37/50 `reward_ratio`; we would be getting 13/50 if this value were set `True` because it would be checking the time default door exists instead.
+
+Next let's see our field values:
+- `self._change_checks`: This value records the number of times a change occurs, it is the numerator. 
+- `self._total_checks`: This value record the total number of checks, it is the denominator.
+- `self._verbal`: Controls whether the program should print information, for debugging purposes.
+- `self._name`: Name of the class instance, for debugging purposes.
+
+<br>
+I hope now you have a good understanding about this class. Next, inside the constructor of `Bound_Observer`, add
+{% highlight python %}
+def check_bound():
+    def check():
+        screenshot = get_screen_of_chosen_window(window)
+        if test_change(screenshot):
+            self._change_checks += 1
+        self._total_checks += 1
+        if self._verbal:
+            print(f"{self._name}: {self._change_checks} / {self._total_checks}")
+
+    while True:
+        check()
+        time.sleep(0.1)
+
+self.thread = threading.Thread(target=check_bound)
+{% endhighlight %}
+
+
+That thread in the end is the core of this class. I will be telling you where you should use it. Now, let's analyze the `check_bound()` function.
+
+
+First, the program gets the game screenshot. It will be put to `test_change` and cropped to `winner_bound` and then compared with our reference. If the check passes, `self._change_checks` will increment by 1. `self._total_checks` will increment by 1 regardless of the check. We repeat this step every 0.1 seconds.
+
+<br>
+Now let's fill `test_change`, within the constructor, put
+{% highlight python %}
+def test_change(screenshot):
+    cropped = screenshot.crop(bound)
+    result = exists_template_rgb(reference, pil_to_cv2(cropped), similarity)
+    if check_exist:
+        return result
+    else:
+        return not result
+
+ def exists_template_rgb(template, screenshot, threshold=0.97):
+    # Separate the alpha channel from the template
+    bgr_template = template[:, :, :3]
+
+    # Perform template matching
+    result = cv2.matchTemplate(screenshot, bgr_template, cv2.TM_CCORR_NORMED)
+
+    # Find the best match location
+    _, max_val, _, max_loc = cv2.minMaxLoc(result)
+    return max_val > threshold
+
+def pil_to_cv2(image):
+    if image is None:
+        raise ValueError("Input image is None. Ensure the image source is valid.")
+
+    # Assuming `image` is a PIL Image (e.g., result of screen.crop())
+    # Convert PIL image to a NumPy array
+    image_np = np.array(image)
+
+    if image_np.size == 0:
+        raise ValueError("Input NumPy array is empty after conversion from PIL image.")
+
+    # Check the number of dimensions to determine if color conversion is needed
+    if image_np.ndim == 3:  # Color image (RGB)
+        # Convert RGB to BGR
+        image_bgr = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
+    else:
+        # Grayscale or other single-channel image, no conversion needed
+        image_bgr = image_np
+    return image_bgr
+{% endhighlight %}
+You do not need to know everything going on here. But if you want to, I have annotated the code for you.
+
+
+🎉 That was all for the constructor. Now we still need to add some functions for this class.
+
+<br>
+Add these functions in `Bound_Observer`
+{% highlight python %}
+def get_ratio(self):
+    return self._change_checks / min(self._total_checks, 1)
+
+def reset(self):
+    self._change_checks = 0
+    self._total_checks = 0
+
+def set_to_verbal(self, name='default'):
+    self._name = name
+    self._verbal = True
+{% endhighlight %}
+- `get_ratio`: This is the actual function you get result from `Bound_Observer`
+- `reset`: Resets the values
+- `set_to_verbal`: Toggle on to debug. Could be helpful when you encounter bugs.
