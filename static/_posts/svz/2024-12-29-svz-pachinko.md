@@ -67,7 +67,7 @@ Create a new Python project and create a folder hierarchy like so:
 
 
 # Step 2
-The first problem we want to solve is to actually reference the emulator screen in Python. We will be analyzing screenshots since there is no access to the internal game data. In this tutorial I am assuming you are using BlueStacks emulator and you are playing the normal version game. You can find how to install [here](/svz-installation/).
+The first problem we want to solve is to actually reference the emulator window in Python. We will be analyzing screenshots since there is no access to the internal game data. In this tutorial I am assuming you are using BlueStacks emulator and you are playing the normal version game. You can find how to install [here](/svz-installation/).
 
 ---
 
@@ -90,7 +90,7 @@ pip install pygetwindow
 pip install pillow
 {% endhighlight %}
 
-🤓 Pygetwindow is Windows specific so you will want to make sure the platform is Windows. We use it to get the screen's reference. Pillow is a powerful image library and later we will be using it for taking the screenshots.
+🤓 Pygetwindow is Windows specific so you will want to make sure the platform is Windows. We use it to get the window's reference. Pillow is a powerful image library and later we will be using it for taking the screenshots.
 
 ---
 
@@ -131,19 +131,19 @@ If everything is correct, you should see something like:
 <Win32Window left="-165", top="6", width="987", height="476", title="BlueStacks App Player 10">
 {% endhighlight %}
 
-🎉 There we have a reference to the screen now!
+🎉 There we have a reference to the window now!
 
 ---
 
-After we have the screen, we want to take screenshots from it. Thanks to pillow, this step is not hard. 
+After we have the window, we want to take screenshots from it. Thanks to pillow, this step is not hard. 
 
 {% highlight python %}
-def get_screenshot_of_chosen_screen(screen):
+def get_screenshot_of_chosen_window(window):
     def run_win():
-        x = screen.left
-        y = screen.top
-        h = screen.height
-        w = screen.width
+        x = window.left
+        y = window.top
+        h = window.height
+        w = window.width
         return PIL.ImageGrab.grab(bbox=(x, y, w, h))
 
     if platform.platform().startswith('Win'):
@@ -152,10 +152,10 @@ def get_screenshot_of_chosen_screen(screen):
         return None
 {% endhighlight %}
 
-🤓 ImageGrab.grab crops out the screenshot of the **entire PC Desktop**  with the provided bounding box. Here, our bounding box is exactly equal to the selected screen, so we get its screenshot, <u>a PIL Image object</u>.
+🤓 ImageGrab.grab crops out the screenshot of the **entire PC Desktop**  with the provided bounding box. Here, our bounding box is exactly equal to the selected window, so we get its screenshot, <u>a PIL Image object</u>.
 
 
-📍 The screen must be active, otherwise the program won't find it. There should not be any other screen above it, otherwise the screenshoter will also take the overlayered screen.
+📍 The window must be active, otherwise the program won't find it. There should not be any other window above it, otherwise the screenshoter will also take the overlayered window.
 
 
 Now let's test.
@@ -163,7 +163,7 @@ Now let's test.
 {% highlight python %}
 if __name__ == '__main__':
     chosen_window = get_window_with_title('BlueStacks App Player')
-    chosen_screen = get_screenshot_of_chosen_screen(chosen_window)
+    chosen_screen = get_screenshot_of_chosen_window(chosen_window)
     chosen_screen.save('screenshot.png')
 {% endhighlight %}
 
@@ -256,3 +256,106 @@ Install the package
 {% highlight shell %}
 pip install pynput
 {% endhighlight %}
+
+🤓 We use pynput here to get the mouse information.
+
+<br>
+Now add
+{% highlight python %}
+if __name__ == '__main__':
+    def get_coords(x, y):
+        print("Now at: {}".format((x, y)))
+
+    Program_Obj()
+    with mouse.Listener(on_move=get_coords) as listen:
+        listen.join()
+{% endhighlight %}
+
+Here, we have instantiated Program_Obj and it's ok that we can just leave it there. We will be able to terminate the program when 'q' is pressed. 
+
+🤓 `mouse.Listener` is a Thread. In this case, it listens to the mouse movement. Basically, it calls assigned `on_move` function when mouse moves. In this case, I want it to print `x` and `y` coordinates. 
+
+
+🎉 Now we got a program that can determine mouse coordinates. You should try this program before proceeding to the next step. Run the program and you should expect mouse coordinate printed. Remember, press 'q' key to stop.
+
+
+<br>
+<br>
+Still remember our task? Determine the bounding box of the window. 
+
+
+I apologize but you will have to put the ads back, for now.
+![pachinko-5](/static/img/svz/pachinko-5.png)
+Align the edge of the ads perfectly with the edge. Now comes the important part, run `mouse_coordinate.py` and record the positions of these two points (top-left and bottom-right):
+![pachinko-6](/static/img/svz/pachinko-6.png)
+
+
+I got:
+`(164, 32)` and `(950, 482)`
+
+
+🤓 This means that the first point is 164 pixels away from the left edge and 32 pixels away from the top edge of the Desktop. The second point is 950 pixels away from the left edge and 482 pixels away from the top edge of the Desktop. Awesome!
+
+
+Now you can just go ahead and modify the main function in `screen_getter.py` to
+{% highlight python %}
+if __name__ == '__main__':
+    chosen_window = get_window_with_title('BlueStacks App Player')
+    chosen_screen = get_screenshot_of_chosen_window(chosen_window)
+    chosen_screen.save('screenshot.png')
+    crop_bound = (164, 32, 950, 482)  # whatever values you got
+    game_zone = chosen_screen.crop(crop_bound)
+    game_zone.save('game_zone.png')
+{% endhighlight %}
+Run and you should get an almost perfect game zone screenshot (and you can hide the ads now. It will work with & without ads).
+![game_zone](/static/img/svz/game_zone.png)
+
+---
+
+Now we can get the screenshot, but we still need to <u>find a way to maintain the same window size each time we open the app.</u> **I will be showing you the approach that hides the ads; if you do not want to hide them you might have to do some extra works to get it right.**
+
+
+Create `window_rescaler.py` in `util`, put
+{% highlight python %}
+from src.util.screen_getter import get_window_with_title
+
+# Rescale the window to fit the requirement
+if __name__ == '__main__':
+    chosen_window = get_window_with_title('BlueStacks App Player')
+    top, left, bottom, right = 0, -164, 482, 819
+
+    # Calculate the width and height based on the bounds
+    width = right - left
+    height = bottom - top
+
+    if chosen_window:
+        chosen_window.activate()
+
+        chosen_window.moveTo(left, top)
+        print(f"Left: {chosen_window.left}, Top: {chosen_window.top}")
+        chosen_window.resizeTo(width, height)
+
+        print(f"Window resized to top-left ({left}, {top}) with width {width} and height {height}.")
+    else:
+        print('Window not found, cannot rescale')
+{% endhighlight %}
+
+🤓 Here, to get `top`, `left`, `bottom`, `right`, you will have to use mouse coordinate again. 
+- top: **0**, assuming you have almost perfectly put the emulator window in the top-left corner of the Desktop.
+- left: negative [the x-coordinate of the top-left marked dot]. Mine is 164 so I put **-164** here.
+- bottom: [the y-coordinate of the bottom-right marked dot]. Mine is 482 so I put **482** here.
+- right: A tricky one. Use mouse coordinate again, but this time <u>hide the ads</u>. Measure the bottom-right marked dot position. Take the y-coordinate of the measured result. I got **819**.
+
+
+Run the code and you should expect the window moved to the specified location.
+
+
+📍 Trouble shooting: If the window moved to a wrong location / not moving at all. Try manually dragging it to somewhere else and run the code again until it gets right. I speculate that there are some unknown issues with the pygetwindow's `move` / `moveTo` functions.
+
+
+<br>
+<br>
+🎉 Excellent! Now we can get perfect screenshots. Let's move onto the next step.
+
+
+## Step 3
