@@ -67,6 +67,9 @@ Create a new Python project and create a folder hierarchy like so:
 
 
 # Step 2
+📍 Note: step 2 is very long. If you don't care about machine learning (only want to get the best result) in the pachinko game, you can almost certainly jump to step 3. However, <u>be warned that you might encounter some problems with positioning if you don't read through step 2.</u>
+
+
 The first problem we want to solve is to actually reference the emulator window in Python. We will be analyzing screenshots since there is no access to the internal game data. In this tutorial I am assuming you are using BlueStacks emulator and you are playing the normal version game. You can find how to install [here](/svz-installation/).
 
 ---
@@ -361,4 +364,75 @@ Run the code and you should expect the window moved to the specified location.
 🎉 Excellent! Now we can get perfect screenshots. Let's move onto the next step.
 
 
-## Step 3
+## Step 3 (Hard-code)
+If you only want to gain the highest possible rewards out of the Pachinko machine, read this step and no further! 
+
+
+First, create a new folder `hardcode` under `pachinko`. Second, create `hardcode.py` under `hardcode`. Inside `hardcode.py`, put:
+{% highlight python %}
+import time
+import pyautogui
+from src.program.program_obj import Program_Obj
+from src.pachinko.location.ui_position import drag_from, drag_to
+{% endhighlight %}
+Install the required package:
+{% highlight shell %}
+pip install pyautogui
+{% endhighlight %}
+🤓 Pyautogui is a powerful library that can simulate mouse and keyboard interactions. 
+
+---
+
+Next, create a new folder `location` under `pachinko`. Then, create `ui_position` under `location`. Inside `ui_position`, put: 
+{% highlight python %}
+drag_from = [609, 445]
+drag_to = [609, 480]
+{% endhighlight %}
+🤓 `drag_from` and `drag_to` are dragging positions for the handle. Note that this is optimal in my case but might not be in yours. You are encouraged to adjust them until you get desired outcomes.
+
+---
+
+In `hardcode.py`, create a new function that can perform drag.
+{% highlight python %}
+def perform_drag(drag_from, drag_to, speed=0.5):
+    start_x, start_y = drag_from[0], drag_from[1]
+    end_x, end_y = drag_to[0], drag_to[1]
+    duration = speed
+
+    # Move to the starting position
+    pyautogui.moveTo(start_x, start_y)
+
+    # Perform the drag
+    pyautogui.mouseDown()  # Press the mouse button
+    pyautogui.dragTo(end_x, end_y, duration=duration)
+    pyautogui.mouseUp()  # Release the mouse button
+{% endhighlight %}
+
+🤓 Pyautogui will **take control** of your mouse cursor. On each call, the function will move the mouse cursor to the starting position and perform a press then drag it to the ending position and release the mouse cursor.
+
+Write a main function
+{% highlight python %}
+if __name__ == '__main__':
+    Program_Obj()
+
+    duration = 0.5
+    while True:
+        perform_drag(drag_from, drag_to, duration)
+        time.sleep(0.01)
+{% endhighlight %}
+🤓 We add `time.sleep()` to prevent the program from high CPU usage.
+
+<br>
+<br>
+🎉 That's actually all we need to get the most optimal rewards in the Pachinko game! Run this program to test it out and adjust the dragging positions as needed.
+
+## Step 4 (Machine Learning)
+Before we do ML, we should design the data we are going to collect. Recall that we care about the amount of coins and game items we can get. I think the simplest and the most efficient way is to get the coins difference every x seconds. For game items, let's observe the Winner region:
+
+![winner](/static/img/svz/winner.gif)
+
+
+If we get an item from the Slot machine, the door will open and the item will be displayed with a short amount of time, as shown above. <u>Therefore, we can try to get the proportion of time when the door is open within a time interval (x seconds).</u> That is equivalent to: if we get more items, the door is opened for a longer amount of time.
+
+
+I think these two pieces of information are enough to solve our problem.
