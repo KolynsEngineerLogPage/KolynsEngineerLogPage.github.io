@@ -682,3 +682,72 @@ def set_to_verbal(self, name='default'):
 - `get_ratio`: This is the actual function you get result from `Bound_Observer`
 - `reset`: Resets the values
 - `set_to_verbal`: Toggle on to debug. Could be helpful when you encounter bugs.
+
+
+🎉 Great! Now our program has the ability observe the door.
+## Step 5
+So far we can get coins amount and `reward_ratio` for game items from game screenshots. Sounds no much but it's already a lot of work. 
+
+
+The next step will be building a game simulator. This time I will give you some visual aids.
+![diagram](/static/img/svz/diagram.jpeg)
+Currently we have done phase 1 and phase 6 (sort of) in the diagram. Based on this diagram, we see that the game simulator has relations to many components. Don't worry, you just need to know one single most important thing about the game simulator - **it produces a score in the end of each interval!**
+
+<br>
+Now we will refine the puller a little bit by giving it its own script.
+Create `puller.py` under `pachinko`, put
+{% highlight python %}
+import pyautogui
+
+
+class Puller:
+    @staticmethod
+    def perform_pull(drag_from, drag_to, speed=0.5):
+        start_x, start_y = drag_from[0], drag_from[1]
+        end_x, end_y = drag_to[0], drag_to[1]
+        duration = speed
+
+        # Move to the starting position
+        pyautogui.moveTo(start_x, start_y)
+
+        # Perform the drag
+        pyautogui.mouseDown()  # Press the mouse button
+        pyautogui.dragTo(end_x, end_y, duration=duration)
+        pyautogui.mouseUp()  # Release the mouse button
+
+{% endhighlight %}
+done!
+
+<br>
+Now create `game_simulator.py` under `pachinko`, put
+{% highlight python %}
+import time
+from src.pachinko.puller import Puller
+from src.pachinko.coins_pytesseract import Coins_Pytesseract
+
+
+class Game_Simulator:
+    def __init__(self, window, winner_observer, interval=10):
+        self._interval = interval
+        self._start_time = time.time()
+        self._puller = Puller()
+        self._coin_reader = Coins_Pytesseract(window)
+        self._curr_coins = self._get_coins()
+        self._winner_observer = winner_observer
+{% endhighlight %}
+
+
+Again, we start analyzing from the parameters.
+- `window`: The emulator window.
+- `winner_observer`: Reference to door observer.
+- `interval`: (Seconds) Produces a score every x seconds.
+
+
+The fields.
+- `self._interval`: See above.
+- `self._start_time`: Used to track time for interval.
+- `self._puller`: Reference to a puller.
+- `self._coin_reader`: For reading number of coins.
+- `self._curr_coins`: Used to track the current number of coins.
+- `self._winner_observer`: For getting reward ratio.
+
