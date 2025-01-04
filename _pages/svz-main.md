@@ -12,6 +12,10 @@ buttons:
     image: /static/img/svz/svz-pachinko.png
     alt: Pachinko machine.
     description: Use scikit to crack the Pachinko mini game.
+  - url: /svz-pachinko-coins/
+    image: /static/img/svz/svz-pachinko.png
+    alt: Pachinko getting coins amount with Custom Template.
+    description: Getting coins amount with Custom Template.
   - url: /svz-battle/
     image: /static/img/svz/svz-battle.png
     alt: AI SvZ Battle.
