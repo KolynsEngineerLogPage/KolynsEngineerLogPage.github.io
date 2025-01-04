@@ -949,7 +949,7 @@ Next we have the optimizer. We are using Gaussian Process (GP), and it's written
 `sim`, the game simulator, and we are using an interval of 10 seconds. You can change this to other values.
 
 
-The last three values are hyper-parameters. You can freely change them. Here, one episode is equivalent to elapsing 10 seconds to get a score. So 100 episodes is the same as the program will be spending around 1000 seconds to run. The `exploration_noise` and `noise_factor` slightly alter the next actions. They add more randomness to the program. You can disable it by setting 
+The last three values are hyper-parameters. You can freely change them. Here, one episode is equivalent to elapsing 10 seconds. So 100 episodes is the same as the program will be spending around 1000 seconds to run. The `exploration_noise` and `noise_factor` slightly alter the next actions. They add more randomness to the program. You can disable it by setting 
 `exploration_noise` to 0.
 
 <br>
@@ -988,3 +988,57 @@ def lazy_learn():
     print("Best Action:", best_action)
     print("Best Reward:", max(optimizer.yi))
 {% endhighlight %}
+We create `reward_history` to store all non-zero rewards we have encountered so far. Recall that if a score is not ready if it is 0. Next we have a gigantic for loop but it is just essentially exploring different possible combinations so that the optimizer will return a good action (drag_from, drag_to, speed) in the end. 
+
+
+But it is also worth to understand what the loop is actually doing here. In each episode, we want to start by resetting the simulator so that it is the same as before. No residue stuff that affects judgements. `total_reward` stores the total rewards for the current episode. `episode_actions` stores all actions in the current episode. 
+
+In the inner loop, we want it to run until the score (reward) is ready. The first thing we do is to ask the optimizer what's our `next_action`. After that we apply noises on `next_action`, this step is not required. Then we make sure our action is within bounds, otherwise optimizer will complain when it encounters one. Now we are satisfied with `next_action`, save it to `episode_actions`. 
+
+
+Now, after all the hard works, we can tell the simulator to play the action. If it returns a non-zero `reward`, `done` will be True. We append non-zero rewards to `reward_history`. However, we then standardize `reward` before telling it to the optimizer. This is because we don't want old standardizations to affect new standardizations. After that, add `reward` to `total_reward`. Actually, you should be expecting `total_reward` to add a bunch of zeros before adding a non-zero value. In the end, break from the loop when done is true.
+
+
+We tell the optimizer about the last action the simulator performed in the episode along with the standardized reward. It will automatically figure out the next best predicted action. 
+
+`optimizer.Xi[np.argmax(optimizer.yi)]` is really just saying finding the best input (the best action) given by the best output (the highest reward) that optimizer has.
+
+<br>
+Next we start the threads and get the thing run. Still within `main()`, put
+{% highlight python %}
+learn_thread = threading.Thread(target=lazy_learn)
+learn_thread.start()
+winner_observer.thread.start()
+learn_thread.join()
+winner_observer.thread.join()
+{% endhighlight %}
+🤓 Program has started learning and the `winner_observer` has started observing. 
+
+
+The only last thing we need to add is amazingly simple.
+{% highlight python %}
+if __name__ == '__main__':
+    Program_Obj()
+    main()
+{% endhighlight %}
+Remember, you would have to go through all episodes to see the final result. 
+
+<br>
+<br>
+FYI, this is what I got after 100 episodes.
+{% highlight python %}
+drag_from = 576.0650605485463, 445.66566461020403
+drag_to = 612.9658921893482, 490.7634947666629
+speed = 0.47014037277376075
+{% endhighlight %}
+It consistently hits the balls into Slot machine, but unfortunately the ball is not hitting the middle trap. I guess it could work after more episodes. 
+
+
+🎉 Well, it was a very detailed (and long) tutorial. I hope you like this. If you have any doubts, you can send an [issue ticket](https://github.com/cyberspatula/cyberspatula.github.io/issues) and I might offer helps.
+
+<br>
+<br>
+🍯 Happy Coding 🍯
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
