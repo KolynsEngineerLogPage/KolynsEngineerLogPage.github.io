@@ -45,7 +45,7 @@ This trap randomly gives base 25 coins for each ball landed in.
 <br>
 <br>
 ## Problem Statement
-Our goal is to <u>maximumize the number of coins and game items we can get.</u> One observation we can make is that once the ball passes the Slot machine, it can only go to the middle trap and not others, so the best path seems to be:
+Our goal is to <u>maximize  the number of coins and game items we can get.</u> One observation we can make is that once the ball passes the Slot machine, it can only go to the middle trap and not others, so the best path seems to be:
 
 
 ![The best path](/static/img/svz/svz-pachinko-best-path.png)
@@ -826,9 +826,11 @@ f(x) =
 z & \text{otherwise}.
 \end{cases}
 $$
+<br>
 $$
 x = \max \left( \text{increased} + 20 \cdot \text{ratio}, 0 \right)
 $$
+<br>
 $$
 z =
 \log \left( \min \left( x, 5000 \right) \right)
@@ -840,3 +842,149 @@ $$
 <br>
 🎉 Wonderful, now we have a game simulator.
 ## Step 6
+This is the final step that is going to wrap up everything together and this is also where we are going to introduce our main role: `scikit-optimize`.
+
+
+Create `main.py` under `pachinko`, put
+{% highlight python %}
+import cv2
+import threading
+import numpy as np
+from skopt import Optimizer
+from src.program.program_obj import Program_Obj
+from src.util.screen_getter import get_window_with_title
+from src.pachinko.game_simulator import Game_Simulator
+from src.pachinko.bound_observer import Bound_Observer
+from src.pachinko.location.ui_position import winner_bound
+from src.pachinko.location.ui_position import (drag_from_x_max,
+                                               drag_from_y_max,
+                                               drag_to_x_max,
+                                               drag_to_y_max,
+                                               drag_from_x_min,
+                                               drag_to_x_min,
+                                               drag_from_y_min,
+                                               drag_to_y_min)
+{% endhighlight %}
+Install the required packages
+{% highlight shell %}
+pip install scikit-optimize
+{% endhighlight %}
+
+We have imported a lot things  this time, but you already know most of them. `skopt` is short for `scikit-optimize`, we will be using an optimizer called "[Gaussian Process](https://en.wikipedia.org/wiki/Gaussian_process)". It is a form of [lazy learning](https://en.wikipedia.org/wiki/Lazy_learning). <u>The goal of GP is to predict the best input to maximize the reward.</u> 
+
+
+If we think about this, the only thing we care about can be interpreted to a score which we have a way to measure. To pull the handle, we only need (drag_from, drag_to, speed), which is equivalent to a list of numbers. If we try different combinations, we get different scores, and we attempt to find the best one among them. GP will somewhat make this process faster.
+
+
+You probably also have notice that we have imported 8 new values from `ui_position`, go to the script and add
+{% highlight python %}
+drag_from_x_max = 648
+drag_from_x_min = 569
+drag_from_y_max = 452
+drag_from_y_min = 413
+drag_to_x_max = 648
+drag_to_x_min = 569
+drag_to_y_max = 491
+drag_to_y_min = 452
+{% endhighlight %}
+📍 These values works in my case. **You are very likely have to find your own.**
+
+
+To find these values, use mouse coordinate and find positions for these two marked dots. The bottom-right dot is outside the window.
+![pachinko-9](/static/img/svz/pachinko-9.png)
+
+After you have found them, do some math to find the middle two. 
+{% highlight python %}
+upper_left_dot = [569, 413]  # Put your own here
+bottom_right_dot = [648, 491]  # Put your own here
+drag_from_x_max = bottom_right_dot[0]
+drag_from_x_min = upper_left_dot[0]
+drag_from_y_max = (bottom_right_dot[1] + upper_left_dot[1]) / 2
+drag_from_y_min = upper_left_dot[1]
+drag_to_x_max = bottom_right_dot[0]
+drag_to_x_min = upper_left_dot[0]
+drag_to_y_max = bottom_right_dot[1]
+drag_to_y_min = (bottom_right_dot[1] + upper_left_dot[1]) / 2
+
+{% endhighlight %}
+![pachinko-10](/static/img/svz/pachinko-10.png)
+
+
+🤓 The green region painted above will be the "drag_from" region. The red region painted above will be the "drag_to" region.
+
+---
+
+Next we are going to write our last function and it's going to be very long so I will break it into parts. The first part is initializations.
+{% highlight python %}
+def main():
+    chosen_window = get_window_with_title('BlueStacks App Player')
+
+    bounds = [(drag_from_x_min, drag_from_x_max),
+              (drag_from_y_min, drag_from_y_max),
+              (drag_to_x_min, drag_to_x_max),
+              (drag_to_y_min, drag_to_y_max),
+              (0, 0.5)]
+    # Initialize the Bayesian optimizer
+    optimizer = Optimizer(bounds, base_estimator="gp", random_state=37, n_initial_points=10)
+
+    # The reference for template matching
+    winner_ref = cv2.imread('no_winner.png', cv2.IMREAD_UNCHANGED)
+    winner_observer = Bound_Observer(chosen_window, winner_bound, winner_ref, similarity=0.9)
+    sim = Game_Simulator(chosen_window, winner_observer, interval=10)
+
+    episodes = 100
+    exploration_noise = 0.1
+    noise_factor = [10, 10, 10, 10, 0.1]
+
+{% endhighlight %}
+`chosen_window` is already old news. `bounds` is a necessary parameter for optimizer. Here, we are telling the optimizer to generate a list of five numbers, given by the ranges. I have already explained drag_from and drag_to. The last one is for speed. It's saying that randomly choose a duration from 0 seconds to 0.5 seconds. <u>Lower this value, the faster it pulls</u>. You are welcome to adjust these values to see if things can go better.
+
+
+Next we have the optimizer. We are using Gaussian Process (GP), and it's written as "gp" here. The `random_state` can be any integer. The `n_initial_points` is just telling the optimizer the randomly initialize n samples when it is initialized. 
+
+
+`winner_ref` is a `cv2` image. We discussed this earlier when we were making `Bound_Observer`. This would be the reference for our `winner_observer`. The `cv2.IMREAD_UNCHANGED` flag means that reading the image as it is. Preserving all channels and every pixel is same as the original. 
+
+
+`sim`, the game simulator, and we are using an interval of 10 seconds. You can change this to other values.
+
+
+The last three values are hyper-parameters. You can freely change them. Here, one episode is equivalent to elapsing 10 seconds to get a score. So 100 episodes is the same as the program will be spending around 1000 seconds to run. The `exploration_noise` and `noise_factor` slightly alter the next actions. They add more randomness to the program. You can disable it by setting 
+`exploration_noise` to 0.
+
+<br>
+Now let's actually do some machine learning. Within `main()`, put
+{% highlight python %}
+def lazy_learn():
+    reward_history = []
+    for e in range(episodes):
+        sim.reset()
+        total_reward = 0
+        episode_actions = []
+
+        for _ in range(500):
+            next_action = optimizer.ask()
+            next_action = [x + exploration_noise * np.random.uniform(-noise_factor[i], noise_factor[i])
+                            for i, x in enumerate(next_action)]
+            next_action = [np.clip(v, low, high) for v, (low, high) in zip(next_action, bounds)]
+
+            episode_actions.append(next_action)
+            reward, done = sim.play(next_action)
+
+            if reward != 0:
+                reward_history.append(reward)
+                # Standard score
+                reward = (reward - np.mean(reward_history)) / (np.std(reward_history) + 1e-8)
+                # print(f"Next action: {next_action}, reward: {reward}")
+
+            total_reward += reward
+            if done:
+                break
+
+        optimizer.tell(episode_actions[-1], total_reward)
+        print(f"Episode {e + 1}: Total Reward = {total_reward}")
+
+    best_action = optimizer.Xi[np.argmax(optimizer.yi)]
+    print("Best Action:", best_action)
+    print("Best Reward:", max(optimizer.yi))
+{% endhighlight %}
