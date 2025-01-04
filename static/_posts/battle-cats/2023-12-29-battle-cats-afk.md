@@ -68,6 +68,9 @@ Here is a list of good stages where you can farm materials:
 
 This list is far from exhaustive. You are welcome to write an issue if you have found more stages that are farmable, and I will add them here: [GitHub issues](https://github.com/cyberspatula/cyberspatula.github.io/issues)
 
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
 <br>
 <br>
  👾 Happy Gaming 👾

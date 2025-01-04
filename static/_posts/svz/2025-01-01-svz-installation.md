@@ -56,6 +56,10 @@ Same as step 5 in the normal installation section, but this time you choose to i
 1. This tutorial still works as of 12/22/2024.
 2. The writer has no association with any of the aforementioned entities. This article is purely for guidance, and no advertisement is intended.
 
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
 <br>
 <br>
  👾 Happy Gaming 👾
