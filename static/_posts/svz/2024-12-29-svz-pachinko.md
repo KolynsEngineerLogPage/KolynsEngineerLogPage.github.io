@@ -162,7 +162,7 @@ def get_screenshot_of_chosen_window(window):
 🤓 ImageGrab.grab crops out the screenshot of the **entire PC Desktop**  with the provided bounding box. Here, our bounding box is exactly equal to the selected window, so we get its screenshot, <u>a PIL Image object</u>.
 
 
-📍 The window must be active, otherwise the program won't find it. There should not be any other window above it, otherwise the screenshoter will also take the overlayered window.
+📍 The window must be active, otherwise the program won't find it. There should not be any other window above it, otherwise the screenshoter will also take the overlay window.
 
 
 Now let's test.
@@ -183,7 +183,7 @@ if __name__ == '__main__':
 As you can see, there are some unnecessary regions in our screenshot. Also, the Ads are quite annoying! So our next step will be solving them.
 
 
-You can 'hide' the ads by simplying moving BlueStacks emulator to the corner of the Desktop!
+You can 'hide' the ads by simplifying moving BlueStacks emulator to the corner of the Desktop!
 
 ![pachinko-3](/static/img/svz/pachinko-3.png)
 
@@ -464,7 +464,7 @@ Install the required package
 pip install pytesseract
 {% endhighlight %}
 
-🤓 Pytesseract is a powerful text recognition library. I like it a lot but in my experience it only works for 90% of times and it's significantly slower compared custom template matching. That's why if your case is specific (like this one), I would highly recommend writing a custom tempalte matching program. 
+🤓 Pytesseract is a powerful text recognition library. I like it a lot but in my experience it only works for 90% of times and it's significantly slower compared custom template matching. That's why if your case is specific (like this one), I would highly recommend writing a custom template matching program. 
 
 
 Another thing you need to do is to figure out the coins amount bounds with mouse coordinate. **Here is mine, yours could be different.**
@@ -588,7 +588,7 @@ Let's start with the parameters.
 - `window`: The emulator window.
 - `bound`: The bound to be observed, later we will put `winner_bound`.
 - `reference`: This is going to be the reference, later we will put the default door here. This is a `cv2` image.
-- `similarity`: The threshold of the program recoginzing a change. If their similarity is less than this ratio, it will be marked as a change.
+- `similarity`: The threshold of the program recognizing a change. If their similarity is less than this ratio, it will be marked as a change.
 - `check_exist`: This value essentially toggles the result. In our case, we want to check if a change occurs so we should set it to `False`. As discussed earlier, if we got 37/50 `reward_ratio`; we would be getting 13/50 if this value were set `True` because it would be checking the time default door exists instead.
 
 Next let's see our field values:
@@ -820,7 +820,7 @@ def _calculate_score(self, curr_coins):
     return math.log(min(result, 5000))
 {% endhighlight %}
 Here I came up with a random formula for calculating the score.
-My forumla: 
+My formula: 
 
 
 $$
@@ -840,7 +840,7 @@ z =
 \log \left( \min \left( x, 5000 \right) \right)
 $$
 
-👨‍🔬 To-do Task: after you have completed the entire tutorial, remember to experiement with new forumlas. Share your formulas at [my github issues](https://github.com/cyberspatula/cyberspatula.github.io/issues) if you do like!
+👨‍🔬 To-do Task: after you have completed the entire tutorial, remember to experiment with new formulas. Share your formulas at [my github issues](https://github.com/cyberspatula/cyberspatula.github.io/issues) if you do like!
 
 <br>
 <br>

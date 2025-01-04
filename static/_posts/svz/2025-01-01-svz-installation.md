@@ -28,13 +28,13 @@ Recently, I have been playing this game called Samurai vs Zombies Defense, and i
 # Step 1
 Go to the [official BlueStacks website](https://www.bluestacks.com/) and download BlueStacks app to your PC.
 # Step 2
-After you installed BlueStacks, you should see an app called BlueStacks Multi-Instance Manager, from there you can create new Android emulators (and you can run multiple instances at the same time). When choosing an Android verion, I recommend **Nougat 64-bit** because this version seems to be the most stable based on my tests.
+After you installed BlueStacks, you should see an app called BlueStacks Multi-Instance Manager, from there you can create new Android emulators (and you can run multiple instances at the same time). When choosing an Android version, I recommend **Nougat 64-bit** because this version seems to be the most stable based on my tests.
 # Step 3
 After you created the new emulator, open it and locate Chrome. Search for apkcombo and install its APK DOWNLOADER (should be on the top navigation bar of the website). 
 # Step 4
 In the apkcombo website, search SAMURAI vs ZOMBIES DEFENSE in the search bar and find the game (v 3.4.0), then download XAPK (235 MB). A XAPK is APK with obb signature (a proof of you own this game). This detail is not important if you are just installing the normal game (which is what we have been doing now).
 # Step 5
-Open APKCombo Installer, click 'Install', locate and install the .xapk file. Volia! You can play Samurai vs Zombies now.
+Open APKCombo Installer, click 'Install', locate and install the .xapk file. Voila! You can play Samurai vs Zombies now.
 
 <br>
 <br>
