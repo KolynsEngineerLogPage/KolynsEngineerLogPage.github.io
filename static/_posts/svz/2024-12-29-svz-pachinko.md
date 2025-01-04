@@ -368,7 +368,7 @@ Run the code and you should expect the window moved to the specified location.
 🎉 Excellent! Now we can get perfect screenshots. Let's move onto the next step.
 
 
-## Step 3 (Hard-code)
+# Step 3 (Hard-code)
 If you only want to gain the highest possible rewards out of the Pachinko machine, read this step and no further! 
 
 
@@ -430,7 +430,7 @@ if __name__ == '__main__':
 <br>
 🎉 That's actually all we need to get the most optimal rewards in the Pachinko game! Run this program to test it out and adjust the dragging positions as needed.
 
-## Step 4 (Collecting data)
+# Step 4 (Collecting data)
 Before we do ML, we should design the data we are going to collect. Recall that we care about the amount of coins and game items we can get. I think the simplest and the most efficient way is to get the coins difference every x seconds. For game items, let's observe the Winner region:
 
 ![winner](/static/img/svz/winner.gif)
@@ -689,7 +689,7 @@ def set_to_verbal(self, name='default'):
 
 
 🎉 Great! Now our program has the ability observe the door.
-## Step 5
+# Step 5
 So far we can get coins amount and `reward_ratio` for game items from game screenshots. Sounds no much but it's already a lot of work. 
 
 
@@ -845,7 +845,7 @@ $$
 <br>
 <br>
 🎉 Wonderful, now we have a game simulator.
-## Step 6
+# Step 6
 This is the final step that is going to wrap up everything together and this is also where we are going to introduce our main role: `scikit-optimize`.
 
 
