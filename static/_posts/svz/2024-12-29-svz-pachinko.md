@@ -24,7 +24,7 @@ Prerequisite: Basic Python
 
 
 ## What is the Pachinko mini game?
-In Samurai vs Zombies, there is a mode called Pachinko where the players can gain extra game currency and items. The game consumes 'balls' and they can be obtained through battles or game rewards. To play the Pachinko machine, drag down the handler to shoot the ball. 
+In Samurai vs Zombies, there is a mode called Pachinko where the players can gain extra game currency and items. The game consumes 'balls' and they can be obtained through battles or game rewards. To play the Pachinko machine, drag down the handle to shoot the ball. 
 
 
 ![The handle](/static/img/svz/svz-pachinko-handle.png)
