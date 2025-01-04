@@ -14,6 +14,9 @@ title: SvZ Pachinko and Slot Machine
 **This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
 
 
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
+
+
 Category: Tutorial
 
 
@@ -1046,3 +1049,6 @@ It consistently hits the balls into Slot machine, but unfortunately the ball is 
 
 
 **This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**

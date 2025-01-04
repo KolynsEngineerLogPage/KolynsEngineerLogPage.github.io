@@ -14,6 +14,9 @@ theme: cat
 **This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
 
 
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
+
+
 Category: Tutorial
 
 
@@ -81,3 +84,6 @@ This list is far from exhaustive. You are welcome to write an issue if you have 
 
 
 **This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
