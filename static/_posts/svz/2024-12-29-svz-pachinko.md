@@ -823,13 +823,20 @@ $$
 f(x) =
 \begin{cases} 
 -5 & \text{if } x = 0, \\
-x & \text{otherwise}.
+z & \text{otherwise}.
 \end{cases}
 $$
 $$
-x =
-\log \left( \min \left( \max \left( \text{increased} + 20 \cdot \text{ratio}, 0 \right), 5000 \right) \right)
+x = \max \left( \text{increased} + 20 \cdot \text{ratio}, 0 \right)
+$$
+$$
+z =
+\log \left( \min \left( x, 5000 \right) \right)
 $$
 
-👨‍🔬 To-do Task: after you completed the entire tutorial, remember to experiement with new forumlas. Post your formulas at [my github issues](https://github.com/cyberspatula/cyberspatula.github.io/issues)
+👨‍🔬 To-do Task: after you have completed the entire tutorial, remember to experiement with new forumlas. Share your formulas at [my github issues](https://github.com/cyberspatula/cyberspatula.github.io/issues) if you do like!
 
+<br>
+<br>
+🎉 Wonderful, now we have a game simulator.
+## Step 6
