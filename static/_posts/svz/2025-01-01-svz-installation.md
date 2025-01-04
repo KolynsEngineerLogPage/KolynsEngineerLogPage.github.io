@@ -10,6 +10,10 @@ theme: sushi
 title: Install SvZ on PC emulator
 ---
 
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
 Category: Tutorial
 
 
@@ -57,9 +61,9 @@ Same as step 5 in the normal installation section, but this time you choose to i
 2. The writer has no association with any of the aforementioned entities. This article is purely for guidance, and no advertisement is intended.
 
 
-**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
-
-
 <br>
 <br>
  👾 Happy Gaming 👾
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**

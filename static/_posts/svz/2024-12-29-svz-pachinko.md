@@ -10,6 +10,10 @@ theme: sushi
 title: SvZ Pachinko and Slot Machine
 ---
 
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
 Category: Tutorial
 
 
