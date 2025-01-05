@@ -452,7 +452,7 @@ Our current idea is very high-level. That's why we will start by getting actual 
 Let's do coins amount extraction first.
 
 
-I approached this problem in two different ways: with pytesseract library to recognize digits or write a template matching program. Here I am going to introduce the pytesseract approach and I will be writing another post about writing custom template matching program. (TODO)
+I approached this problem in two different ways: with pytesseract library to recognize digits or write a template matching program. Here I am going to introduce the pytesseract approach and I have [another post](/svz-pachinko-coins/) about writing custom template matching program. 
 
 Create `coins_pytesseract.py` under `pachinko`, put
 {% highlight python %}
