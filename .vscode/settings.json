@@ -15,6 +15,7 @@
         "installables",
         "judgements",
         "Kolyn",
+        "makedirs",
         "maxval",
         "ndim",
         "numpy",

@@ -27,7 +27,7 @@ Prerequisite: Basic Python, read [this article](/svz-pachinko/)
 
 
 ## Recap
-Last time we attempted the problem of reading coins amount using `pytesseract`. It works but it takes approximately 0.8 seconds to complete for one read, which is slow. That is why today I will introduce to you another way that is way faster (and more accurate) - Template Matching. 
+Last time we attempted the problem of reading coins amount using `pytesseract`. It works but it can take over a second to complete for one read during learning, which is slow. That is why today I will introduce to you another way that is way faster (and more accurate) - Template Matching. 
 
 
 ## Template Matching
@@ -522,10 +522,10 @@ def _edit_blob_canvas(blob, new_x, new_y):
 🤓 `cv2.copyMakeBorder` extends an image by sides and fill the space with `value` (color). 
 
 
-📍 This function returns two things. The first is a boolean flag indicating whether the operation is successful. It will be true if the original blob is smaller than our specified size, otherwise false. The second is the new image (blob with canvas). It will return a new image regardless, and the only matter is how the canvas are created.
-
-
 ![padding](/static/img/svz/padding.png)
+
+
+📍 This function returns two things. The first is a boolean flag indicating whether the operation is successful. It will be true if the original blob is smaller than our specified size, otherwise false. The second is the new image (blob with canvas). It will return a new image regardless, and the only matter is how the canvas are created.
 
 
 The idea here is to use `cv2.copyMakeBorder` to add a white border around the given image. In the end we will get back a `new_x` * `new_y` (in my case, 24 * 24) size blob image. We can save the new image as a template or use it for recognition. 
@@ -537,4 +537,183 @@ This works except when the original blob is larger than our specified size. For 
 
 has width larger than our specified width (24). To solve this, I decided to add a thickness of 4 border around the original blob. 
 
+
+Continue from `extract_coin_amount`, add
+{% highlight python %}
+count = 0
+os.makedirs('debug_digit', exist_ok=True)
+for canvased_blob in canvased_blobs:
+    if canvased_blob[0]:
+        self._debug_save(f'debug_digit/{count}.png', canvased_blob[1])
+        count += 1
+{% endhighlight %}
+
+
+Now create the following main function
+{% highlight python %}
+if __name__ == '__main__':
+    chosen_window = get_window_with_title('BlueStacks App Player')
+
+    coins_tm = Coins_TM(chosen_window)
+    coins_tm.set_verbose()
+    coins_tm.extract_coin_amount()
+{% endhighlight %}
+
+
+Now let's update your template. Open the emulator and the pachinko game. Remember to rescale the window using `window_rescaler.py`. Run the above main function. You will find a new folder `debug_digit`. Inside the folder, you should see blob images with canvas if everything goes correctly. Find images that can be use as templates, such as:
+
+![0](/static/img/svz/0.png)
+![1](/static/img/svz/1.png)
+![2](/static/img/svz/2.png)
+![3](/static/img/svz/3.png)
+![4](/static/img/svz/4.png)
+![5](/static/img/svz/5.png)
+![6](/static/img/svz/6.png)
+![7](/static/img/svz/7.png)
+![8](/static/img/svz/8.png)
+![9](/static/img/svz/9.png)
+
+
+Replace your new images with the old templates in `digits` and change their names as you see fit. 
+
+
+🎉 Now you have your own templates.
+
+<br>
+We can try to create our final result now. In `extract_coin_amount`
+{% highlight python %}
+result = ''
+for canvased_blob in canvased_blobs:
+    if canvased_blob[0]:
+        extracted_text = self._digit_recognizer.recognize(canvased_blob[1])
+    else:
+        # Need to handle large blobs
+    result += extracted_text
+    self._debug_print(extracted_text)
+return int(result)
+{% endhighlight %}
+
+
+Looks like we still have some problems needs to take care. That comment `# Need to handle large blobs` is actually a big task if you want to seriously handle it. Fortunately, this is a rare case, so using `pytesseract` would not cause big problems. 
+
+
+Now add these to the top of the script.
+{% highlight python %}
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
+{% endhighlight %}
+
+
+Replace `# Need to handle large blobs` with 
+{% highlight python %}
+extracted_text = pytesseract.image_to_string(canvased_blob[1], config='--psm 6')
+match = re.search(r'\d+', extracted_text)
+if match:
+    extracted_text = match.group()
+else:
+    # The case where pytesseract doesn't work
+{% endhighlight %}
+Apparently we have a new problem. There is a possibility that there is no match from `pytesseract`. In this case, let me introduce to you a quick-and-dirty fix. 
+
+
+First, add this line in the constructor
+{% highlight python %}
+self._last_result = 0
+{% endhighlight %}
+
+Next, in `extract_coin_amount`, replace
+{% highlight python %}
+return int(result)
+{% endhighlight %}
+with
+{% highlight python %}
+self._last_result = int(result)
+return self._last_result
+{% endhighlight %}
+Lastly, replace `# The case where pytesseract doesn't work` with
+{% highlight python %}
+return self._last_result
+{% endhighlight %}
+
+
+In the end, you should have
+{% highlight python %}
+result = ''
+for canvased_blob in canvased_blobs:
+    if canvased_blob[0]:
+        extracted_text = self._digit_recognizer.recognize(canvased_blob[1])
+    else:
+        extracted_text = pytesseract.image_to_string(canvased_blob[1], config='--psm 6')
+        match = re.search(r'\d+', extracted_text)
+        if match:
+            extracted_text = match.group()
+        else:
+            return self._last_result
+    result += extracted_text
+    self._debug_print(extracted_text)
+
+self._last_result = int(result)
+return self._last_result 
+{% endhighlight %}
+
+
+I choose to simply return the last value gotten from `extract_coin_amount` and there we have completed this function.
+
+# Step 3
+This is an optional step that teaches you how to add more templates to `self._digit_template` in `Digit_Recognizer`. As we have discussed already in the beginning of Template Matching, we can have templates such as
+
+![07](/static/img/svz/07.png)
+![77](/static/img/svz/77.png)
+
+or even alternations of the same template
+
+![8_2](/static/img/svz/8_2.png)
+![9_2](/static/img/svz/9_2.png)
+
+This step is a lot easier compared to the last one. Save the above images to `digits`. In `Digit_Recognizer`, change `self._digit_template`
+{% highlight python %}
+self.digit_template = {
+    '0': load_binary(os.path.join(script_dir, 'digits/0.png')),
+    '1': load_binary(os.path.join(script_dir, 'digits/1.png')),
+    '2': load_binary(os.path.join(script_dir, 'digits/2.png')),
+    '3': load_binary(os.path.join(script_dir, 'digits/3.png')),
+    '4': load_binary(os.path.join(script_dir, 'digits/4.png')),
+    '5': load_binary(os.path.join(script_dir, 'digits/5.png')),
+    '6': load_binary(os.path.join(script_dir, 'digits/6.png')),
+    '7': load_binary(os.path.join(script_dir, 'digits/7.png')),
+    '07': load_binary(os.path.join(script_dir, 'digits/07.png')),
+    '77': load_binary(os.path.join(script_dir, 'digits/77.png')),
+    '8': load_binary(os.path.join(script_dir, 'digits/8.png')),
+    '8_2': load_binary(os.path.join(script_dir, 'digits/8_2.png')),
+    '9': load_binary(os.path.join(script_dir, 'digits/9.png')),
+    '9_2': load_binary(os.path.join(script_dir, 'digits/9_2.png'))
+}
+{% endhighlight %}
+
+Change the last line in `recognize`
+{% highlight python %}
+return list(self.digit_template.keys())[result].split('_')[0]
+{% endhighlight %}
+🤓 Now if you want to add more alternations for a template, add an underscore and a new index after it.
+
+
+FYI, the running time comparison:
+{% highlight shell %}
+Pytesseract: 1.1860626459121704
+Template Matching: 0.21195433139801026
+{% endhighlight %}
+
+
+🎉 Excellent, now you understand how to do template matching. If you think this article is useful, please do give [this repo](https://github.com/cyberspatula/cyberspatula.github.io) a Star!
+
+
+<br>
+<br>
+🍯 Happy Coding 🍯
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
 
