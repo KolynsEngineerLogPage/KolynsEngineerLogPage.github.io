@@ -458,7 +458,7 @@ Create `coins_pytesseract.py` under `pachinko`, put
 {% highlight python %}
 import re
 import pytesseract
-from src.util.screen_getter import get_window_with_title, get_screen_of_chosen_window
+from src.util.screen_getter import get_window_with_title, get_screenshot_of_chosen_window
 from src.pachinko.location.ui_position import coin_bound
 {% endhighlight %}
 
@@ -500,7 +500,7 @@ class Coins_Pytesseract:
         self._window = window
 
     def extract_coin_amount(self):
-        screen = get_screen_of_chosen_window(self._window)
+        screen = get_screenshot_of_chosen_window(self._window)
         coin_region = screen.crop(coin_bound)
         extracted_text = pytesseract.image_to_string(coin_region, config='--psm 7')
 
@@ -563,7 +563,7 @@ import cv2
 import time
 import threading
 import numpy as np
-from src.util.screen_getter import get_screen_of_chosen_window
+from src.util.screen_getter import get_screenshot_of_chosen_window
 {% endhighlight %}
 Install the necessary packages
 {% highlight shell %}
@@ -605,7 +605,7 @@ I hope now you have a good understanding about this class. Next, inside the cons
 {% highlight python %}
 def check_bound():
     def check():
-        screenshot = get_screen_of_chosen_window(window)
+        screenshot = get_screenshot_of_chosen_window(window)
         if test_change(screenshot):
             self._change_checks += 1
         self._total_checks += 1
@@ -682,13 +682,13 @@ def reset(self):
     self._change_checks = 0
     self._total_checks = 0
 
-def set_to_verbal(self, name='default'):
+def set_verbose(self, name='default'):
     self._name = name
     self._verbal = True
 {% endhighlight %}
 - `get_ratio`: This is the actual function you get result from `Bound_Observer`
 - `reset`: Resets the values
-- `set_to_verbal`: Toggle on to debug. Could be helpful when you encounter bugs.
+- `set_verbose`: Toggle on to debug. Could be helpful when you encounter bugs.
 
 
 🎉 Great! Now our program has the ability observe the door.

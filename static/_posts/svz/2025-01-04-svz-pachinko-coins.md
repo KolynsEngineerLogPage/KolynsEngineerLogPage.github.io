@@ -269,3 +269,272 @@ The first key, 0, is indeed the most similar to itself.
 
 
 # Step 2
+Recall that last time we built `Coins_Pytesseract` class, which uses the `pytesseract` library to recognize digits. This time we will build another class with the same functionality. Create `coins_tm.py` under `pachinko`, put
+{% highlight python %}
+import os
+import cv2
+import numpy as np
+from src.util.screen_getter import get_window_with_title, get_screenshot_of_chosen_window
+from src.pachinko.location.ui_position import coin_bound
+from src.pachinko.digit_recognizer.digit_recognizer import Digit_Recognizer
+
+class Coins_TM:
+    def __init__(self, window):
+        self._window = window
+        self._digit_recognizer = Digit_Recognizer()
+        self._debug = False
+{% endhighlight %}
+None of these are new and I have just explained `digit_recognizer`. 
+
+---
+
+Now add `extract_coin_amount` function.
+{% highlight python %}
+def extract_coin_amount(self):
+{% endhighlight %}
+
+
+This function is going to be very long and contains a huge amount of information so I will break it down into pieces.
+
+
+First of all, like before. We want the screenshot of coins amount.
+{% highlight python %}
+screen = get_screenshot_of_chosen_window(self._window)
+coin_region = screen.crop(coin_bound)
+{% endhighlight %}
+Now things starts to become different. We convert the screenshot to `cv2`.
+{% highlight python %}
+# convert region from pil to cv2
+coin_region = pil_to_cv2(coin_region)
+self._debug_save('region.png', coin_region)
+{% endhighlight %}
+🤓 `pil_to_cv2` converts the given PIL image to a `cv2` image. `_debug_save` saves the given `cv2` image to the path if `self._debug` is True.
+
+
+Here is `pil_to_cv2`, put this in `extract_coin_amount`.
+{% highlight python %}
+def pil_to_cv2(pil_image):
+    # Ensure it's in RGB mode
+    pil_image = pil_image.convert('RGB')
+
+    # Convert PIL to NumPy array (RGB)
+    rgb_array = np.array(pil_image)
+
+    # Convert RGB to BGR
+    bgr_image = cv2.cvtColor(rgb_array, cv2.COLOR_RGB2BGR)
+    return bgr_image
+{% endhighlight %}
+
+`_debug.save` along with the rest of the debugging functions, put these in `Coins_TM`
+{% highlight python %}
+def _debug_save(self, path, cv2_img):
+    if self._debug:
+        cv2.imwrite(path, cv2_img)
+
+def _debug_print(self, message):
+    if self._debug:
+        print(message)
+
+def set_verbose(self):
+    self._debug = True
+{% endhighlight %}
+Now we continue from `extract_coin_amount`. Like we discussed before, we want to binarize the screenshot so that it becomes something like:
+![pachinko-8-enlarge-bw](/static/img/svz/pachinko-8-enlarge-bw.png)
+{% highlight python %}
+# make region to binary
+coin_region = make_binary(coin_region, threshold=127)
+self._debug_save('region_binary.png', coin_region)
+
+def make_binary(cv2_img, threshold=127):
+    # Convert to grayscale
+    grayscale = cv2.cvtColor(cv2_img, cv2.COLOR_BGR2GRAY)
+
+    # Apply binary threshold
+    _, bw = cv2.threshold(grayscale, threshold, 255, cv2.THRESH_BINARY)
+
+    return bw
+{% endhighlight %}
+🤓 `make_binary` converts the given `cv2` image to binary, same idea as `load_binary` but this time we don't have to load the image.
+
+<br>
+Next we will be finding the blobs. I have decided to find them with their bounding boxes. You'll see why that could be beneficial.
+
+
+Write a new method in `Coins_TM`.
+{% highlight python %}
+def _find_blobs_with_bounding_box(self, binary_img):
+    result = []
+
+    # visited array to track processed pixels
+    visited = np.zeros_like(binary_img, dtype=np.uint8)
+
+    # iterate through each pixel in the binary image
+    h, w = binary_img.shape
+    for y in range(h):
+        for x in range(w):
+            if binary_img[y, x] == 0 and visited[y, x] == 0:
+                # extract the blob using DFS and get its bounding box
+                blob_mask, min_x, max_x, min_y, max_y = self._dfs(x, y, binary_img, visited)
+                # append the blob mask and bounding box to the list
+                result.append((blob_mask, min_x, max_x, min_y, max_y))
+
+    # sort blobs by their x-coordinate (left-to-right order)
+    result.sort(key=lambda b: b[1])  # sort by min_x
+
+    return result
+{% endhighlight %}
+🤓 First, it creates a list to store our result. Second, `visited`, an image (matrix) of all zeros, same as the size of our screenshot, is created. `visited` is currently a all-black image if you save it. Third, we apply DFS to find all blobs along with their bounding boxes. After we have the blobs, we order them by the x-coordinate, which means that they are ordered from left to right. `['1', '4', '975', '6']`
+
+
+Now create the `_dfs` method in `Coins_TM`.
+{% highlight python %}
+@staticmethod
+def _dfs(x, y, binary_img, visited):
+    assert binary_img[y, x] == 0, "starting position is not black"
+
+    directions = [(-1, -1), (-1, 0), (-1, 1),
+                  (0, -1), (0, 1),
+                  (1, -1), (1, 0), (1, 1)]
+
+    h, w = binary_img.shape
+    stack = [(x, y)]
+    min_x, max_x, min_y, max_y = x, x, y, y  # track bounding box
+
+    # create a white background to store the blob
+    blob_mask = np.full_like(binary_img, 255, dtype=np.uint8)
+
+    while stack:
+        cx, cy = stack.pop()
+        if 0 <= cx < w and 0 <= cy < h and binary_img[cy, cx] == 0 and visited[cy, cx] == 0:
+            # mark the pixel as visited
+            visited[cy, cx] = 1
+            # paint position (cx, cy) in blob_mask
+            blob_mask[cy, cx] = 0
+
+            # update bounding box
+            min_x, max_x = min(min_x, cx), max(max_x, cx)
+            min_y, max_y = min(min_y, cy), max(max_y, cy)
+
+            # push all nearby 8 neighbors
+            for dx, dy in directions:
+                nx = cx + dx
+                ny = cy + dy
+                stack.append((nx, ny))
+
+    return blob_mask, min_x, max_x, min_y, max_y
+{% endhighlight %}
+🤓 This is a stack-based DFS and each call to `_dfs` finds one blob. We assume that the (x, y) position given in the parameter is a black pixel in our image. After that, we create a `directions` 2D array to store all possible directions. This stands for the 8 nearby neighbors around the pixel. We store `h` and `w` for image size reference, then create the `stack` and put the first position inside and initialize the 4 points of bounding box for this blob. Before we start DFS, we create a white background `blob_mask` to store the blob.
+
+After all the preparations, we can finally start DFS. Like a normal DFS, we pop the most recent item out and call it `cx` and `cy`. We make sure that `(cx, cy)` is a valid position in the image and the pixel is indeed black in `(cx, cy)` and it has not been visited. <u>By the way, it's written `[cy, cx]` because Numpy arrays are row-first indexing. The first index is the row and it corresponds to y-coordinate. The seconds index is the column and it corresponds to x-coordinate.</u> Now we are certain about visiting this pixel; mark it as visited and paint it to black in `blob_mask`. After that, we update the bounding box as we see fit. Finally, we explore the pixel's 8 neighbors and repeat this process until a blob is formed. Return the `blob_mask` with the bounding box as our result.
+
+
+After the first iteration of `_dfs` on our example, we do get
+![pachinko-8-enlarge-1_b](/static/img/svz/pachinko-8-enlarge-1_b.png)
+
+
+The rest of the iterations
+![pachinko-8-enlarge-4_b](/static/img/svz/pachinko-8-enlarge-4_b.png)
+![pachinko-8-enlarge-975_b](/static/img/svz/pachinko-8-enlarge-975_b.png)
+![pachinko-8-enlarge-6_b](/static/img/svz/pachinko-8-enlarge-6_b.png)
+
+<br>
+We store them in a list and the next thing will be removing unnecessary white background from them. Let's continue from `extract_coin_amount`
+{% highlight python %}
+blobs_with_bounding_box = self._find_blobs_with_bounding_box(coin_region)
+blobs = []
+for blob_with_bounding_box in blobs_with_bounding_box:
+    blob = self._remove_blob_background(blob_with_bounding_box)
+    blobs.append(blob)
+{% endhighlight %}
+
+
+Here is the missing method
+{% highlight python %}
+@staticmethod
+def _remove_blob_background(blob_with_bounding_box):
+    blob_mask = blob_with_bounding_box[0]
+    min_x = blob_with_bounding_box[1]
+    max_x = blob_with_bounding_box[2] + 1
+    min_y = blob_with_bounding_box[3]
+    max_y = blob_with_bounding_box[4] + 1
+    return blob_mask[min_y:max_y, min_x:max_x]
+{% endhighlight %}
+
+
+Since we already know the bounding box of the blob, we just have to crop it out. ✌
+
+<br>
+The next we want to do is to make the blobs to have the same size. To do so, we add a fix sized canvas as background to each blob. 
+{% highlight python %}
+canvased_blobs = [self._edit_blob_canvas(blob, 24, 24) for blob in blobs]
+{% endhighlight %}
+🤓 `_edit_blob_canvas` takes in the blob (image) and width and height. It creates a white background (canvas) for the blob. **You can change the size to other values, especially when your original screenshot is large.**
+
+
+Here is the method
+
+
+{% highlight python %}
+@staticmethod
+def _edit_blob_canvas(blob, new_x, new_y):
+    h, w = blob.shape
+
+    # calculate padding on each side
+    top = (new_x - h) // 2
+    bottom = new_x - h - top
+    left = (new_y - w) // 2
+    right = new_y - w - left
+
+    # check if the blob is grayscale (2D) or color (3D)
+    # value will be white
+    if len(blob.shape) == 2:  # grayscale image
+        value = 255  # single integer for grayscale
+    else:  # color image
+        value = (255, 255, 255)  # tuple for color
+
+    try:
+        padded_image = cv2.copyMakeBorder(
+            blob,
+            top, bottom, left, right,
+            borderType=cv2.BORDER_CONSTANT,
+            value=value
+        )
+    except Exception as e:
+        print(f"The blob is too large: {e}")
+        print("Resolving...")
+        new_x = h + 8
+        new_y = w + 8
+        top = (new_x - h) // 2
+        bottom = new_x - h - top
+        left = (new_y - w) // 2
+        right = new_y - w - left
+
+        padded_image = cv2.copyMakeBorder(
+            blob,
+            top, bottom, left, right,
+            borderType=cv2.BORDER_CONSTANT,
+            value=value
+        )
+        return False, padded_image
+
+    return True, padded_image
+{% endhighlight %}
+🤓 `cv2.copyMakeBorder` extends an image by sides and fill the space with `value` (color). 
+
+
+📍 This function returns two things. The first is a boolean flag indicating whether the operation is successful. It will be true if the original blob is smaller than our specified size, otherwise false. The second is the new image (blob with canvas). It will return a new image regardless, and the only matter is how the canvas are created.
+
+
+![padding](/static/img/svz/padding.png)
+
+
+The idea here is to use `cv2.copyMakeBorder` to add a white border around the given image. In the end we will get back a `new_x` * `new_y` (in my case, 24 * 24) size blob image. We can save the new image as a template or use it for recognition. 
+
+
+This works except when the original blob is larger than our specified size. For example
+
+![pachinko-8-enlarge-975_alpha](/static/img/svz/pachinko-8-enlarge-975_alpha.png)
+
+has width larger than our specified width (24). To solve this, I decided to add a thickness of 4 border around the original blob. 
+
+
