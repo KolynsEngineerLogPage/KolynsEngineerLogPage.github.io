@@ -34,6 +34,9 @@ Today I have randomly chosen from one of my favorite iOS games and decided to wr
 ## The Main Idea
 On iPhone Mirroring, mouse clicks will simulate taps on iPhone. This is great because I already know how to simulate clicks and presses and drags. Prestige is a fairly mechanical process—it's repeated over and over, and I have already identified a pattern in it. Basically, this program is going to follow some kind of pattern to perform prestige.
 
+## Very Important
+⚠️ I have omitted many details that are not directly related. In the future I <u>might</u> make write another log about them. **Please do not be surprised if things are not working well after you have followed everything in this blog.** Also, please do not have high hope about this, even after optimizations, its efficiency is still horrible compared to manual prestige.
+
 ## Limitations
 That being said, **if you are here for a one-size-fits-all program, you might be out of luck because this is very experimental.** You will also need at least some degree of knowledge about programming in order to understand the materials presented in this article; and worse, this is a personal log, not a tutorial so I might not be explaining things nicely. 
 
@@ -506,7 +509,7 @@ if __name__ == '__main__':
 
 
 # Step 8
-After buying houses, now I need trucks.
+After buying houses, now I need trucks. For simplicity, let me just buy 4.
 
 {% highlight python %}
 from src.interaction.mouse import Mouse
@@ -557,5 +560,6 @@ if __name__ == '__main__':
     asyncio.run(main())
 {% endhighlight %}
 ![truck-test](/static/img/egg-inc/truck-test.png)
+
 
 # Step 9
