@@ -402,7 +402,6 @@ if __name__ == '__main__':
 
 
 ![spawn-test](/static/img/egg-inc/spawn-test.png)
-Working as expected.
 
 
 I can even make this go on forever.
@@ -430,10 +429,133 @@ if __name__ == '__main__':
 {% endhighlight %}
 
 ![spawn-test2](/static/img/egg-inc/spawn-test2.png)
-Working as expected.
 
 
 🎉 This should be everything about spawn chickens.
 
 
 # Step 7
+The next easiest thing to do is to purchase chicken houses. Create `house.py` under `house`.
+{% highlight python %}
+from src.interaction.mouse import Mouse
+from src.program.debug_class import Debug_Class
+from src.play.house.ui_position import (house_pos,
+                                        max_pos1,
+                                        max_pos2,
+                                        max_pos3,
+                                        max_pos4,
+                                        exit_pos)
+
+class House(Debug_Class):
+    def __init__(self, logger):
+        super().__init__(logger)
+        self._mouse = Mouse()
+
+    async def buy_new_house(self):
+        # go to purchasing house menu
+        # click multiple times (to prevent drones)
+        self.message("Open house menu.")
+        self._mouse.click_pos(house_pos, 0.7)
+        self._mouse.click_pos(house_pos, 0.7)
+        self._mouse.click_pos(house_pos, 0.7)
+
+        # max out houses
+        self._mouse.click_pos(max_pos1)
+        self._mouse.click_pos(max_pos2)
+        self._mouse.click_pos(max_pos3)
+        self._mouse.click_pos(max_pos4)
+
+        self.message("Purchased houses.")
+
+        # exit
+        self.message("Close menu.")
+        self._mouse.click_pos(exit_pos, 0.7)
+
+{% endhighlight %}
+
+
+Add the following to `house/ui_position.py`.
+{% highlight python %}
+house_pos = [183, 227]
+
+max_pos1 = [121, 363]
+max_pos2 = [223, 312]
+max_pos3 = [82, 471]
+max_pos4 = [223, 471]
+
+exit_pos = [278, 173]
+{% endhighlight %}
+
+
+Test.
+{% highlight python %}
+import asyncio
+from src.log.logger import Logger
+
+async def main():
+    logger = Logger()
+    house = House(logger)
+    await house.buy_new_house()
+
+if __name__ == '__main__':
+    asyncio.run(main())
+{% endhighlight %}
+
+
+![house-test](/static/img/egg-inc/house-test.png)
+
+
+# Step 8
+After buying houses, now I need trucks.
+
+{% highlight python %}
+from src.interaction.mouse import Mouse
+from src.play.depot.ui_position import (depot_pos,
+                                        max_pos1,
+                                        max_pos2,
+                                        max_pos3,
+                                        max_pos4,
+                                        exit_pos)
+from src.program.debug_class import Debug_Class
+
+
+class Depot(Debug_Class):
+    def __init__(self, logger):
+        super().__init__(logger)
+        self._mouse = Mouse()
+
+    async def buy_new_trucks(self):
+        self.message("Open shipping menu.")
+        self._mouse.click_pos(depot_pos, 0.7)
+        self._mouse.click_pos(depot_pos, 0.7)
+        self._mouse.click_pos(depot_pos, 0.7)
+
+        # max out trucks
+        self._mouse.click_pos(max_pos1)
+        self._mouse.click_pos(max_pos2, once=True)
+        self._mouse.click_pos(max_pos3, once=True)
+        self._mouse.click_pos(max_pos4, once=True)
+
+        self.message("Purchased trucks.")
+
+        # exit
+        self.message("Close menu.")
+        self._mouse.click_pos(exit_pos, 0.7)
+{% endhighlight %}
+
+Test.
+{% highlight python %}
+import asyncio
+from src.log.logger import Logger
+
+async def main():
+    logger = Logger()
+    depot = Depot(logger)
+    await depot.buy_new_trucks()
+
+if __name__ == '__main__':
+    asyncio.run(main())
+{% endhighlight %}
+![truck-test](/static/img/egg-inc/truck-test.png)
+
+# Step 9
