@@ -125,7 +125,8 @@ if __name__ == '__main__':
 
 📍 However, soon I found a problem. It appears that sometimes I have to tap twice on the simulator for the interaction to work and it seems like it's not an issue of focusing. Now things become tricky. That is why I have added a flag `once` to indicate whether this click should be performed only once. By default it performs two.
 
-<br>
+---
+
 That's a good start. Now let's see drags.
 {% highlight python %}
 if __name__ == '__main__':
@@ -143,3 +144,188 @@ if __name__ == '__main__':
 
 🎉 Excellent, it has dragged the research menu down. Now I am very certain I have everything needed to control the device.
 
+# Step 4
+In this step I will create some utility scripts.
+
+
+I imagine it's going to have massive logs so I will need a class that can generate and store the logs. Create `logger.py` under `log`.
+{% highlight python %}
+import os
+import fnmatch
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+logs_path = os.path.join(script_dir, 'logs')
+
+
+class Logger:
+    def __init__(self):
+        self._content = []
+
+    def add_content(self, line):
+        self._content.append(line)
+
+    def save_content(self):
+        os.makedirs('logs', exist_ok=True)
+        new_save_path = self.get_new_save_path()
+        with open(new_save_path, 'w') as file:
+            file.write("\n".join(self._content))
+
+    @staticmethod
+    def get_new_save_path():
+        prefix_name = 'log'
+        max_num = 0
+        for dirpath, dirnames, filenames in os.walk(logs_path):
+            for filename in fnmatch.filter(filenames, '*.txt'):
+                num = int(filename.replace(prefix_name, '').replace('.txt', ''))
+                if num > max_num:
+                    max_num = num
+        return os.path.join(logs_path, prefix_name + str(max_num + 1) + '.txt')
+
+
+if __name__ == '__main__':
+    logger = Logger()
+    print(logger.get_new_save_path())
+    logger.add_content('test')
+    logger.add_content('test2')
+    logger.save_content()
+{% endhighlight %}
+
+
+As expected.
+
+
+![log-test](/static/img/egg-inc/log-test.png)
+
+---
+
+Now create a base class that takes-in and is initialized with a `Logger`. Everything worth logging must inherit from this class. Create `debug_class` under `program`.
+{% highlight python %}
+from src.log.logger import Logger
+
+
+class Debug_Class:
+    def __init__(self, logger: Logger):
+        self._debug = False
+        self._logger = logger
+
+    def message(self, content):
+        if self._debug:
+            print(content)
+            self._logger.add_content(content)
+
+    def set_verbose(self):
+        self._debug = True
+
+{% endhighlight %}
+
+---
+
+Next would be `mouse_coordinate.py` under `util`. 
+{% highlight python %}
+from pynput import *
+
+
+def get_coords(x, y):
+    print("Now at: {}".format((x, y)))
+
+
+if __name__ == '__main__':
+    with mouse.Listener(on_move=get_coords) as listen:
+        listen.join()
+{% endhighlight %}
+🤓 This script gets the current position of the mouse. I use this to get the positions of the UI.
+
+---
+
+Although I don't know where I can apply this yet, I am fairly sure I am going to need to take screenshots. Let me copy & paste some old code from my screen-scraping projects. Create `window_getter.py` under `util`.
+{% highlight python %}
+import platform
+if platform.platform().startswith('macOS'):
+    import Quartz
+import PIL.ImageGrab
+
+
+def get_window_with_title(title):
+    def get_window_list_mac():
+        window_list = []
+        window_info_list = Quartz.CGWindowListCopyWindowInfo(Quartz.kCGWindowListOptionOnScreenOnly,
+                                                             Quartz.kCGNullWindowID)
+        for window_info in window_info_list:
+            window_list.append(window_info)
+        return window_list
+
+    def get_mac_windows():
+        result = []
+        for m_window in get_window_list_mac():
+            m_window_title = m_window.get('kCGWindowOwnerName', 'No Title')
+            if title in m_window_title:
+                result.append(m_window)
+        return result
+
+    if platform.platform().startswith('macOS'):
+        windows = get_mac_windows()
+        if len(windows) > 0:
+            return windows[0]
+    else:
+        return None
+
+
+def get_screen_of_chose_window(chosen_window):
+    def run_mac():
+        bounds = chosen_window.get('kCGWindowBounds')
+        h = int(bounds.get('Height'))
+        w = int(bounds.get('Width'))
+        x = int(bounds.get('X'))
+        y = int(bounds.get('Y'))
+        return PIL.ImageGrab.grab(bbox=(x, y, w+x, h+y),
+                                  include_layered_windows=True,
+                                  all_screens=True)
+    if platform.platform().startswith('macOS'):
+        return run_mac()
+    else:
+        return None
+{% endhighlight %}
+
+
+Tests.
+{% highlight python %}
+if __name__ == '__main__':
+    chosen_window = get_window_with_title('iPhone Mirroring')
+    print(chosen_window)
+    get_screenshot_of_chosen_window(chosen_window).save('screenshot-test.png')
+
+{% endhighlight %}
+
+
+I got
+
+{% highlight shell %}
+{
+    kCGWindowAlpha = 1;
+    kCGWindowBounds =     {
+        Height = 694;
+        Width = 312;
+        X = 0;
+        Y = 25;
+    };
+    kCGWindowIsOnscreen = 1;
+    kCGWindowLayer = 0;
+    kCGWindowMemoryUsage = 2272;
+    kCGWindowName = "iPhone Mirroring";
+    kCGWindowNumber = 6958;
+    kCGWindowOwnerName = "iPhone Mirroring";
+    kCGWindowOwnerPID = 11641;
+    kCGWindowSharingState = 1;
+    kCGWindowStoreType = 1;
+}
+{% endhighlight %}
+
+and
+
+![screenshot-test](/static/img/egg-inc/screenshot-test.png)
+
+
+Let me do just these 3 for now.
+
+
+# Step 5
