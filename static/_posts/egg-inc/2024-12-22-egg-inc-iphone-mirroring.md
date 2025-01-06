@@ -329,3 +329,111 @@ Let me do just these 3 for now.
 
 
 # Step 5
+Now, after I have performed a prestige manually. I think here are the parts I need to implement.
+- depot - upgrade trucks
+- egg_jump
+- house - upgrade houses
+- prestige
+- research
+- spawner - spawn chickens
+
+
+Put them under `play`
+
+
+![play-folder](/static/img/egg-inc/play-folder.png)
+
+
+Also, create `ui_position` under each of them.
+![play-folder2](/static/img/egg-inc/play-folder2.png)
+
+
+In the following steps, my job will be implementing all of them and in the end I will use everything together to write the final prestige machine in `main.py`.
+
+
+# Step 6
+Finally I am going to implement something related to the game. Let me start with the first thing every player does in the game - spawn chickens. 
+
+
+In `spawner/ui_position.py`, put
+
+
+{% highlight python %}
+spawn_pos = [153, 665]
+{% endhighlight %}
+
+
+Create `spawner.py` under `spawner`.
+{% highlight python %}
+import time
+from src.interaction.mouse import Mouse
+from src.play.spawner.ui_position import spawn_pos
+from src.program.debug_class import Debug_Class
+
+
+class Spawner(Debug_Class):
+    def __init__(self, logger):
+        super().__init__(logger)
+        self._mouse = Mouse()
+
+    async def spawn_chicken(self, duration=2):
+        self.message(f"Spawn chicken for {duration} seconds.")
+        self._mouse.click_pos(spawn_pos)
+        self._mouse.press_pos(spawn_pos, duration)
+        self.message(f"Resting for {round(duration * 0.75, 2)} seconds.")
+        time.sleep(duration * 0.75)
+{% endhighlight %}
+🤓 `spawn_chicken` sends chickens for `duration` seconds and release for `duration * 0.75` seconds.
+
+
+Now test this.
+{% highlight python %}
+import asyncio
+from src.log.logger import Logger
+
+async def main():
+    logger = Logger()
+    spawner = Spawner(logger)
+    await spawner.spawn_chicken(10)
+
+if __name__ == '__main__':
+    asyncio.run(main())
+{% endhighlight %}
+
+
+![spawn-test](/static/img/egg-inc/spawn-test.png)
+Working as expected.
+
+
+I can even make this go on forever.
+{% highlight python %}
+async def spawn_continue(self, times=5, duration=2):
+    self.message(f"Spawn {times} waves of chicken.")
+    for i in range(times):
+        self.message(f"Perform spawn wave {i + 1}.")
+        await self.spawn_chicken(duration)
+{% endhighlight %}
+
+
+Test.
+{% highlight python %}
+import asyncio
+from src.log.logger import Logger
+
+async def main():
+    logger = Logger()
+    spawner = Spawner(logger)
+    await spawner.spawn_continue(5, 5)
+
+if __name__ == '__main__':
+    asyncio.run(main())
+{% endhighlight %}
+
+![spawn-test2](/static/img/egg-inc/spawn-test2.png)
+Working as expected.
+
+
+🎉 This should be everything about spawn chickens.
+
+
+# Step 7
