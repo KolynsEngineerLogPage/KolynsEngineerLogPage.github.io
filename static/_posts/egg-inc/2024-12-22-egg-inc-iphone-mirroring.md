@@ -509,7 +509,7 @@ if __name__ == '__main__':
 
 
 # Step 8
-After buying houses, now I need trucks. For simplicity, let me just buy 4.
+After buying houses, now I need trucks. For simplicity, let me just buy 4. Create `depot.py` under `depot`.
 
 {% highlight python %}
 from src.interaction.mouse import Mouse
@@ -546,6 +546,20 @@ class Depot(Debug_Class):
         self._mouse.click_pos(exit_pos, 0.7)
 {% endhighlight %}
 
+
+Add the following to `depot/ui_position.py`.
+{% highlight python %}
+depot_pos = [175, 469]
+
+max_pos1 = [266, 292]
+max_pos2 = [247, 354]
+max_pos3 = [247, 406]
+max_pos4 = [247, 451]
+
+exit_pos = [278, 173]
+{% endhighlight %}
+
+
 Test.
 {% highlight python %}
 import asyncio
@@ -563,3 +577,167 @@ if __name__ == '__main__':
 
 
 # Step 9
+So far things have been not very interesting. That's why in the next step I am going to make the program to be able to upgrade Research. I will need to somehow make it finds the upgrade buttons. 
+
+![research-upgrade-button](/static/img/egg-inc/research-upgrade-button.png)
+
+
+Fortunately, I have done this before. The high level idea is to first pixelate the screenshot. Crop out the green button from it and save it as a template. After that apply template matching to find the positions of buttons in the pixelated screenshot. In the end project the positions back to the positions in the default screenshot and Voila the program knows where to press.
+
+
+Let's start coding! Create `research.py` under `research`.
+{% highlight python %}
+import os
+import cv2
+import time
+import numpy as np
+from PIL import Image
+from src.interaction.mouse import Mouse
+from src.play.spawner.spawner import Spawner
+from src.program.debug_class import Debug_Class
+from src.util.window_getter import get_screenshot_of_chosen_window, get_window_with_title
+from src.play.research.ui_position import (research_pos,
+                                           drag_from,
+                                           drag_to,
+                                           exit_pos)
+
+
+class Research(Debug_Class):
+    def __init__(self, window, logger):
+        super().__init__(logger)
+        self._mouse = Mouse()
+        self._window = window
+{% endhighlight %}
+
+Next let me use this screenshot as an example and I will be finding all upgrade buttons in it.
+![research-test2](/static/img/egg-inc/research-test2.png)
+
+
+The first step is to pixelate this screenshot.
+{% highlight python %}
+def pixelate(pil_image, factor):
+    width, height = pil_image.size
+
+    # assuming factor = 3
+    # calculate the new dimensions (each 3x3 block becomes 1 pixel)
+    new_width = width // factor
+    new_height = height // factor
+
+    # create a new image with the new dimensions
+    new_image = Image.new("RGB", (new_width, new_height))
+
+    for i in range(new_width):
+        for j in range(new_height):
+            # initialize RGB accumulators
+            r_total, g_total, b_total = 0, 0, 0
+
+            # sum the colors in the 3x3 block
+            for x in range(factor):
+                for y in range(factor):
+                    # get the pixel at the current position
+                    pixel = pil_image.getpixel((i * factor + x, j * factor + y))
+                    r_total += pixel[0]
+                    g_total += pixel[1]
+                    b_total += pixel[2]
+
+            # calculate the average color
+            r_avg = r_total // (factor * factor)
+            g_avg = g_total // (factor * factor)
+            b_avg = b_total // (factor * factor)
+
+            # set the average color in the new image
+            new_image.putpixel((i, j), (r_avg, g_avg, b_avg))
+
+    return new_image
+{% endhighlight %}
+
+
+Now let me test this. I want the pixel factor to be 5.
+
+
+![screenshot-pixelated](/static/img/egg-inc/screenshot-pixelated.png)
+
+
+That worked pretty well, but there is no need to process the entire image. However, that being said, for simplicity. I am not going to show how to optimize this.
+
+
+Next I will save the green button template. It's very small ➡️   ![button-template](/static/img/egg-inc/button-template.png)
+
+
+After we have the template, we can use it.
+{% highlight python %}
+script_dir = os.path.dirname(os.path.abspath(__file__))
+self._template = cv2.imread(os.path.join(script_dir, 'button-template.png'))
+
+
+def _get_research_position(self, screenshot, factor=5, similarity=0.97):
+    result = match_position(self._template, pil_to_cv2(pixelate(screenshot, factor)), similarity)
+    if result[1]:
+        return [int(item) * factor for item in list(result[1][0])]
+    return None
+{% endhighlight %}
+
+
+Here is `pil_to_cv2`.
+{% highlight python %}
+def pil_to_cv2(pil_image):
+    pil_image = pil_image.convert('RGB')
+    rgb_array = np.array(pil_image)
+    bgr_image = cv2.cvtColor(rgb_array, cv2.COLOR_RGB2BGR)
+    return bgr_image
+{% endhighlight %}
+
+
+Here is `match_position`.
+{% highlight python %}
+def match_position(template, screenshot, similarity=0.97):
+    # separate the alpha channel if present
+    bgr_template = template[:, :, :3] if template.shape[2] == 4 else template
+
+    # perform template matching
+    result = cv2.matchTemplate(screenshot, bgr_template, cv2.TM_CCORR_NORMED)
+
+    # get all locations with similarity above the threshold
+    match_locations = np.where(result >= similarity)
+
+    # get the size of the template
+    template_h, template_w = bgr_template.shape[:2]
+
+    # create a copy of the screenshot for visualization
+    screenshot_with_dots = screenshot.copy()
+
+    # calculate and draw the center positions
+    centers = []
+    for (x, y) in zip(match_locations[1], match_locations[0]):
+        center_x = x + template_w // 2
+        center_y = y + template_h // 2
+        centers.append((center_x, center_y))
+
+        # draw a red dot at the center
+        # cv2.circle(screenshot_with_dots, (center_x, center_y), radius=1, color=(0, 0, 255), thickness=0)
+
+    return screenshot_with_dots, centers
+{% endhighlight %}
+
+
+Test for template matching in pixelated image.
+{% highlight python %}
+from src.log.logger import Logger
+
+
+if __name__ == '__main__':
+    chosen_window = get_window_with_title('iPhone Mirroring')
+    logger = Logger()
+    research = Research(chosen_window, logger)
+    screenshot = Image.open('research-test2.png')
+    research.get_research_position(screenshot)
+{% endhighlight %}
+
+
+Output:
+{% highlight shell %}
+[(np.int64(51), np.int64(45)), (np.int64(51), np.int64(59)), (np.int64(51), np.int64(72)), (np.int64(51), np.int64(86))]
+{% endhighlight %}
+![research-test3](/static/img/egg-inc/research-test3.png)
+
+
