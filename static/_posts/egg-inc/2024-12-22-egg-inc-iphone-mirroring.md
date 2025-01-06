@@ -673,6 +673,7 @@ self._template = cv2.imread(os.path.join(script_dir, 'button-template.png'))
 def _get_research_position(self, screenshot, factor=5, similarity=0.97):
     result = match_position(self._template, pil_to_cv2(pixelate(screenshot, factor)), similarity)
     if result[1]:
+        # project back to the original position
         return [int(item) * factor for item in list(result[1][0])]
     return None
 {% endhighlight %}
@@ -730,14 +731,88 @@ if __name__ == '__main__':
     logger = Logger()
     research = Research(chosen_window, logger)
     screenshot = Image.open('research-test2.png')
-    research.get_research_position(screenshot)
+    print(research._get_research_position(screenshot))
 {% endhighlight %}
 
 
 Output:
 {% highlight shell %}
-[(np.int64(51), np.int64(45)), (np.int64(51), np.int64(59)), (np.int64(51), np.int64(72)), (np.int64(51), np.int64(86))]
+[255, 225]
 {% endhighlight %}
+This position in the screenshot.
+![research-test2-dotted](/static/img/egg-inc/research-test2-dotted.png)
+
+
+BTW, `match_position` actually finds all of them. The program only took the first.
+
+
 ![research-test3](/static/img/egg-inc/research-test3.png)
 
 
+It's in a good shape. Next I can make it to do some upgrades.
+{% highlight python %}
+def _determine_research(self, factor=5, press_duration=2):
+    screenshot = get_screenshot_of_chosen_window(self._window)
+    position = self._get_research_position(screenshot, factor)
+    while position:
+        self.message(f"Pressing ({position[0]}, {position[1]+25})")
+        # added 25 to fix margin error
+        self._mouse.press(position[0], position[1]+25, press_duration)
+        screenshot = get_screenshot_of_chosen_window(self._window)
+        position = self._get_research_position(screenshot, factor)
+{% endhighlight %}
+
+
+![research-test4](/static/img/egg-inc/research-test4.png)
+
+Create a loop to make this process repeated. 
+
+{% highlight python %}
+async def do_research(self, iterations=12, press_duration=2, check_wait=2):
+    # go to the research menu
+    self.message("Open research menu.")
+    self._mouse.click_pos(research_pos, 0.4, True)
+
+    self.message(f"Leveling up, total iterations: {iterations}.")
+    # level up researches
+    for i in range(iterations):
+        start_time = time.time()
+        self.message(f"Performing iteration {i+1}.")
+        self._determine_research(factor=5, press_duration=press_duration)
+        self.message("Time spent on this iteration: --- %s seconds ---" % (time.time() - start_time))
+        time.sleep(check_wait)
+        self._drag_menu(drag_duration=1)
+
+    self.message("Close menu.")
+    self._mouse.click_pos(exit_pos)
+    time.sleep(1)
+
+def _drag_menu(self, drag_duration=1.0):
+    self._mouse.perform_drag(drag_from, drag_to, drag_duration)
+{% endhighlight %}
+
+
+Test.
+{% highlight python %}
+import asyncio
+from src.log.logger import Logger
+
+
+async def main():
+    chosen_window = get_window_with_title('iPhone Mirroring')
+    logger = Logger()
+    research = Research(chosen_window, logger)
+    await research.do_research(15)
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+{% endhighlight %}
+
+
+![research-test5](/static/img/egg-inc/research-test5.png)
+
+
+🎉 The program is performing pretty well. Here is the result after a research upgrade loop by the program. 
+
+# Step 10
