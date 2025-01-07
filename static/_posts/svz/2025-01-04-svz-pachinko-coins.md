@@ -429,13 +429,22 @@ After all the preparations, we can finally start DFS. Like a normal DFS, we pop 
 
 
 After the first iteration of `_dfs` on our example, we do get
+
+
 ![pachinko-8-enlarge-1_b](/static/img/svz/pachinko-8-enlarge-1_b.png)
 
 
 The rest of the iterations
+
+
 ![pachinko-8-enlarge-4_b](/static/img/svz/pachinko-8-enlarge-4_b.png)
+
+
 ![pachinko-8-enlarge-975_b](/static/img/svz/pachinko-8-enlarge-975_b.png)
+
+
 ![pachinko-8-enlarge-6_b](/static/img/svz/pachinko-8-enlarge-6_b.png)
+
 
 <br>
 We store them in a list and the next thing will be removing unnecessary white background from them. Let's continue from `extract_coin_amount`
