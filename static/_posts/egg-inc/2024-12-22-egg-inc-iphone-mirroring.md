@@ -64,6 +64,8 @@ The first thing I am going to do is to open up my new toy iPhone Mirroring.
 
 
 Next, I start a new Python project.
+
+
 ![program-hierarchy](/static/img/egg-inc/program-hierarchy.png)
 
 
@@ -122,6 +124,10 @@ if __name__ == '__main__':
 
 
 🎉 It works!
+
+
+📍 Note: you will need to find the position using `mouse_coordinate.py`, which I will be introducing in step 4.
+
 
 ![send-chicken](/static/img/egg-inc/send-chicken.png)
 
@@ -348,6 +354,8 @@ Put them under `play`
 
 
 Also, create `ui_position` under each of them.
+
+
 ![play-folder2](/static/img/egg-inc/play-folder2.png)
 
 
@@ -600,7 +608,7 @@ from src.play.research.ui_position import (research_pos,
                                            drag_from,
                                            drag_to,
                                            exit_pos)
-
+∂
 
 class Research(Debug_Class):
     def __init__(self, window, logger):
@@ -620,6 +628,8 @@ exit_pos = [285, 164]
 {% endhighlight %}
 
 Next let me use this screenshot as an example and I will be finding all upgrade buttons in it.
+
+
 ![research-test2](/static/img/egg-inc/research-test2.png)
 
 
@@ -750,6 +760,8 @@ Output:
 [255, 225]
 {% endhighlight %}
 This position in the screenshot.
+
+
 ![research-test2-dotted](/static/img/egg-inc/research-test2-dotted.png)
 
 
@@ -958,4 +970,125 @@ if __name__ == '__main__':
 
 ![fresh-farm](/static/img/egg-inc/fresh-farm.png)
 
+
+# Step 12
+Now I will start filling `main.py`. Every thing will come together in this step. 
+
+
+{% highlight python %}
+import time
+import asyncio
+from src.play.spawner.spawner import Spawner
+from src.play.egg_jump.egg_jump import Egg_Jump
+from src.play.house.house import House
+from src.play.depot.depot import Depot
+from src.play.research.research import Research
+from src.util.window_getter import get_window_with_title
+from src.play.prestige.prestige import Prestige
+from src.log.logger import Logger
+
+
+async def main(window, logger: Logger, run_num=0, debug=True):
+    logger.add_content(f"--- Prestige run {run_num} starts. ---")
+    start_time = time.time()
+
+    spawner = Spawner(logger=logger)
+    # assuming Edible
+    # go to Dilithium
+    egg_jump = Egg_Jump(logger=logger)
+    if debug:
+        spawner.set_verbose()
+        egg_jump.set_verbose()
+    # guarantees to succeed
+    await egg_jump.jump()
+    # animation
+    time.sleep(5)
+
+    # now in Dilithium
+    # Start by spawning chickens for 5 seconds
+    await spawner.spawn_chicken(5)
+    time.sleep(0.5)
+
+    # buy houses
+    house = House(logger=logger)
+    if debug:
+        house.set_verbose()
+    await house.buy_new_house()
+    time.sleep(0.5)
+
+    # buy trucks
+    depot = Depot(logger=logger)
+    if debug:
+        depot.set_verbose()
+    await depot.buy_new_trucks()
+    time.sleep(0.5)
+
+    # research
+    research = Research(window=window, logger=logger)
+    if debug:
+        research.set_verbose()
+    await research.do_research(12, 1, 0.1)
+
+    await egg_jump.jump()
+    # animation
+    time.sleep(5)
+
+    # now in universe
+    # start by spawning chickens for 5 seconds
+    await spawner.spawn_chicken(5)
+    time.sleep(5)
+
+    # buy houses
+    await house.buy_new_house()
+    time.sleep(0.5)
+
+    # buy trucks
+    await depot.buy_new_trucks()
+    time.sleep(0.5)
+
+    # Research
+    await research.do_research(20, 1, 0.1)
+
+    # raise more chicken
+    await spawner.spawn_continue(10)
+
+    await depot.buy_new_trucks()
+    time.sleep(0.5)
+
+    # raise more chicken
+    await spawner.spawn_continue(20)
+
+    prestige = Prestige(logger=logger)
+    if debug:
+        prestige.set_verbose()
+    await prestige.start_new_farm()
+
+    logger.add_content(f"--- Prestige run {run_num} ends. ---")
+    logger.add_content(f"Time spent for this run : --- %s seconds ---" % (time.time() - start_time))
+    time.sleep(6)
+
+
+if __name__ == '__main__':
+    logger = Logger()
+    chosen_window = get_window_with_title('iPhone Mirroring')
+    counter = 0
+    try:
+        while True:
+            asyncio.run(main(chosen_window, logger, counter))
+            counter += 1
+    except KeyboardInterrupt:
+        logger.save_content()
+{% endhighlight %}
+
+
+The result I got after one prestige.
+
+{% highlight shell %}
+--- Prestige run 0 starts. ---
+Open egg jump menu.
+Perform egg jump.
+...
+--- Prestige run 0 ends. ---
+Time spent for this run : --- 692.892648935318 seconds ---
+{% endhighlight %}
 
