@@ -28,27 +28,30 @@ Prerequisite: Basic Python
 ## Preface
 iPhone Mirroring didn’t come to my attention until my friend mentioned it last month. I never imagined it could become the key to conquering iOS devices. All this time, I had been trying to find ways to play games on iOS with scripting, and iPhone Mirroring turned out to be the answer.
 
+
 ## Introduction
 Today I have randomly chosen from one of my favorite iOS games and decided to write a script for it, with iPhone Mirroring. It's called [Egg Inc.](https://egg-inc.fandom.com/wiki/Egg,_Inc.) A game where you raise chickens, the chickens lay eggs, and you make profits by shipping the eggs. My goal today will be writing a program specifically for [Prestige](https://egg-inc.fandom.com/wiki/Prestige). 
 
+
 ## The Main Idea
-On iPhone Mirroring, mouse clicks will simulate taps on iPhone. This is great because I already know how to simulate clicks and presses and drags. Prestige is a fairly mechanical process—it's repeated over and over, and I have already identified a pattern in it. Basically, this program is going to follow some kind of pattern to perform prestige.
+On iPhone mirroring, mouse clicks simulate taps on the iPhone. This is great because I already know how to simulate clicks, presses, and drags. Prestige is a fairly mechanical process—it’s repeated over and over, and I have already identified a pattern in it. Essentially, this program will follow a specific pattern to perform prestige.
+
 
 ## Very Important
-⚠️ I have omitted many details that are not directly related. In the future I <u>might</u> make write another log about them. **Please do not be surprised if things are not working well after you have followed everything in this blog.** Also, please do not have high hope about this, even after optimizations, its efficiency is still horrible compared to manual prestige.
+⚠️ I have intentionally omitted many details that are not directly related. In the future, I <u>might</u> write another log about them. **Please do not be surprised if things don’t work well after following everything in this blog.** Also, please keep your expectations realistic— even after optimizations, its efficiency is still terrible compared to manual prestige.
 
 ## Limitations
-That being said, **if you are here for a one-size-fits-all program, you might be out of luck because this is very experimental.** You will also need at least some degree of knowledge about programming in order to understand the materials presented in this article; and worse, this is a personal log, not a tutorial so I might not be explaining things nicely. 
+That being said, **if you’re looking for a one-size-fits-all program, you might be out of luck, as this is highly experimental.** You’ll also need at least a basic understanding of programming to follow the materials presented in this article. To make matters worse, this is a personal log, not a tutorial, so I might not explain things as clearly as I could.
 
 
-On the top of that, players have different prestige strategies. I will list mine here.
+On top of that, players have different prestige strategies. I will list mine here.
 1. Start from Edible
 2. Jump to Dilithium
 3. Get enough farm value and jump to Universe
 4. Get soul eggs and prestige
 
 
-Sounds easy? Okay, I admit I've hidden a lot of details. Now I will follow this pattern and build a program based on it.
+Sounds easy? Okay, I admit I’ve omitted a lot of details. Now, I will follow this pattern and build a program based on it.
 
 
 FYI, my current Earning Bonus and Prestige set:
@@ -57,7 +60,9 @@ FYI, my current Earning Bonus and Prestige set:
 
 ## The Program
 # Step 1
-The first thing I am going to do is to open up my new toy iPhone Mirroring.
+
+
+The first thing I’m going to do is open up my new toy, iPhone Mirroring.
 
 
 ![new-farm](/static/img/egg-inc/new-farm.png)
@@ -70,7 +75,7 @@ Next, I start a new Python project.
 
 
 # Step 2
-The next thing is to confirm window size and position so that the next time I open this it will be the same. It appears that I cannot change the window size, which is amazing because this means that I would not have to write a `window_rescaler.py` for it. Now I will just put iPhone Mirroring in <u>the top-left corner of my Desktop</u> so my clicks will always occur in the expected positions.
+The next step is to confirm the window size and position so that it remains consistent every time I open it. It seems I can’t change the window size, which is fantastic because it means I won’t need to write a `window_rescaler.py` for it. I’ll simply place iPhone Mirroring in <u>the top-left corner of my Desktop</u>, to make sure that my clicks always occur in the expected positions.
 
 
 # Step 3
@@ -132,7 +137,7 @@ if __name__ == '__main__':
 ![send-chicken](/static/img/egg-inc/send-chicken.png)
 
 
-📍 However, soon I found a problem. It appears that sometimes I have to tap twice on the simulator for the interaction to work and it seems like it's not an issue of focusing. Now things become tricky. That is why I have added a flag `once` to indicate whether this click should be performed only once. By default it performs two.
+📍 However, I soon encountered a problem. It seems that sometimes I need to tap twice on the simulator for the interaction to work, and it doesn’t appear to be an issue of focusing. This complicates things. To address this, I added a flag `once` to indicate whether the click should be performed only once. By default, it performs two clicks.
 
 ---
 
@@ -151,7 +156,7 @@ if __name__ == '__main__':
 ![test-drag](/static/img/egg-inc/test-drag.png)
 
 
-🎉 Excellent, it has dragged the research menu down. Now I am very certain I have everything needed to control the device.
+🎉 Excellent, it dragged the research menu down. Now I am confident that I have everything I need to control the device.
 
 # Step 4
 In this step I will create some utility scripts.
@@ -207,7 +212,9 @@ As expected.
 
 ---
 
-Now create a base class that takes-in and is initialized with a `Logger`. Everything worth logging must inherit from this class. Create `debug_class` under `program`.
+Now, create a base class that takes in and is initialized with a Logger. Everything worth logging must inherit from this base class. Create `debug_class` under `program`.
+
+
 {% highlight python %}
 from src.log.logger import Logger
 
@@ -242,11 +249,11 @@ if __name__ == '__main__':
     with mouse.Listener(on_move=get_coords) as listen:
         listen.join()
 {% endhighlight %}
-🤓 This script gets the current position of the mouse. I use this to get the positions of the UI.
+🤓 This script gets the current position of the mouse. I will use it to get the positions of the UI.
 
 ---
 
-Although I don't know where I can apply this yet, I am fairly sure I am going to need to take screenshots. Let me copy & paste some old code from my screen-scraping projects. Create `window_getter.py` under `util`.
+Although I don't know where I can apply this yet, I am fairly sure I am going to need to take screenshots. Let me copy & paste some code from my old screen-scraping projects. Create `window_getter.py` under `util`.
 {% highlight python %}
 import platform
 if platform.platform().startswith('macOS'):
@@ -296,7 +303,7 @@ def get_screen_of_chose_window(chosen_window):
 {% endhighlight %}
 
 
-Tests.
+Test.
 {% highlight python %}
 if __name__ == '__main__':
     chosen_window = get_window_with_title('iPhone Mirroring')
@@ -338,7 +345,7 @@ Let me do just these 3 for now.
 
 
 # Step 5
-Now, after I have performed a prestige manually. I think here are the parts I need to implement.
+Now, after I have performed a prestige manually. I think here are the parts I will need to implement.
 - depot - upgrade trucks
 - egg_jump
 - house - upgrade houses
@@ -359,11 +366,11 @@ Also, create `ui_position` under each of them.
 ![play-folder2](/static/img/egg-inc/play-folder2.png)
 
 
-In the following steps, my job will be implementing all of them and in the end I will use everything together to write the final prestige machine in `main.py`.
+In the following steps, my task will be to implement each of them, and, in the end, I will combine everything together to write the final prestige machine in `main.py`.
 
 
 # Step 6
-Finally I am going to implement something related to the game. Let me start with the first thing every player does in the game - spawn chickens. 
+At last, I am going to implement something related to the game. Let me start with the first thing every player does in the game - spawn chickens. 
 
 
 In `spawner/ui_position.py`, put
@@ -442,7 +449,7 @@ if __name__ == '__main__':
 ![spawn-test2](/static/img/egg-inc/spawn-test2.png)
 
 
-🎉 This should be everything about spawn chickens.
+🎉 This should be everything about spawning chickens.
 
 
 # Step 7
@@ -585,12 +592,12 @@ if __name__ == '__main__':
 
 
 # Step 9
-So far things have been not very interesting. That's why in the next step I am going to make the program to be able to upgrade Research. I will need to somehow make it finds the upgrade buttons. 
+So far, things haven’t been very interesting. That’s why in the next step I’m going to make the program capable of upgrading Research. I’ll need to figure out a way for it to locate the upgrade buttons.
 
 ![research-upgrade-button](/static/img/egg-inc/research-upgrade-button.png)
 
 
-Fortunately, I have done this before. The high level idea is to first pixelate the screenshot. Crop out the green button from it and save it as a template. After that apply template matching to find the positions of buttons in the pixelated screenshot. In the end project the positions back to the positions in the default screenshot and Voila the program knows where to press.
+Fortunately, I’ve done this before. The high-level idea is to first pixelate the screenshot, crop out the green button, and save it as a template. Then, apply template matching to identify the positions of the buttons in the pixelated screenshot. Finally, map these positions back to the original screenshot, and voilà—the program knows where to press!
 
 
 Let's start coding! Create `research.py` under `research`.
@@ -693,7 +700,7 @@ self._template = cv2.imread(os.path.join(script_dir, 'button-template.png'))
 def _get_research_position(self, screenshot, factor=5, similarity=0.97):
     result = match_position(self._template, pil_to_cv2(pixelate(screenshot, factor)), similarity)
     if result[1]:
-        # project back to the original position
+        # map back to the original position
         return [int(item) * factor for item in list(result[1][0])]
     return None
 {% endhighlight %}
@@ -1092,3 +1099,13 @@ Perform egg jump.
 Time spent for this run : --- 692.892648935318 seconds ---
 {% endhighlight %}
 
+
+<br>
+<br>
+🍯 Happy Coding 🍯
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
