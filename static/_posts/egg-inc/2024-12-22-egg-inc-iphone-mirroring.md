@@ -609,6 +609,16 @@ class Research(Debug_Class):
         self._window = window
 {% endhighlight %}
 
+Put these in `research/ui_position.py`.
+{% highlight python %}
+research_pos = [31, 601]
+
+drag_from = [70, 540]
+drag_to = [70, 380]
+
+exit_pos = [285, 164]
+{% endhighlight %}
+
 Next let me use this screenshot as an example and I will be finding all upgrade buttons in it.
 ![research-test2](/static/img/egg-inc/research-test2.png)
 
@@ -816,3 +826,81 @@ if __name__ == '__main__':
 🎉 The program is performing pretty well. Here is the result after a research upgrade loop by the program. 
 
 # Step 10
+Recall the pattern:
+1. Start from Edible
+2. Jump to Dilithium
+
+
+...
+
+
+My Earning Bonus allows me to jump to Dilithium from a fresh Edible farm.
+
+
+![egg-jump1](/static/img/egg-inc/egg-jump1.png)
+
+
+This should be similar to purchasing houses and trucks. (It's actually not, I am only presenting the barely minimum version that gets the job down.)
+
+
+Create `egg_jump.py` under `egg_jump`.
+{% highlight python %}
+from src.interaction.mouse import Mouse
+from src.program.debug_class import Debug_Class
+from src.play.egg_jump.location.ui_position import (egg_pos, 
+                                                    upgrade_pos,
+                                                    yes_pos, 
+                                                    exit_pos)
+
+class Egg_Jump(Debug_Class):
+    def __init__(self, logger):
+        super().__init__(logger)
+        self._mouse = Mouse()
+
+    async def jump(self):
+        self.message("Open egg jump menu.")
+        self._mouse.click_pos(egg_pos, 0.7)
+
+        self.message("Perform egg jump.")
+        self._mouse.click_pos(upgrade_pos, 0.7)
+        self._mouse.click_pos(yes_pos, 0.7)
+
+        self.message("Close menu.")
+        self._mouse.click_pos(exit_pos)
+{% endhighlight %}
+
+Add the following to `egg_jump/ui_position`:
+{% highlight python %}
+egg_pos = [38, 122]
+upgrade_pos = [158, 435]
+yes_pos = [197, 299]
+exit_pos = [285, 164]
+{% endhighlight %}
+
+Test.
+{% highlight python %}
+import asyncio
+from src.log.logger import Logger
+
+
+async def main():
+    logger = Logger()
+    egg_jump = Egg_Jump(logger)
+    await egg_jump.jump()
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+{% endhighlight %}
+
+
+![egg-jump2](/static/img/egg-inc/egg-jump2.png)
+
+# Step 11
+The next two steps are:
+- Get enough farm value and jump to Universe
+- Get soul eggs and prestige
+
+Let me skip 'Get enough farm value and jump to Universe' for now.
+
+
