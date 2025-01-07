@@ -904,3 +904,58 @@ The next two steps are:
 Let me skip 'Get enough farm value and jump to Universe' for now.
 
 
+'Prestige' is a very easy step. Create `prestige.py` under `prestige`.
+{% highlight python %}
+from src.interaction.mouse import Mouse
+from src.program.debug_class import Debug_Class
+from play.prestige.ui_position import (egg_pos, 
+                                       prestige_info_pos,
+                                       prestige_and_collect_pos, 
+                                       yes_button)
+
+
+class Prestige(Debug_Class):
+    def __init__(self, logger):
+        super().__init__(logger)
+        self._mouse = Mouse()
+
+    async def start_new_farm(self):
+        self.message("Open prestige menu.")
+        self._mouse.click_pos(egg_pos, 0.7)
+        self._mouse.click_pos(prestige_info_pos, 0.7)
+        self._mouse.click_pos(prestige_and_collect_pos, 0.7)
+        self.message("Confirm prestige.")
+        self._mouse.click_pos(yes_button, 0.7)
+{% endhighlight %}
+
+Add the following to `prestige/ui_position`:
+{% highlight python %}
+egg_pos = [38, 122]
+prestige_info_pos = [161, 482]
+prestige_and_collect_pos = [157, 500]
+yes_button = [194, 299]
+{% endhighlight %}
+
+
+Test.
+
+
+{% highlight python %}
+import asyncio
+from src.log.logger import Logger
+
+
+async def main():
+    logger = Logger()
+    prestige = Prestige(logger)
+    await prestige.start_new_farm()
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+{% endhighlight %}
+
+
+![fresh-farm](/static/img/egg-inc/fresh-farm.png)
+
+
