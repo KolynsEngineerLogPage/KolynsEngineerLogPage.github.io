@@ -31,9 +31,14 @@ buttons:
     image: /static/img/the-escapists3d/The_Escapists_3D-thumb.png
     alt: Page 5
     description: The Escapists 3D made by me using Unity
-    
+  
   - url: /page6/
-    image: /static/img/the-janitor/The_Janitor-thumb.png
+    image: /static/img/1-default/not-found.jpg
     alt: Page 6
-    description: Game Dev Class Project
+    description: My Softwares
+
+  - url: /page7/
+    image: /static/img/1-default/not-found.jpg
+    alt: Page 7
+    description: My Class Projects
 ---
