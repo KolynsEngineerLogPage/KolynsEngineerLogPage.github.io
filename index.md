@@ -10,7 +10,7 @@ buttons:
   - url: /egg-inc-main/
     image: /static/img/egg-inc/egg-inc.jpg
     alt: Egg Inc. Main
-    description: Egg Inc - Auto Prestige 
+    description: Egg Inc - Automation
 
   - url: /svz-main/
     image: /static/img/svz/svz.png

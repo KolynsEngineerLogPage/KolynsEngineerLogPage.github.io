@@ -25,10 +25,6 @@ Platform: MacOS
 Prerequisite: Basic Python
 
 
-## Preface
-iPhone Mirroring didn’t come to my attention until my friend mentioned it last month. I never imagined it could become the key to conquering iOS devices. All this time, I had been trying to find ways to play games on iOS with scripting, and iPhone Mirroring turned out to be the answer.
-
-
 ## Introduction
 Today I have randomly chosen from one of my favorite iOS games and decided to write a script for it, with iPhone Mirroring. It's called [Egg Inc.](https://egg-inc.fandom.com/wiki/Egg,_Inc.) A game where you raise chickens, the chickens lay eggs, and you make profits by shipping the eggs. My goal today will be writing a program specifically for [Prestige](https://egg-inc.fandom.com/wiki/Prestige). 
 
@@ -38,10 +34,10 @@ On iPhone mirroring, mouse clicks simulate taps on the iPhone. This is great bec
 
 
 ## Very Important
-⚠️ I have intentionally omitted many details that are not directly related. In the future, I <u>might</u> write another log about them. **Please do not be surprised if things don’t work well after following everything in this blog.** Also, please keep your expectations realistic— even after optimizations, its efficiency is still terrible compared to manual prestige.
+⚠️ This is **not a tutorial.** I have intentionally omitted many details that are not directly related. In the future, I <u>might</u> write another log about them. **Please do not be surprised if things don’t work after following everything in this blog.** Also, please don't have high expectations: even after optimizations, its efficiency is still terrible compared to manual prestige.
 
 ## Limitations
-That being said, **if you’re looking for a one-size-fits-all program, you might be out of luck, as this is highly experimental.** You’ll also need at least a basic understanding of programming to follow the materials presented in this article. To make matters worse, this is a personal log, not a tutorial, so I might not explain things as clearly as I could.
+That being said, **if you’re looking for a one-size-fits-all program, you might be out of luck, as this is highly experimental.** You’ll also need at least a basic understanding of programming to follow the materials presented in this article.∂
 
 
 On top of that, players have different prestige strategies. I will list mine here.
@@ -76,6 +72,9 @@ Next, I start a new Python project.
 
 # Step 2
 The next step is to confirm the window size and position so that it remains consistent every time I open it. It seems I can’t change the window size, which is fantastic because it means I won’t need to write a `window_rescaler.py` for it. I’ll simply place iPhone Mirroring in <u>the top-left corner of my Desktop</u>, to make sure that my clicks always occur in the expected positions.
+
+
+![top-left-corner](/static/img/egg-inc/top-left-corner.png)
 
 
 # Step 3
@@ -179,7 +178,7 @@ class Logger:
         self._content.append(line)
 
     def save_content(self):
-        os.makedirs('logs', exist_ok=True)
+        os.makedirs(logs_path, exist_ok=True)
         new_save_path = self.get_new_save_path()
         with open(new_save_path, 'w') as file:
             file.write("\n".join(self._content))
@@ -286,7 +285,7 @@ def get_window_with_title(title):
         return None
 
 
-def get_screen_of_chose_window(chosen_window):
+def get_screenshot_of_chosen_window(chosen_window):
     def run_mac():
         bounds = chosen_window.get('kCGWindowBounds')
         h = int(bounds.get('Height'))
@@ -341,7 +340,7 @@ and
 ![screenshot-test](/static/img/egg-inc/screenshot-test.png)
 
 
-Let me do just these 3 for now.
+Let me do just these three for now.
 
 
 # Step 5
@@ -422,7 +421,7 @@ if __name__ == '__main__':
 ![spawn-test](/static/img/egg-inc/spawn-test.png)
 
 
-I can even make this go on forever.
+I can even repeat this.
 {% highlight python %}
 async def spawn_continue(self, times=5, duration=2):
     self.message(f"Spawn {times} waves of chicken.")
@@ -615,7 +614,7 @@ from src.play.research.ui_position import (research_pos,
                                            drag_from,
                                            drag_to,
                                            exit_pos)
-∂
+
 
 class Research(Debug_Class):
     def __init__(self, window, logger):
@@ -691,6 +690,10 @@ That worked pretty well, but there is no need to process the entire image. Howev
 Next I will save the green button template. It's very small ➡️   ![button-template](/static/img/egg-inc/button-template.png)
 
 
+📍 Here you can get your own template by using a pixel art editor.
+
+---
+
 After we have the template, we can use it.
 {% highlight python %}
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -762,6 +765,21 @@ if __name__ == '__main__':
 {% endhighlight %}
 
 
+📍 Troubleshot: If you see error like `AttributeError: 'NoneType' object has no attribute 'shape'`. It's very likely that your project is missing the screenshot and template. 
+
+
+- Put this image ⬇️ under `research` and name it `research-test2.png`.
+
+
+![research-test2](/static/img/egg-inc/research-test2.png)
+
+
+- Put this image ⬇️ under `research` and name it `button-template`. (It's a 10 x 7 green image, very small.)
+
+
+![button-template](/static/img/egg-inc/button-template.png)
+
+
 Output:
 {% highlight shell %}
 [255, 225]
@@ -777,6 +795,7 @@ BTW, `match_position` actually finds all of them. The program only took the firs
 
 ![research-test3](/static/img/egg-inc/research-test3.png)
 
+---
 
 It's in a good shape. Next I can make it to do some upgrades.
 {% highlight python %}
@@ -800,7 +819,7 @@ Create a loop to make this process repeated.
 async def do_research(self, iterations=12, press_duration=2, check_wait=2):
     # go to the research menu
     self.message("Open research menu.")
-    self._mouse.click_pos(research_pos, 0.4, True)
+    self._mouse.click_pos(research_pos, 0.4)
 
     self.message(f"Leveling up, total iterations: {iterations}.")
     # level up researches
@@ -866,10 +885,10 @@ Create `egg_jump.py` under `egg_jump`.
 {% highlight python %}
 from src.interaction.mouse import Mouse
 from src.program.debug_class import Debug_Class
-from src.play.egg_jump.location.ui_position import (egg_pos, 
-                                                    upgrade_pos,
-                                                    yes_pos, 
-                                                    exit_pos)
+from src.play.egg_jump.ui_position import (egg_pos, 
+                                           upgrade_pos,
+                                           yes_pos, 
+                                           exit_pos)
 
 class Egg_Jump(Debug_Class):
     def __init__(self, logger):
@@ -1098,6 +1117,16 @@ Perform egg jump.
 --- Prestige run 0 ends. ---
 Time spent for this run : --- 692.892648935318 seconds ---
 {% endhighlight %}
+
+
+📍 I got this result using an optimized version. Yours is very likely to encounter problems. Some debugging suggestions: 
+1. check if during any step, the program did too many clicks.
+2. check if during any step, the program missed a click.
+3. check if the game has lost focus. If yes, you will have to regain focus. Hint: open a random menu and close it.
+
+<br>
+<br>
+If you liked this log, consider giving a Star to [this repository](https://github.com/cyberspatula/cyberspatula.github.io).
 
 
 <br>
