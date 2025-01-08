@@ -774,7 +774,7 @@ if __name__ == '__main__':
 ![research-test2](/static/img/egg-inc/research-test2.png)
 
 
-- Put this image ⬇️ under `research` and name it `button-template`. (It's a 10 x 7 green image, very small.)
+- Put this image ⬇️ under `research` and name it `button-template.png`. (It's a 10 x 7 green image, very small.)
 
 
 ![button-template](/static/img/egg-inc/button-template.png)
