@@ -32,13 +32,13 @@ buttons:
     alt: Page 5
     description: The Escapists 3D made by me using Unity
   
-  - url: /page6/
+  - url: /softwares-main/
     image: /static/img/1-default/not-found.jpg
-    alt: Page 6
+    alt: My Softwares
     description: My Softwares
 
-  - url: /page7/
+  - url: /school/
     image: /static/img/1-default/not-found.jpg
-    alt: Page 7
-    description: My Class Projects
+    alt: My School Projects
+    description: My School Projects
 ---

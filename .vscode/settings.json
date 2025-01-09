@@ -23,6 +23,7 @@
         "makedirs",
         "maxval",
         "ndim",
+        "nonogram",
         "numpy",
         "pachinko",
         "Phonoa",
@@ -38,6 +39,7 @@
         "skopt",
         "startswith",
         "staticmethod",
+        "talpia",
         "Tesseract",
         "XAPK",
         "Yukimura"
