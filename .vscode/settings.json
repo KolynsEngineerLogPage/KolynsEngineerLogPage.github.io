@@ -23,6 +23,7 @@
         "installables",
         "judgements",
         "Kolyn",
+        "kwargs",
         "makedirs",
         "maxval",
         "ndim",
