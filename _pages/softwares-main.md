@@ -7,4 +7,9 @@ buttons:
     image: /static/img/2-softwares/nonogram-solver/talpia.png
     alt: Talpia in Nonogram.
     description: Adding a 'draw' feature for my software Nonogram Solver.
+
+  - url: /software-cyber-spatula/
+    image: /static/img/1-default/not-found.jpg
+    alt: Creating a website with GitHub website and Jekyll.
+    description: Creating a website like Cyber Spatula. (GitHub Pages & Jekyll)
 ---
