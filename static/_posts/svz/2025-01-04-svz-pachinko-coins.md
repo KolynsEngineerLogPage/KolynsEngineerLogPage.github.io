@@ -350,9 +350,9 @@ def make_binary(cv2_img, threshold=127):
     grayscale = cv2.cvtColor(cv2_img, cv2.COLOR_BGR2GRAY)
 
     # Apply binary threshold
-    _, bw = cv2.threshold(grayscale, threshold, 255, cv2.THRESH_BINARY)
+    _, binary = cv2.threshold(grayscale, threshold, 255, cv2.THRESH_BINARY)
 
-    return bw
+    return binary
 {% endhighlight %}
 🤓 `make_binary` converts the given `cv2` image to binary, same idea as `load_binary` but this time we don't have to load the image.
 
