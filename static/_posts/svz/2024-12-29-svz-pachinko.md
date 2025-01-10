@@ -898,7 +898,10 @@ drag_to_y_min = 452
 
 
 To find these values, use mouse coordinate and find positions for these two marked dots. The bottom-right dot is outside the window.
+
+
 ![pachinko-9](/static/img/svz/pachinko-9.png)
+
 
 After you have found them, do some math to find the middle two. 
 {% highlight python %}

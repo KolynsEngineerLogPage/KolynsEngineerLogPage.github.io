@@ -350,9 +350,9 @@ def make_binary(cv2_img, threshold=127):
     grayscale = cv2.cvtColor(cv2_img, cv2.COLOR_BGR2GRAY)
 
     # Apply binary threshold
-    _, bw = cv2.threshold(grayscale, threshold, 255, cv2.THRESH_BINARY)
+    _, binary = cv2.threshold(grayscale, threshold, 255, cv2.THRESH_BINARY)
 
-    return bw
+    return binary
 {% endhighlight %}
 🤓 `make_binary` converts the given `cv2` image to binary, same idea as `load_binary` but this time we don't have to load the image.
 
@@ -429,13 +429,22 @@ After all the preparations, we can finally start DFS. Like a normal DFS, we pop 
 
 
 After the first iteration of `_dfs` on our example, we do get
+
+
 ![pachinko-8-enlarge-1_b](/static/img/svz/pachinko-8-enlarge-1_b.png)
 
 
 The rest of the iterations
+
+
 ![pachinko-8-enlarge-4_b](/static/img/svz/pachinko-8-enlarge-4_b.png)
+
+
 ![pachinko-8-enlarge-975_b](/static/img/svz/pachinko-8-enlarge-975_b.png)
+
+
 ![pachinko-8-enlarge-6_b](/static/img/svz/pachinko-8-enlarge-6_b.png)
+
 
 <br>
 We store them in a list and the next thing will be removing unnecessary white background from them. Let's continue from `extract_coin_amount`

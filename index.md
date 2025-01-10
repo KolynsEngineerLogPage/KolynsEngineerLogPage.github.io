@@ -10,7 +10,7 @@ buttons:
   - url: /egg-inc-main/
     image: /static/img/egg-inc/egg-inc.jpg
     alt: Egg Inc. Main
-    description: Egg Inc - Auto Prestige 
+    description: Egg Inc - Automation
 
   - url: /svz-main/
     image: /static/img/svz/svz.png
@@ -31,9 +31,14 @@ buttons:
     image: /static/img/the-escapists3d/The_Escapists_3D-thumb.png
     alt: Page 5
     description: The Escapists 3D made by me using Unity
-    
-  - url: /page6/
-    image: /static/img/the-janitor/The_Janitor-thumb.png
-    alt: Page 6
-    description: Game Dev Class Project
+  
+  - url: /softwares-main/
+    image: /static/img/1-default/not-found.jpg
+    alt: My Softwares
+    description: My Softwares
+
+  - url: /school/
+    image: /static/img/1-default/not-found.jpg
+    alt: My School Projects
+    description: My School Projects
 ---
