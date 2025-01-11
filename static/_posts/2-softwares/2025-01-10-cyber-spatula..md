@@ -83,7 +83,7 @@ You should see something like this
 Within this panel, you can enter commands and the computer will do some works based on the command you typed in. Now we will want to [clone a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository). This essentially means that you will download a folder from the internet. In this case, we want to clone [this repository](https://github.com/cyberspatula/cyberspatula.github.io.git) and we can achieve this through the terminal.
 
 
-In the terminal, type this and hit enter
+In the terminal, type this and hit enter on your keyboard
 {% highlight shell %}
 git clone https://github.com/cyberspatula/cyberspatula.github.io.git
 {% endhighlight %}
@@ -115,12 +115,12 @@ I have already filled `cyberspatula.github.io` with a lot of things. You should 
 You will have to type in several commands this time. If you are on Mac, you might need to do some extra works in order to use [Ruby](https://www.ruby-lang.org/en/). It's the programming language that [Jekyll](https://jekyllrb.com/) uses, and we will be using Jekyll to format our website.
 
 
-You should check if you already have Ruby. Type this command in the terminal and hit enter.
+You should check if you already have Ruby. Type this command in the terminal and hit enter on your keyboard.
 {% highlight shell %}
 ruby -v
 {% endhighlight %}
 
-
+<br>
 # Install Ruby
 On Windows, if you don't have Ruby, you should download it from [here](https://rubyinstaller.org/) and follow the instructions and you should be good.
 
@@ -128,7 +128,7 @@ On Windows, if you don't have Ruby, you should download it from [here](https://r
 On Mac, you are guaranteed to have Ruby. BUT, your Ruby version is likely to be old, like 2.6 something. We want it to be at least 3.0 above. This problem cannot be resolved by just updating Ruby because your MacOS is actually relying on it. One way to solve this is by using something called [chruby](https://github.com/postmodern/chruby). 
 
 
-1 . Install chruby via [Homebrew](https://brew.sh/). That means you should type the following in the terminal and hit enter.
+1 . Install chruby via [Homebrew](https://brew.sh/). That means you should type the following in the terminal and hit enter on your keyboard.
 {% highlight shell %}
 brew install chruby
 {% endhighlight %}
@@ -159,7 +159,7 @@ cd ruby-install
 sudo make install
 {% endhighlight %}
 
-5 . The next step could be a little difficult for you if you have never had programming experience before. In this step you will want to use a text editor like nano or vim. It's not important which one you choose. In this case I will choose vim. You can use them by enter the command and hit enter. This will open a text editor in terminal.
+5 . The next step could be a little difficult for you if you have never had programming experience before. In this step you will want to use a text editor like nano or vim. It's not important which one you choose. In this case I will choose vim. You can use them by enter the command and hit enter on your keyboard. This will open a text editor in terminal.
 {% highlight shell %}
 vim ~./zshrc
 {% endhighlight %}
@@ -176,14 +176,14 @@ source /usr/local/share/chruby/auto.sh
 {% endhighlight %}
 
 
-7 . After you are back in the terminal. Enter the following and hit enter.
+7 . After you are back in the terminal. Enter the following and hit enter on your keyboard.
 {% highlight shell %}
 source ~./zshrc
 {% endhighlight %}
 - Replace with `~./bashrc` if you are using bash shell.
 
 
-8 . Enter the following and hit enter.
+8 . Enter the following and hit enter on your keyboard.
 {% highlight shell %}
 ruby-install ruby 3.1.1
 {% endhighlight %}
@@ -203,7 +203,7 @@ You should see something like `ruby 3.1.1`. Be sure to perform online searches o
 
 ---
 
-Now, after you have installed Ruby. I want you to go back to `cyberspatula.github.io`. If you are lost where you are, you can do Open Folder again in vscode. Open the terminal again and enter this command and hit enter.
+Now, after you have installed Ruby. I want you to go back to `cyberspatula.github.io`. If you are lost where you are, you can do Open Folder again in vscode. Open the terminal again and enter this command and hit enter on your keyboard.
 {% highlight shell %}
 bundle install
 {% endhighlight %}
@@ -232,3 +232,41 @@ You can check whether it worked or not by typing `http://127.0.0.1:4000/` in a w
 
 
 # Step 3
+In the next step I will be teaching you how to start a fresh new Jekyll setup like the one use in Cyber Spatula. Then I will discuss what each component in Jekyll does, in the manner that assuming you have no programming knowledge.
+
+<br>
+# GitHub account
+Since we are going to host the web page on GitHub Pages, you are going to need a [GitHub account](https://github.com/). Register one if you don't have it. 
+
+
+1 . Connect git with your GitHub account. In terminal, set your Git username with
+{% highlight shell %}
+git config --global user.name "Username"
+{% endhighlight %}
+📍 Replace "Username" with your username!
+
+- Confirm the Git username has been set correctly.
+{% highlight shell %}
+git config --global user.name
+{% endhighlight %}
+
+- You should see your username being printed.
+{% highlight shell %}
+Username
+{% endhighlight %}
+
+2 . The other thing you will want to do is to set your Git email.
+{% highlight shell %}
+git config --global user.email "Your email"
+{% endhighlight %}
+
+- Confirm the Git email has been set correctly.
+{% highlight shell %}
+git config --global user.email
+{% endhighlight %}
+
+- You should see your email address being printed.
+{% highlight shell %}
+Your email
+{% endhighlight %}
+
