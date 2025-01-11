@@ -29,7 +29,13 @@ Hello, there. Ever wondered how to build a blogging website like the one you are
 ## The first thing
 This site uses GitHub Pages. You should be aware that GitHub Pages are mainly used for writing blogs or project wikis. These pages are static, meaning they display the same content to every user. If your goal is to build a dynamic page website (content change based on user actions or data retrieval from database), you will need to avoid using GitHub Pages. 
 
-## Use other tools as guidance
+If you already know how to use git and GitHub, you can jump to:
+- [Create a GitHub Pages repo](#create-a-github-pages-repo)
+
+If you don't have Ruby installed:
+- [Install Ruby](#install-ruby)
+
+## Use other tools for more guidance
 Let's face it, you are going to encounter many problems and so did I when I first started this project. That's why I highly recommend using AI tools like [ChatGPT](https://chatgpt.com/) to suggest possible fixes for you. In this article I will be teaching you what I know about GitHub websites. 
 
 ## Getting the website running
@@ -121,7 +127,8 @@ ruby -v
 {% endhighlight %}
 
 <br>
-# Install Ruby
+<h1 id="install-ruby">Install Ruby</h1>
+
 On Windows, if you don't have Ruby, you should download it from [here](https://rubyinstaller.org/) and follow the instructions and you should be good.
 
 
@@ -270,3 +277,10 @@ git config --global user.email
 Your email
 {% endhighlight %}
 
+3 . The next thing you will want to do is to set up GitHub Authentication. This step is a little complicated. I recommend you to watch and follow [this video](https://www.youtube.com/watch?v=ePCBuIQJAUc).
+
+---
+
+Now you have set up git and GitHub account, the next thing is to create your own repository. 
+
+<h1 id="create-a-github-pages-repo">Create a GitHub Pages repo</h1>
