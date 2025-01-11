@@ -112,6 +112,123 @@ Now check the files in `cyberspatula.github.io`, see if you can make sense what 
 I have already filled `cyberspatula.github.io` with a lot of things. You should be able to use it by **running a local server**. It essentially means that you will be able to open a website and your computer is going to be its server. Other people won't be able to see this website.
 
 
-You will have to type in several commands this time. If you are on Mac, you might need to do some extra works in order to use [ruby](https://www.ruby-lang.org/en/). It's the programming language that [Jekyll](https://jekyllrb.com/) uses, and we will be using Jekyll to format our website.
+You will have to type in several commands this time. If you are on Mac, you might need to do some extra works in order to use [Ruby](https://www.ruby-lang.org/en/). It's the programming language that [Jekyll](https://jekyllrb.com/) uses, and we will be using Jekyll to format our website.
 
 
+You should check if you already have Ruby. Type this command in the terminal and hit enter.
+{% highlight shell %}
+ruby -v
+{% endhighlight %}
+
+
+# Install Ruby
+On Windows, if you don't have Ruby, you should download it from [here](https://rubyinstaller.org/) and follow the instructions and you should be good.
+
+
+On Mac, you are guaranteed to have Ruby. BUT, your Ruby version is likely to be old, like 2.6 something. We want it to be at least 3.0 above. This problem cannot be resolved by just updating Ruby because your MacOS is actually relying on it. One way to solve this is by using something called [chruby](https://github.com/postmodern/chruby). 
+
+
+1 . Install chruby via [Homebrew](https://brew.sh/). That means you should type the following in the terminal and hit enter.
+{% highlight shell %}
+brew install chruby
+{% endhighlight %}
+
+2 . The other way to install it is via the source code. Try this way if the above didn't work. Clone this repository
+{% highlight shell %}
+git clone https://github.com/postmodern/chruby.git
+{% endhighlight %}
+- Go to the `chruby` folder by entering
+{% highlight shell %}
+cd chruby
+{% endhighlight %}
+
+- Run the installation script
+{% highlight shell %}
+sudo make install
+{% endhighlight %}
+
+3 . Install `ruby-install`. Again, it's possible to install this via Homebrew.
+{% highlight shell %}
+brew install ruby-install
+{% endhighlight %}
+
+4 . Or you can do it manually if the above didn't work.
+{% highlight shell %}
+git clone https://github.com/postmodern/ruby-install.git
+cd ruby-install
+sudo make install
+{% endhighlight %}
+
+5 . The next step could be a little difficult for you if you have never had programming experience before. In this step you will want to use a text editor like nano or vim. It's not important which one you choose. In this case I will choose vim. You can use them by enter the command and hit enter. This will open a text editor in terminal.
+{% highlight shell %}
+vim ~./zshrc
+{% endhighlight %}
+- Replace with nano if you want to use nano. Replace with `~./bashrc` if you are using bash shell.
+
+
+📍 **It's going to be a little tricky to use vim text editor.** First of all, you need to enter the insertion mode by typing `i` on your keyboard. Then you start typing in the editor. After you are done, hit `Esc` on your keyboard. Then enter `:wq` to save the changes and exit from vim.
+
+
+6 . Enter the following text via vim, then save and exit from it.
+{% highlight shell %}
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+{% endhighlight %}
+
+
+7 . After you are back in the terminal. Enter the following and hit enter.
+{% highlight shell %}
+source ~./zshrc
+{% endhighlight %}
+- Replace with `~./bashrc` if you are using bash shell.
+
+
+8 . Enter the following and hit enter.
+{% highlight shell %}
+ruby-install ruby 3.1.1
+{% endhighlight %}
+
+
+9 . Use chruby to switch your current ruby version to 3.1.1
+{% highlight shell %}
+chruby ruby-3.1.1
+{% endhighlight %}
+
+
+10 . Verify you have successfully switched the Ruby version
+{% highlight shell %}
+ruby -v
+{% endhighlight %}
+You should see something like `ruby 3.1.1`. Be sure to perform online searches or inquiry ChatGPT if you encounter any problems not covered here.
+
+---
+
+Now, after you have installed Ruby. I want you to go back to `cyberspatula.github.io`. If you are lost where you are, you can do Open Folder again in vscode. Open the terminal again and enter this command and hit enter.
+{% highlight shell %}
+bundle install
+{% endhighlight %}
+This installs all dependencies in `cyberspatula.github.io`. 
+
+
+Next, run this command to **start the local server**.
+{% highlight shell %}
+bundle exec jekyll serve
+{% endhighlight %}
+
+
+If the above one didn't work, try this instead
+{% highlight shell %}
+jekyll serve
+{% endhighlight %}
+
+
+You can check whether it worked or not by typing `http://127.0.0.1:4000/` in a web browser like Safari, Google Chrome...
+
+
+![cs](/static/img/2-softwares/cyber-spatula/cs.png)
+
+
+🎉 That wasn't so bad, huh?
+
+
+# Step 3
