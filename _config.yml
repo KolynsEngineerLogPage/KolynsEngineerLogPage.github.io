@@ -32,6 +32,7 @@ github_username: Kolyn090
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll
 
 # Exclude from processing.
 # The following items will not be processed, by default.
