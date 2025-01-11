@@ -37,3 +37,13 @@ Let's face it, you are going to encounter many problems and so did I when I firs
 In this tutorial I am going to assume you have no background knowledge regarding programming. So the first step will be <u>downloading an IDE</u> so that you can view the files better. IDE stands for Integrated Development Environment. It's a software that has tools needed for software development in one place. It's OK if you don't understand what I am saying. You'll do better once you try it out yourself. Different programmers might have different IDE preferences. I, for one, use [Visual Studio Code](https://code.visualstudio.com/) the most often. It is also currently what I'm using to write this article. 
 
 If you don't have a specific preference, go ahead and download [Visual Studio Code](https://code.visualstudio.com/).
+
+# Step 2
+After you have successfully install an IDE, open it. I will use vscode (Visual Studio Code) as example. 
+
+
+Here is the welcome page of vscode. This is Windows system, if you are using a different operating system like MacOS the page layout might be slightly different.
+
+
+![welcome-vscode](/static/img/2-softwares/cyber-spatula/welcome-vscode.png)
+
