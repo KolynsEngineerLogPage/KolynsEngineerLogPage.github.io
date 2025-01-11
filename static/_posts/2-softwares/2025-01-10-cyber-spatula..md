@@ -6,7 +6,7 @@ custom_class: custom-page-content
 date: 2025-01-10 17:00:00 -0500
 layout: post
 permalink: /software-cyber-spatula/
-title: Create a website like Cyber Spatula
+title: Create a website like Cyber Spatula, as an Absolute Beginner.
 ---
 
 
@@ -38,7 +38,8 @@ In this tutorial I am going to assume you have no background knowledge regarding
 
 If you don't have a specific preference, go ahead and download [Visual Studio Code](https://code.visualstudio.com/).
 
-# Step 2
+---
+
 After you have successfully install an IDE, open it. I will use vscode (Visual Studio Code) as example. 
 
 
@@ -46,4 +47,16 @@ Here is the welcome page of vscode. This is Windows system, if you are using a d
 
 
 ![welcome-vscode](/static/img/2-softwares/cyber-spatula/welcome-vscode.png)
+
+
+# Step 2
+Wouldn't it be so much better if you could get familiar with GitHub Pages while learning how to use an IDE?
+
+
+Now I will be using this project as an example. First, create a new folder somewhere in your computer. Next, you will want to open this folder in vscode.
+
+
+Open vscode, go to Settings, select File -> Open Folder... If you don't know how to do this, you can try the hot-key instead: `Ctrl + K, Ctrl + O`. That will also do Open Folder for you. Next, locate your folder and open it.
+
+---
 
