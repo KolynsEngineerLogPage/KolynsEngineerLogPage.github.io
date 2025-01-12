@@ -281,6 +281,50 @@ Your email
 
 ---
 
-Now you have set up git and GitHub account, the next thing is to create your own repository. 
+Now you have set up git and GitHub account, the next thing is to create your own repository (repo). A repository stores your code and assets remotely in GitHub's database. It can either be public or private. A public repository can be seen by all GitHub users while a private one can only be seen by yourself. Other developers can clone or [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) your public repositories.
 
 <h1 id="create-a-github-pages-repo">Create a GitHub Pages repo</h1>
+
+
+Assuming this is the first time you are creating a GitHub repository, go to GitHub and follow these steps.
+
+
+![github1](/static/img/2-softwares/cyber-spatula/github1.png)
+
+
+![github2](/static/img/2-softwares/cyber-spatula/github2.png)
+
+
+![github3](/static/img/2-softwares/cyber-spatula/github3.png)
+
+
+![github4](/static/img/2-softwares/cyber-spatula/github4.png)
+
+
+📍 Very important: the Repository name must be `yourusername.github.io`. Replace `yourusername` with your actual username and must be lowercased. In a normal repository you don't have to follow the format.
+
+
+You can also use [GitHub Organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/about-organizations) instead of your own account to create GitHub Pages. Naming follows the same format.
+
+<br>
+After you have created the repository, you will go to the page of your repository. Here I am using `cyberspatula.github.io` as example. Click 'Code'.
+
+
+![github5](/static/img/2-softwares/cyber-spatula/github5.png)
+
+
+Copy your repository URL.
+
+
+![github6](/static/img/2-softwares/cyber-spatula/github6.png)
+
+
+Now the next thing is something you have already done in step 2. Open vscode and type the following command in terminal and hit enter on your keyboard.
+
+
+{% highlight shell %}
+git clone https://github.com/cyberspatula/cyberspatula.github.io.git
+{% endhighlight %}
+Remember, you should use your own repository URL here.
+
+
