@@ -148,6 +148,7 @@ git clone https://github.com/postmodern/chruby.git
 {% highlight shell %}
 cd chruby
 {% endhighlight %}
+🤓 `cd` means change directory.
 
 - Run the installation script
 {% highlight shell %}
@@ -319,7 +320,7 @@ Copy your repository URL.
 ![github6](/static/img/2-softwares/cyber-spatula/github6.png)
 
 
-Now the next thing is something you have already done in step 2. Open vscode and type the following command in terminal and hit enter on your keyboard.
+Now the next thing is something you have already done in step 2. Create a new folder on your computer, open it on vscode, and type the following command in terminal and hit enter on your keyboard.
 
 
 {% highlight shell %}
@@ -327,4 +328,85 @@ git clone https://github.com/cyberspatula/cyberspatula.github.io.git
 {% endhighlight %}
 Remember, you should use your own repository URL here.
 
+---
+
+Used `cd` to change directory to your repository folder.
+{% highlight shell %}
+cd cyberspatula.github.io.git
+{% endhighlight %}
+This should be the last part of your repository URL.
+
+<br>
+Now enter the following in terminal and hit enter on your keyboard.
+{% highlight shell %}
+jekyll new . --force
+{% endhighlight %}
+
+
+You should see the following files generated. This is the bare-bone form of Jekyll.
+
+
+![repo](/static/img/2-softwares/cyber-spatula/repo.png)
+
+
+Next, run this command in terminal.
+
+
+{% highlight shell %}
+bundle install
+{% endhighlight %}
+
+You should see something like
+{% highlight shell %}
+Bundle complete! 7 Gemfile dependencies, 38 gems now installed.
+Use `bundle info [gemname]` to see where a bundled gem is installed.
+{% endhighlight %}
+
+---
+
+Next let's take a look at `_config.yml`, by default it looks like:
+{% highlight yaml %}
+title: Your awesome title
+email: your-email@example.com
+description: >- # this means to ignore newlines until "baseurl:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: jekyllrb
+github_username:  jekyll
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+{% endhighlight %}
+You can configure your site's settings in `_config.yml`. Each time you modify this file you will have to open the local server again to apply the changes. To close the local server, press `Ctrl + C` in terminal. To open the local server, type the following and hit enter on your keyboard.
+{% highlight shell %}
+bundle exec jekyll serve
+{% endhighlight %}
+
+
+Use this instead if the above didn't work.
+{% highlight shell %}
+jekyll serve
+{% endhighlight %}
+
+<br>
+Type `http://127.0.0.1:4000/` in a web browser and you will see a greeting page like this.
+
+
+![jekyll](/static/img/2-softwares/cyber-spatula/jekyll.png)
+
+
+Open post 'Welcome to Jekyll!'
+
+
+![jekyll2](/static/img/2-softwares/cyber-spatula/jekyll2.png)
+
+
+👨‍🔬 Observe `_posts/welcome-to-jekyll.markdown` in your repository folder. See if you can figure out its connections with this page by yourself.
+
+---
 
