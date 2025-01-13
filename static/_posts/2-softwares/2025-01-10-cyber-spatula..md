@@ -862,4 +862,30 @@ The next style is `body.egg`. Before we have been article used setting `theme: c
 Credits page is something good to have. There are times you might have borrowed other people's works and you will want to cite them in this page. The quick way to make this page is to copy it from `cyberspatula.github.io\_pages\credits.md` and modify it from there. 
 
 
-# Article banner
+# The articles
+The next thing I want to mention is the articles. I have been using the words articles, posts, logs interchangeably even though they don't have the same meaning, but I want to emphasize that they mean the same thing here. So, in an article, it has a banner and the text body. I have already taught you how to write an article and now let's look at its settings. Using this article for example.
+{% highlight css %}
+---
+author: Kolyn090
+banner: /static/img/1-default/not-found.jpg
+categories: Tutorial
+custom_class: custom-page-content
+date: 2025-01-10 17:00:00 -0500
+layout: post
+permalink: /software-cyber-spatula/
+title: Create a website like Cyber Spatula, as an Absolute Beginner.
+---
+{% endhighlight %}
+
+
+Immediately we see a new setting `banner`. This is the image located at the top of an article. Here, this is a 'Not Found' image. As you might have noticed, we have specified banner image twice. The first one is in category page and here again. <u>This means that these images can be different for the same article.</u> The downside of this design is that you have to type the image path twice if you intend to use the same image. You can also exclude banner image by not specifying one.
+
+
+Next we have a new setting called `custom_class`, but I want you to ignore it because I had some issue with css design and I couldn't get the banner align correctly so I came up with this fix. 
+
+
+Next we have `layout` and it is a `post`, that makes sense.
+
+
+The most important thing is the `permalink`. You can change this but remember you should add slashes around it, and I highly recommend the link should be relevant to the article. As mentioned before, the link of buttons in category pages should reference this `permalink`. 
+
