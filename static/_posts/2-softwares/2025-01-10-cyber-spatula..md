@@ -427,7 +427,7 @@ Now let's take a look at the files in the hands.
 
 - `_config.yml`: You can configure the site's settings in this file. Each time after you modify this file you need to re-host the local server to apply the changes.
 
-- `_posts`: The place where you store the jekyll posts (`.markdown`). By the way, you can use `.md` extension as well. It is **important** to note that all post names should start with a date. Like `2025-01-12-first-post.md`.
+- `_posts`: The place where you store the jekyll posts (`.markdown`). By the way, you can use `.md` extension as well. It is **important** to note that all post names should start with a date. Like `2025-01-12-first-post.md`. You can create folders inside `_posts` and store posts in them. Jekyll will automatically locate them.
 
 - `.jekyll-cache`: Cache folder for jekyll.
 
@@ -647,5 +647,39 @@ public static int addNumbers(int a, int b) {
 ```
 <br>
 
-These are the most common ways of writing I use in jekyll posts.
+These are the most common ways of writing I do in jekyll posts. But you can almost apply any [markdown rules](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) in jekyll. If you are happy with the current situation. You can skip Step 4.
+
+# Step 4
+To enable customizations, you will have to learn how to write [html](https://en.wikipedia.org/wiki/HTML) and [css](https://en.wikipedia.org/wiki/CSS). You can learn both of them through the help of ChatGPT. 
+
+
+There are some files you will have to add to your project. You can either copy the modified versions from `cyberspatula.github.io` or start out fresh by running this in terminal
+{% highlight shell %}
+jekyll new-theme minima
+{% endhighlight %}
+
+You should see a new folder called `minima`. This means that you are using [this theme](https://github.com/jekyll/minima). There are other themes you can use as well. Here is a [website](https://jekyllthemes.io/free) for jekyll themes.
+
+
+Now I will be proceeding using the modified version approach. You can still continue reading even if you have chosen to start out fresh. 
+
+
+<br>
+
+From `cyberspatula.github.io`, copy the following folders to your project.
+- _includes
+- _layouts
+- _sass
+- assets
+
+Next, create the following folders.
+- _pages
+- _plugins
+- static
+
+Now inside `static`, do
+- Move `_posts` to `static`
+- Create a folder `img`
+
+---
 
