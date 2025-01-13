@@ -427,7 +427,7 @@ Now let's take a look at the files in the hands.
 
 - `_config.yml`: You can configure the site's settings in this file. Each time after you modify this file you need to re-host the local server to apply the changes.
 
-- `_posts`: The place where you store the jekyll posts (`.markdown`). By the way, you can use `.md` extension as well.
+- `_posts`: The place where you store the jekyll posts (`.markdown`). By the way, you can use `.md` extension as well. It is **important** to note that all post names should start with a date. Like `2025-01-12-first-post.md`.
 
 - `.jekyll-cache`: Cache folder for jekyll.
 
@@ -476,4 +476,176 @@ categories: log
 permalink: /my-first-post/
 ---
 {% endhighlight %}
+
+
+Refresh the webpage, you should see your name next to the date and the website link becomes `127.0.0.1:4000/my-first-post/`. 
+
+
+# Edit jekyll posts
+There is a lot you can do in a jekyll post. The most basic text is like this one you are seeing right now. Change your post to and refresh the webpage.
+{% highlight markdown %}
+---
+author: Your Name
+layout: post
+title:  "Our first post"
+date:   2025-01-12 12:00:00 -0500
+categories: log
+permalink: /my-first-post/
+---
+
+
+This is basic text.
+{% endhighlight %}
+
+
+![jekyll4](/static/img/2-softwares/cyber-spatula/jekyll4.png)
+
+
+---
+
+You can also add titles by adding the pound sign before the text. Here is the effect:
+{% highlight markdown %}
+#### Big
+
+### Big
+
+## Big
+
+# Big
+{% endhighlight %}
+
+
+![jekyll5](/static/img/2-softwares/cyber-spatula/jekyll5.png)
+
+
+---
+
+You can also **bold** the text by adding double asterisk symbols around it.
+{% highlight markdown %}
+**Important**
+{% endhighlight %}
+
+
+![jekyll6](/static/img/2-softwares/cyber-spatula/jekyll6.png)
+
+
+---
+
+You can underscore the text by doing
+{% highlight markdown %}
+<u>This is underscored text.</u>
+{% endhighlight %}
+
+
+![jekyll7](/static/img/2-softwares/cyber-spatula/jekyll7.png)
+
+
+---
+
+You can add a new line by writing this between lines
+
+{% highlight markdown %}
+<br>
+{% endhighlight %}
+
+
+![jekyll8](/static/img/2-softwares/cyber-spatula/jekyll8.png)
+
+
+---
+
+You can list things out by doing
+
+{% highlight markdown %}
+Things to buy:
+- potato
+- milk
+- banana
+- avocado
+{% endhighlight %}
+
+
+![jekyll9](/static/img/2-softwares/cyber-spatula/jekyll9.png)
+
+
+Numbered version
+{% highlight markdown %}
+Things to prepare in order:
+1. potato
+2. milk
+3. banana
+4. avocado
+{% endhighlight %}
+
+Alphabetic version
+{% highlight markdown %}
+Which is the best among them?
+a. potato
+b. milk
+c. banana
+d. avocado
+{% endhighlight %}
+
+However, sometimes I prefer this instead when the layout is broken.
+{% highlight markdown %}
+Things to prepare in order:
+1 . potato
+2 . milk
+3 . banana
+4 . avocado
+{% endhighlight %}
+
+
+---
+
+
+You can also add hyperlinks by doing
+
+{% highlight markdown %}
+[Visit my blogging website](https://cyberspatula.github.io)
+{% endhighlight %}
+
+
+You can also add link to your posts
+{% highlight markdown %}
+[See my post](/my-first-post/)
+{% endhighlight %}
+
+
+You can also add link to assets in this project. Make sure the file exists in the path.
+{% highlight markdown %}
+![Red Bean Soup!](/static/img/sweet-red-bean-soup.png)
+{% endhighlight %}
+
+---
+
+You can add break lines by doing
+
+{% highlight markdown %}
+---
+{% endhighlight %}
+
+---
+
+For programmers,
+
+Use backtick to indicate code.
+{% highlight markdown %}
+`int foo = 0`
+{% endhighlight %}
+
+
+Add block of code
+```
+{% raw %}
+{% highlight java %}
+public static int addNumbers(int a, int b) {
+    return a + b;
+}
+{% endhighlight %}
+{% endraw %}
+```
+<br>
+
+These are the most common ways of writing I use in jekyll posts.
 

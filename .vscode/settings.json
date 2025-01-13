@@ -16,6 +16,7 @@
         "dirpath",
         "dtype",
         "elif",
+        "endraw",
         "fedimser",
         "fnmatch",
         "gemname",
