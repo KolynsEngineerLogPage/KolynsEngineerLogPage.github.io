@@ -664,6 +664,12 @@ You should see a new folder called `minima`. This means that you are using [this
 Now I will be proceeding using the modified version approach. You can still continue reading even if you have chosen to start out fresh, but note that if you hear any file you don't have that means it's in `cyberspatula.github.io`.
 
 
+In case you didn't follow Step 2, here is the repository.
+{% highlight shell %}
+git clone https://github.com/cyberspatula/cyberspatula.github.io.git
+{% endhighlight %}
+
+
 <br>
 
 From `cyberspatula.github.io`, copy the following folders to your project.
@@ -680,6 +686,10 @@ Next, create the following folders.
 Now inside `static`, do
 - Move `_posts` to `static`
 - Create a folder `img`
+
+
+![folder-structure](/static/img/2-softwares/cyber-spatula/folder-structure.png)
+
 
 ---
 
@@ -702,3 +712,154 @@ After you have done above, our project structure should look very similar. Let's
 
 ---
 
+You can design your site in any way you wish it to be. In Cyber Spatula, the navigation and layout is designed to be simple for blogging. 
+
+
+In the homepage, readers can select the category which they might be interested in. 
+
+
+![cs](/static/img/2-softwares/cyber-spatula/cs.png)
+
+
+Then a list of articles within the selected category will be displayed.
+
+
+![svz](/static/img/2-softwares/cyber-spatula/svz.png)
+
+
+Finally, the article.
+
+
+![post](/static/img/2-softwares/cyber-spatula/post.png)
+
+
+
+<br>
+If you want to use the same layout as Cyber Spatula, you might be wondering how to add new categories, change the background, add banners for the articles...
+
+---
+
+# Homepage
+As we have said before, `index.markdown` is the home page of your site. If you observe this file in `cyberspatula.github.io`, you will find out that its layout is very simple and indeed resembles the homepage.
+{% highlight markdown %}
+ ---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: selector
+title: Kolyn090's Dev Log
+header: Gaming, Automation, Computer Graphics, and Machine Learning
+permalink: /
+buttons:
+  - url: /egg-inc-main/
+    image: /static/img/egg-inc/egg-inc.jpg
+    alt: Egg Inc. Main
+    description: Egg Inc - Automation
+
+  - url: /svz-main/
+    image: /static/img/svz/svz.png
+    alt: Samurai VS Zombies Main
+    description: SvZ Defense with ML
+
+  - url: /pvz2-main/
+    image: /static/img/pvz2/pvz2-main-menu.png
+    alt: Use AI to beat PvZ2
+    description: AI PvZ2
+
+  - url: /battle-cats-main/
+    image: /static/img/battle-cats/The_Battle_Cats-title.jpg
+    alt: The Battle Cats Main
+    description: AFK The Battle Cats
+
+  - url: /page5/
+    image: /static/img/the-escapists3d/The_Escapists_3D-thumb.png
+    alt: Page 5
+    description: The Escapists 3D made by me using Unity
+  
+  - url: /softwares-main/
+    image: /static/img/1-default/not-found.jpg
+    alt: My Softwares
+    description: My Softwares
+
+  - url: /school/
+    image: /static/img/1-default/not-found.jpg
+    alt: My School Projects
+    description: My School Projects
+---
+{% endhighlight %}
+
+
+The `selector` layout is telling the program that we are using the template page with a scrollable list of buttons with image. To use this template, you will also have to specify the buttons, which are the categories we just discussed earlier.
+
+
+For a button, you will need to include its `url`, this should be the same as the article's `permalink`. You will also need an `image`, `alt` in the case cannot read image, and `description` for the category.
+
+# Category page
+So where do `/egg-inc-main/`, `/svz-main/`... exist? The answer is `_pages`. If you open it, you will find some markdown files ending with main. Open one of them.
+
+
+{% highlight markdown %}
+---
+layout: selector
+permalink: /battle-cats-main/
+title: The Battle Cats
+theme: cat
+buttons:
+  - url: /battle-cats-afk/
+    image: /static/img/battle-cats/accessibility-afk-thumb.jpg
+    alt: The Battle Cats AFK Farm using iOS Accessibility feature.
+    description: AFK Farm with iOS Accessibility feature. No programming required!
+categories: Game Tutorial
+---
+{% endhighlight %}
+
+
+Here we can see this page has a very similar structure as the homepage. With the exception of a new setting called `theme`. This controls the page's background. BTW, these settings can be completely customized in jekyll. For example, I customized `theme` and `buttons` myself. If you don't specify `theme`, the program will use the default theme for this page.
+
+
+It's also quite simple to make your own theme as well. To do so, go to `assets/css/background.css`. You should see
+{% highlight css %}
+body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-image: 
+        url('/static/img/1-default/soybean.png'),
+        url('/static/img/1-default/soybean.png');
+    background-color: #cc9b6d;
+    background-size: 100px 100px, 100px 100px;
+    background-repeat: repeat, repeat;
+    background-position:  0 0, 50px 50px;
+    background-blend-mode: overlay, overlay;
+    animation: movePattern 10s linear infinite;
+}
+
+body.egg {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-image: 
+        url('/static/img/egg-inc/egg.png');
+    background-color: #cc62d6;
+    background-size: 100px 100px;
+    background-repeat: repeat;
+    background-position:  0 0;
+    background-blend-mode: overlay;
+    animation: movePattern-single 20s linear infinite;
+}
+
+...
+{% endhighlight %}
+
+
+The the first style is the default theme (background) called `body`. It has many attributes such as `position`, `margin`... but it's only recommended to modify `background-image`, `background-color`, `background-size`, `background-repeat`, `background-position`, `background-blend-mode`, `animation`. You can try to modify them and see what happens. Things usually needs some trial-and-errors in order to get working. BTW, I hope you agree with me that it's pretty smart to paint soybean with red color to make red beans here...
+
+
+The next style is `body.egg`. Before we have been article used setting `theme: cat`, so it's straightforward that we can use this theme with `theme: egg`. Basically, if you want to create more themes, just do `body.theme`. Remember you can inquiry ChatGPT if you want to do something but don't know where to start it.
+
+
+# Credits page
+Credits page is something good to have. There are times you might have borrowed other people's works and you will want to cite them in this page. The quick way to make this page is to copy it from `cyberspatula.github.io\_pages\credits.md` and modify it from there. 
+
+
+# Article banner
