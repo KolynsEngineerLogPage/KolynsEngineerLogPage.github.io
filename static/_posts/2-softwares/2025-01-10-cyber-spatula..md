@@ -921,3 +921,34 @@ The effect:
 
 
 # Step 5
+After you have built the webpage, you will want to maintain it. Since we are using GitHub Pages, the site is automatically compiled and hosted by GitHub. This means that if you open a browser and search `https://<your-username>.github.io`, you should see your page. 
+
+However, if you have never used GitHub before, you might not know how to maintain your project. It's not going to be just adding things to it. You will need to know how to use [git](https://git-scm.com/)!
+
+
+After you have added something, you will want to save the current progress. You can achieve this by using git. Check out the git commands at the [git documentation](https://git-scm.com/docs), specifically `git add`, `git commit`, and `git push`. 
+
+
+<u>Each time you push some changes in a GitHub Pages project, [GitHub Actions](https://github.com/features/actions) will perform checks on them. If every check passes, it will be updated in the GitHub Pages.</u> This means that you can see the changes in `https://<your-username>.github.io`. 
+
+
+If you want to configure a custom domain for your site, you can follow [this article by GitHub](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages). I have not done this yet so I can't offer more help. In the future I will update this article if I made any progress with that.
+
+
+Alright, that was the end of this tutorial. I hope you have built a jekyll website with ease!
+
+
+<br>
+<br>
+If you liked this log, consider giving a Star to [this repository](https://github.com/cyberspatula/cyberspatula.github.io).
+
+
+<br>
+<br>
+🍯 Happy Coding 🍯
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
