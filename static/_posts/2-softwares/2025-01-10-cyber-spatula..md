@@ -687,6 +687,8 @@ Now inside `static`, do
 - Move `_posts` to `static`
 - Create a folder `img`
 
+Lastly, copy `_config.yml` into your project.
+
 
 ![folder-structure](/static/img/2-softwares/cyber-spatula/folder-structure.png)
 
@@ -864,7 +866,7 @@ Credits page is something good to have. There are times you might have borrowed 
 
 # The articles
 The next thing I want to mention is the articles. I have been using the words articles, posts, logs interchangeably even though they don't have the same meaning, but I want to emphasize that they mean the same thing here. So, in an article, it has a banner and the text body. I have already taught you how to write an article and now let's look at its settings. Using this article for example.
-{% highlight css %}
+{% highlight markdown %}
 ---
 author: Kolyn090
 banner: /static/img/1-default/not-found.jpg
@@ -889,3 +891,33 @@ Next we have `layout` and it is a `post`, that makes sense.
 
 The most important thing is the `permalink`. You can change this but remember you should add slashes around it, and I highly recommend the link should be relevant to the article. As mentioned before, the link of buttons in category pages should reference this `permalink`. 
 
+
+# The Logo
+To change the logo, go to `_includes/header.html` and replace `src` to your image's path.
+{% highlight markdown %}
+<img src="/static/img/1-default/cyber-spatula.svg" alt="{{ site.title }}" class="site-logo">
+{% endhighlight %}
+
+# Colored text
+
+The last thing I want to cover is colored text. Even though I barely use them, I think some of you might want this feature. Go ahead and copy `colorize.rb` under `_plugins` to your `_plugins` folder. There you have colored text feature. Here is an example on how to use it.
+
+```
+{% raw %}
+{% highlight ruby %}
+{{ "This text is red" | colorize: "red" }}
+{% endhighlight %}
+{% endraw %}
+```
+
+The effect:
+
+
+{{ "This text is red" | colorize: "red" }}
+
+
+<br>
+🎉 That should be covering most about how to build a website like Cyber Spatula, as of 1/13/2025. Try to keep exploring the files and see what you can do with them. You can send an [issue ticket](https://github.com/cyberspatula/cyberspatula.github.io/issues) to ask me if you have any doubts about this step.
+
+
+# Step 5
