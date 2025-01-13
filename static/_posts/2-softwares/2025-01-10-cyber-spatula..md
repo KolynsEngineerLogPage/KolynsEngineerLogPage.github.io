@@ -661,7 +661,7 @@ jekyll new-theme minima
 You should see a new folder called `minima`. This means that you are using [this theme](https://github.com/jekyll/minima). There are other themes you can use as well. Here is a [website](https://jekyllthemes.io/free) for jekyll themes.
 
 
-Now I will be proceeding using the modified version approach. You can still continue reading even if you have chosen to start out fresh. 
+Now I will be proceeding using the modified version approach. You can still continue reading even if you have chosen to start out fresh, but note that if you hear any file you don't have that means it's in `cyberspatula.github.io`.
 
 
 <br>
@@ -680,6 +680,25 @@ Next, create the following folders.
 Now inside `static`, do
 - Move `_posts` to `static`
 - Create a folder `img`
+
+---
+
+After you have done above, our project structure should look very similar. Let's take a look at their purposes before going any further.
+
+
+- _includes: Contains page components of the site. The most important files are `footer.html`, `head.html`, and `header.html`.
+- _layouts: Contains format for pages. You can create template pages and assign them to your posts.
+- _sass: Contains the theme files from jekyll. Normally you don't modify files in this folder unless you want to change the default theme such as font and text color.
+- assets: Currently contains a folder `css` that has all styles of the site pages. You can try to write your own if you know how. To apply them you need to add them to the html tags, like
+{% highlight html %}
+<div class="your-style">
+  ...
+</div>
+{% endhighlight %}
+
+- _pages: Contains all specialized markdown pages for your posts.
+- _plugins: Contains all customized plugins for jekyll, typically written with Ruby.
+- static: You can put your assets here. Such as `img` for images.
 
 ---
 
