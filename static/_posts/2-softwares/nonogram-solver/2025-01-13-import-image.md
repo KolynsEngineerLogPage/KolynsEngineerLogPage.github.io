@@ -100,3 +100,31 @@ top_matrix_region = [385, 460, 1370, 760]
 bottom_matrix_region = [60, 780, 380, 1770]
 {% endhighlight %}
 
+---
+
+Go to `src/image_recognition/main.py`, find these two lines (should be close to the top in `get_two_vector_matrices()`)
+{% highlight python %}
+screenshot = Screenshot("QuickTime Player").image
+# screenshot = cv2.imread('test/screenshot/quicktime_screenshot.png')
+{% endhighlight %}
+
+Change to
+{% highlight python %}
+# screenshot = Screenshot("QuickTime Player").image
+screenshot = cv2.imread('test/screenshot/quicktime_screenshot.png')
+{% endhighlight %}
+
+
+Currently the program will not attempt to take screenshot from 'QuickTime Player' but reading a local screenshot. To find the specified image, go to `src/image_recognition` find `/test/screenshot/quicktime_screenshot.png`. You will find that it's the one shown above from Picture Cross. You can add more screenshots under `screenshot` folder. Change the image path so that `cv2` will read your screenshot.
+
+
+Or it's perfectly fine to use the current setting for testing. Run the application and click the 'Experimental' button. The program will attempt to load the puzzle and it could take some time to finish. After it has finished running. Try to fix the missing digits. The program currently isn't perfect and it tends to create errors, especially for the bottom matrix. 
+
+
+Using the default setting, after the program solves the puzzle, you would get
+
+
+![default-setting](/static/img/2-softwares/nonogram-solver/default-setting.png)
+
+
+# Step 3
