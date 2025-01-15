@@ -156,3 +156,97 @@ bottom_matrix_region = [38, 131, 131, 450]
 
 Now go ahead and run Experimental again.
 
+# Step 3
+Now I hope you have an idea about how to use Nonogram Solver. Next I will be teaching you how to incorporate QuickTime Player (MacOS) with this app. 
+
+---
+
+
+📍 Screenshot only currently works on iOS & Mac for now.
+
+
+Before you try this step, make sure you have:
+1. A Mac that can run Nonogram Solver
+2. An iPad / iPhone
+3. A USB cable that can connect Mac to your iPad / iPhone
+4. Your iPad / iPhone has Nonogram game (such as Picture Cross)
+
+P.S. You don't need the cable if you are using iPhone Mirroring and iPhone.
+
+---
+
+Remember, image recognition is all about the **images**. In this case it's the screenshots. Therefore, you can get screenshots of Nonogram puzzles from **any window**. It's not limited to QuickTime Player. There are many other ways to do this: web browser, application, iPhone Mirroring... I am just showing a way to extend the program's usage to other devices. 
+
+---
+
+Now let's get started.
+
+
+1 . Go to `main.py`, find `screenshot` and modify it.
+{% highlight python %}
+screenshot = Screenshot("QuickTime Player").image
+# screenshot = cv2.imread(script_dir + '/test/screenshot/quicktime_screenshot.png')
+{% endhighlight %}
+
+
+2 . Before we run the program, we must first set up QuickTime Player. Open QuickTime Player. In the Docker, hover over QuickTime Player. You should see 'New Movie Recording', select it.
+
+
+![qtp](/static/img/2-softwares/nonogram-solver/qtp.png)
+
+
+3 . Connect your iPad to Mac using USB. Trust your Mac on iPad. 
+
+4 . Select your iPad / iPhone in Movie Recording.
+
+
+![movie-recording](/static/img/2-softwares/nonogram-solver/movie-recording.png)
+
+
+
+5 . Now your QuickTime Player should be projecting your iPad / iPhone in real time. Open a Nonogram game. Here I have chosen Picture Cross.
+
+
+![ipad-nonogram](/static/img/2-softwares/nonogram-solver/ipad-nonogram.png)
+
+
+6 . Go to `screenshot.py`, run that script. **It's extremely important to make sure you don't have any window above QuickTime Player.** You should find a new screenshot named `quicktime.png` under `test/screenshot` folder. 
+
+
+![quicktime](/static/img/2-softwares/nonogram-solver/quicktime.png)
+
+
+7 . Input this screenshot to an art editor, find the bounding boxes of the two grids, as described in Step 2. Modify `ui_position.py`. Don't modify the QuickTime window size after you have found those values.
+
+8 . Open Nonogram Solver and click 'Experimental'.
+
+
+![import-puzzle](/static/img/2-softwares/nonogram-solver/import-puzzle.png)
+
+
+It's working! Okay, I admit it's not working really well in this case. That's why I will be improving it. For now let's manually adjust the grids and run the program.
+
+
+![final](/static/img/2-softwares/nonogram-solver/final.png)
+
+
+<br>
+If you are using iPhone Mirroring or any other windows, the logic is the same but you will need to know the name of your window. Change this line in `main.py` to the name of your window.
+{% highlight python %}
+screenshot = Screenshot("QuickTime Player").image
+{% endhighlight %}
+
+🤓 BTW, some common names are: "Safari" for the Safari browser. "iPhone Mirroring" for iPhone Mirroring. If you have other kinds of window, go to `screenshot.py`, in `get_window_bounds()`, Change the loop like so
+{% highlight python %}
+for window in window_list:
+    print(window['kCGWindowOwnerName'])
+    ...
+{% endhighlight %}
+
+Now the program will print all active windows' name.
+
+
+🎉 Have fun with this!
+
+
+# Step 4
