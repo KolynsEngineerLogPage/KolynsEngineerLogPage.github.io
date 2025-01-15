@@ -250,3 +250,65 @@ Now the program will print all active windows' name.
 
 
 # Step 4
+Next I will be explaining the code intuition behind finding Nonogram puzzles from screenshots. First of all, we have already discussed that we only care about the two grids of numbers.
+
+
+![puzzle-nonograms2](/static/img/2-softwares/nonogram-solver/puzzle-nonograms2.png)
+
+
+1 . Since we have manually set the bounding boxes. We can simplify the screenshot to
+
+
+![puzzle-nonograms_top](/static/img/2-softwares/nonogram-solver/puzzle-nonograms_top.png)
+
+
+![puzzle-nonograms_bottom](/static/img/2-softwares/nonogram-solver/puzzle-nonograms_bottom.png)
+
+
+2 . Processing binary images (black-and-white) is always preferred in a situation like this one. Let's do that.
+
+![cols_binary1](/static/img/2-softwares/nonogram-solver/cols_binary1.png)
+
+
+![rows_binary1](/static/img/2-softwares/nonogram-solver/rows_binary1.png)
+
+
+Here is the result came from `Binarizer`. Its threshold might have been set too low so digits like 6 and 8 are not looking great. You can tune this value if you like.
+
+
+Also, here we have a nice example. If we were using the screenshot from Picture Cross, we might get some residual lines (unwanted things), to demonstrate:
+
+![cols_binary](/static/img/2-softwares/nonogram-solver/cols_binary.png)
+
+
+![rows_binary](/static/img/2-softwares/nonogram-solver/rows_binary.png)
+
+
+If it's not obvious to you have painted them red.
+
+
+![cols_binary-red](/static/img/2-softwares/nonogram-solver/cols_binary-red.png)
+
+
+![rows_binary-red](/static/img/2-softwares/nonogram-solver/rows_binary-red.png)
+
+
+Here I am showing the result after I have attempted removing the residual lines. 
+
+
+3 . Now the residual lines are within an acceptable range. To further enhance our image, we need to trim out unnecessary regions. One way I came up with is to determine blob sizes. If you are confused about what is a blob, check out the first half of [this post](/svz-pachinko-coins/).
+
+
+The idea is to consider only blobs larger than a certain size. In our case, we chose the value to be 100. Also, the blob size must be above certain height and certain width. For example, all blue blobs in the following image. (This is alternatively removing residual lines.)
+
+
+![rows_binary-marked](/static/img/2-softwares/nonogram-solver/rows_binary-marked.png)
+
+
+We can obtain information about the positions of the
+- black pixel closest to the top
+- black pixel closest to the left
+- black pixel closest to the bottom
+- black pixel closest to the right
+
+
