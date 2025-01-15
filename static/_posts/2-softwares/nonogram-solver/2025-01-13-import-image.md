@@ -28,21 +28,21 @@ Prerequisite: Basic Python
 Nonogram Solver currently supports solving Nonogram puzzles, importing puzzles, and exporting puzzles. **Most importantly, importing puzzles from images.** Today I will be teaching you how to import puzzle from image in Nonogram Solver.
 
 
-## Table of Contents
-- Installation
-- How to import from image
-- How to import for Picture Cross via MacOS QuickTime Player
-- Code intuition
+<h2 id="top">Table of Contents</h2>
+- [Installation](#step-1)
+- [How to import from image](#step-2)
+- [How to import for Picture Cross via MacOS QuickTime Player](#step-3)
+- [Code intuition](#step-4)
 
 
-# Step 1
+<h1 id="step-1">Step 1</h1>
 Clone this project to your computer.
 {% highlight shell %}
 git clone https://github.com/Kolyn090/nonogram.git
 {% endhighlight %}
 
 
-# Step 2
+<h1 id="step-2">Step 2</h1>
 To open the application, go to `src/ui/main.py` and run
 {% highlight shell %}
 python main.py
@@ -156,7 +156,10 @@ bottom_matrix_region = [38, 131, 131, 450]
 
 Now go ahead and run Experimental again.
 
-# Step 3
+<br>
+[[Go to top]](#top)
+
+<h1 id="step-3">Step 3</h1>
 Now I hope you have an idea about how to use Nonogram Solver. Next I will be teaching you how to incorporate QuickTime Player (MacOS) with this app. 
 
 ---
@@ -248,8 +251,10 @@ Now the program will print all active windows' name.
 
 🎉 Have fun with this!
 
+<br>
+[[Go to top]](#top)
 
-# Step 4
+<h1 id="step-4">Step 4</h1>
 Next I will be explaining the code intuition behind finding Nonogram puzzles from screenshots. First of all, we have already discussed that we only care about the two grids of numbers.
 
 
@@ -365,6 +370,9 @@ I have painted the background with gray so that you can see what I mean by trimm
 
 <br>
 That's all about how the program finds a Nonogram puzzle from a screenshot. I know it's not very efficient nor accurate. I might try to make updates about this in the future. 
+
+<br>
+[[Go to top]](#top)
 
 <br>
 <br>
