@@ -312,3 +312,71 @@ We can obtain information about the positions of the
 - black pixel closest to the right
 
 
+![rows_binary_trimmed](/static/img/2-softwares/nonogram-solver/rows_binary_trimmed.png)
+
+
+I have painted the background with gray so that you can see what I mean by trimming out unnecessary regions.
+
+
+4 . By this point, we can already make a program to determine the dimension of the grid. The idea is to draw a bounding box around every valid blob (blue blobs). Then determine whether a blob is likely to be in an existing row / column or a new row / column. After we perform this step to all blobs, we should get a grid. To demonstrate.
+
+
+![rows_binary_grid](/static/img/2-softwares/nonogram-solver/rows_binary_grid.png)
+
+
+🤓 It's literally just all these for two integers.
+
+
+5 . The next step is easier. We want to extend the bounding box of the image so that the numbers are not not the edges. Since we know the positions of all blobs, we can calculate the average gaps between them as well. After we get the gap values, extend the image by gap / 2.
+
+
+![rows_binary_extended](/static/img/2-softwares/nonogram-solver/rows_binary_extended.png)
+
+
+6 . Now hopefully, we can cut the image into pieces nicely, like cutting a paper. 
+
+
+![rows_binary_divided](/static/img/2-softwares/nonogram-solver/rows_binary_divided.png)
+
+
+7 . By far we have greatly simplify the job for digit recognizer. Feed each piece to it and in the end return a 2D list with the numbers. Then we convert this list into a `Description` (form a puzzle).
+{% highlight python %}
+[
+    [3],
+    [3],
+    [1, 1, 1],
+    [2, 1, 3, 1, 2],
+    [3],
+    [4, 3, 5],
+    [1, 1, 3, 3, 1],
+    [4, 3, 5],
+    [4, 5, 4],
+    [2, 5 ,3],
+    [2, 3, 3, 1],
+    [2, 2, 2, 1],
+    [2, 3, 3, 1],
+    [2, 7, 1],
+    [4, 5, 4]
+]
+{% endhighlight %}
+
+📍 What do you think might happen if we had a number above 9?
+
+
+<br>
+That's all about how the program finds a Nonogram puzzle from a screenshot. I know it's not very efficient nor accurate. I might try to make updates about this in the future. 
+
+<br>
+<br>
+If you liked this tutorial, consider giving a Star to [this repository](https://github.com/cyberspatula/cyberspatula.github.io).
+
+
+<br>
+<br>
+🍯 Happy Coding 🍯
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
