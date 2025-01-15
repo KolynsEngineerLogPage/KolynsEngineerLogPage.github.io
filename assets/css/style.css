@@ -16,7 +16,7 @@
 .button-image {
     width: 100%;
     height: auto;
-    border: 0px solid #ccc;
+    border: 5px solid #dddddd;
     border-radius: 8px;
     display: block;
 }
@@ -25,9 +25,9 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: -10px;
     height: 20%; /* Overlay covers the bottom half */
-    background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
+    background: rgba(222, 222, 222, 0.6); /* Semi-transparent white */
     display: flex;
     align-items: center;
     justify-content: center;
