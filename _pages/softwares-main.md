@@ -14,7 +14,7 @@ buttons:
     description: Creating a website like Cyber Spatula. (GitHub Pages & Jekyll)
 
   - url: /software-nonogram-solver-import-image/
-    image: /static/img/2-softwares/nonogram-solver/talpia.png
+    image: /static/img/2-softwares/nonogram-solver/import-from-image-thumb.png
     alt: Talpia in Nonogram.
     description: Import puzzle from image in Nonogram Solver.
 ---

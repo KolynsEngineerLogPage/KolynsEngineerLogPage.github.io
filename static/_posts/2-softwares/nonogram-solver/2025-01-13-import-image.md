@@ -1,6 +1,6 @@
 ---
 author: Kolyn090
-banner: /static/img/2-softwares/nonogram-solver/talpia.png
+banner: /static/img/2-softwares/nonogram-solver/import-from-image-thumb.png
 categories: Tutorial
 custom_class: custom-page-content
 date: 2025-01-13 20:00:00 -0500
