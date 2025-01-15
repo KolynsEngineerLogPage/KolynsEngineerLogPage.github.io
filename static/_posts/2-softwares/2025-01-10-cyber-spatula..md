@@ -35,11 +35,22 @@ If you already know how to use git and GitHub, you can jump to:
 If you don't have Ruby installed:
 - [Install Ruby](#install-ruby)
 
+<h2 id="top">Table of Contents</h2>
+- [Download an IDE](#step-1)
+- [Clone this GitHub repo](#step-2)
+- [Install Ruby](#install-ruby)
+- [Running jekyll locally](#run-local)
+- [Configure GitHub with Git](#github-account)
+- [Create a GitHub Pages repo](#create-a-github-pages-repo)
+- [Edit jekyll posts](#edit-jekyll-posts)
+- [Using Cyber Spatula jekyll customization](#step-4)
+- [Maintain your project with Git](#step-5)
+
 ## Use other tools for more guidance
 Let's face it, you are going to encounter many problems and so did I when I first started this project. That's why I highly recommend using AI tools like [ChatGPT](https://chatgpt.com/) to suggest possible fixes for you. In this article I will be teaching you what I know about GitHub websites. 
 
 ## Getting the website running
-# Step 1
+<h1 id="step-1">Step 1</h1>
 In this tutorial I am going to assume you have no background knowledge regarding programming. So the first step will be <u>downloading an IDE</u> so that you can view the files better. IDE stands for **Integrated Development Environment**. It's a software that has tools needed for software development in one place. It's OK if you don't understand what I am saying. You'll do better once you try it out yourself. Different programmers might have different IDE preferences. I, for one, use [Visual Studio Code](https://code.visualstudio.com/) the most often. It is also currently what I'm using to write this article. 
 
 If you don't have a specific preference, go ahead and download [Visual Studio Code](https://code.visualstudio.com/).
@@ -54,8 +65,10 @@ Here is the welcome page of vscode. This is Windows system, if you are using a d
 
 ![welcome-vscode](/static/img/2-softwares/cyber-spatula/welcome-vscode.png)
 
+<br>
+[[Go to top]](#top)
 
-# Step 2
+<h1 id="step-2">Step 2</h1>
 Wouldn't it be so much better if you could get familiar with GitHub Pages while learning how to use an IDE?
 
 
@@ -127,6 +140,8 @@ ruby -v
 {% endhighlight %}
 
 <br>
+[[Go to top]](#top)
+
 <h1 id="install-ruby">Install Ruby</h1>
 
 On Windows, if you don't have Ruby, you should download it from [here](https://rubyinstaller.org/) and follow the instructions and you should be good.
@@ -209,7 +224,12 @@ ruby -v
 {% endhighlight %}
 You should see something like `ruby 3.1.1`. Be sure to perform online searches or inquiry ChatGPT if you encounter any problems not covered here.
 
+<br>
+[[Go to top]](#top)
+
 ---
+
+<h1 id="run-local">Running jekyll locally</h1>
 
 Now, after you have installed Ruby. I want you to go back to `cyberspatula.github.io`. If you are lost where you are, you can do Open Folder again in vscode. Open the terminal again and enter this command and hit enter on your keyboard.
 {% highlight shell %}
@@ -243,7 +263,9 @@ You can check whether it worked or not by typing `http://127.0.0.1:4000/` in a w
 In the next step I will be teaching you how to start a fresh new Jekyll setup like the one use in Cyber Spatula. Then I will discuss what each component in Jekyll does, in the manner that assuming you have no programming knowledge.
 
 <br>
-# GitHub account
+[[Go to top]](#top)
+
+<h1 id="github-account">GitHub account</h1>
 Since we are going to host the web page on GitHub Pages, you are going to need a [GitHub account](https://github.com/). Register one if you don't have it. 
 
 
@@ -283,6 +305,8 @@ Your email
 ---
 
 Now you have set up git and GitHub account, the next thing is to create your own repository (repo). A repository stores your code and assets remotely in GitHub's database. It can either be public or private. A public repository can be seen by all GitHub users while a private one can only be seen by yourself. Other developers can clone or [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) your public repositories.
+<br>
+[[Go to top]](#top)
 
 <h1 id="create-a-github-pages-repo">Create a GitHub Pages repo</h1>
 
@@ -480,8 +504,11 @@ permalink: /my-first-post/
 
 Refresh the webpage, you should see your name next to the date and the website link becomes `127.0.0.1:4000/my-first-post/`. 
 
+<br>
+[[Go to top]](#top)
 
-# Edit jekyll posts
+<h1 id="edit-jekyll-posts">Edit jekyll posts</h1>
+
 There is a lot you can do in a jekyll post. The most basic text is like this one you are seeing right now. Change your post to and refresh the webpage.
 {% highlight markdown %}
 ---
@@ -648,8 +675,11 @@ public static int addNumbers(int a, int b) {
 <br>
 
 These are the most common ways of writing I do in jekyll posts. But you can almost apply any [markdown rules](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) in jekyll. If you are happy with the current situation. You can skip Step 4.
+<br>
+[[Go to top]](#top)
 
-# Step 4
+<h1 id="step-4">Step 4</h1>
+
 To enable customizations, you will have to learn how to write [html](https://en.wikipedia.org/wiki/HTML) and [css](https://en.wikipedia.org/wiki/CSS). You can learn both of them through the help of ChatGPT. 
 
 
@@ -919,8 +949,11 @@ The effect:
 <br>
 🎉 That should be covering most about how to build a website like Cyber Spatula, as of 1/13/2025. Try to keep exploring the files and see what you can do with them. You can send an [issue ticket](https://github.com/cyberspatula/cyberspatula.github.io/issues) to ask me if you have any doubts about this step.
 
+<br>
+[[Go to top]](#top)
 
-# Step 5
+<h1 id="step-5">Step 5</h1>
+
 After you have built the webpage, you will want to maintain it. Since we are using GitHub Pages, the site is automatically compiled and hosted by GitHub. This means that if you open a browser and search `https://<your-username>.github.io`, you should see your page. 
 
 However, if you have never used GitHub before, you might not know how to maintain your project. It's not going to be just adding things to it. You will need to know how to use [git](https://git-scm.com/)!
@@ -936,6 +969,9 @@ If you want to configure a custom domain for your site, you can follow [this art
 
 
 Alright, that was the end of this tutorial. I hope you have built a jekyll website with ease!
+
+<br>
+[[Go to top]](#top)
 
 
 <br>
