@@ -126,5 +126,33 @@ Using the default setting, after the program solves the puzzle, you would get
 
 ![default-setting](/static/img/2-softwares/nonogram-solver/default-setting.png)
 
+---
 
-# Step 3
+Now let's try the second example we have. Change `screenshot` to
+{% highlight python %}
+# screenshot = Screenshot("QuickTime Player").image
+screenshot = cv2.imread(script_dir + '/test/screenshot/puzzle-nonograms.png')
+{% endhighlight %}
+
+Within `main.py` (the same script), find
+{% highlight python %}
+rows_binary_trimmed = cropper.trim(rows_binary, min_black_blob_size=100)
+cols_binary_trimmed = cropper.trim(cols_binary, min_black_blob_size=100)
+{% endhighlight %}
+
+Change to
+{% highlight python %}
+rows_binary_trimmed = cropper.trim(rows_binary, min_black_blob_size=50)
+cols_binary_trimmed = cropper.trim(cols_binary, min_black_blob_size=50)
+{% endhighlight %}
+We want a smaller `min_black_blob_size` here because the digit font in the second example is much smaller. If we used 100 here the program won't be able to find any digit. <u>Change this parameter wisely when you import images.</u>
+
+
+In the end, modify `ui_positions.py`
+{% highlight python %}
+top_matrix_region = [136, 35, 455, 126]
+bottom_matrix_region = [38, 131, 131, 450]
+{% endhighlight %}
+
+Now go ahead and run Experimental again.
+
