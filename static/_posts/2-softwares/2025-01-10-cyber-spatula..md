@@ -1,6 +1,6 @@
 ---
 author: Kolyn090
-banner: /static/img/1-default/not-found.jpg
+banner: /static/img/1-default/cyber-spatula0_2.png
 categories: Tutorial
 custom_class: custom-page-content
 date: 2025-01-10 17:00:00 -0500
