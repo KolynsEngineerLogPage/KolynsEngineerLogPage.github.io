@@ -4,7 +4,7 @@ permalink: /softwares-main/
 title: My Softwares
 buttons:
   - url: /nonogram-main/
-    image: /static/img/1-default/not-found.jpg
+    image: /static/img/2-softwares/nonogram-solver/thumb.png
     alt: 
     description: Solve Nonogram, import from images.
 
