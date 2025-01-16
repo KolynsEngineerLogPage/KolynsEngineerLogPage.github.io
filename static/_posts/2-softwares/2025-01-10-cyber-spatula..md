@@ -887,6 +887,12 @@ body.egg {
 The the first style is the default theme (background) called `body`. It has many attributes such as `position`, `margin`... but it's only recommended to modify `background-image`, `background-color`, `background-size`, `background-repeat`, `background-position`, `background-blend-mode`, `animation`. You can try to modify them and see what happens. Things usually needs some trial-and-errors in order to get working. BTW, I hope you agree with me that it's pretty smart to paint soybean with red color to make red beans here...
 
 
+Also, in `body`, you might have noticed that we have used two background images here. That's for creating a staggering effect, which means that there is an offset for some of the repeating elements. Since we have added a new image here, we will need extra pair of `background-size`, `background-repeat`, `background-position`, `background-blend-mode`.
+
+
+I have to admit that I asked ChatGPT for `animation`, so can you! Try to ask it to make the program do better things. I have faith in you.
+
+
 The next style is `body.egg`. Before we have been article used setting `theme: cat`, so it's straightforward that we can use this theme with `theme: egg`. Basically, if you want to create more themes, just do `body.theme`. Remember you can inquiry ChatGPT if you want to do something but don't know where to start it.
 
 
@@ -896,6 +902,9 @@ Credits page is something good to have. There are times you might have borrowed 
 
 # The articles
 The next thing I want to mention is the articles. I have been using the words articles, posts, logs interchangeably even though they don't have the same meaning, but I want to emphasize that they mean the same thing here. So, in an article, it has a banner and the text body. I have already taught you how to write an article and now let's look at its settings. Using this article for example.
+
+📍 The recommended banner size ratio is 3:2 (width:height).
+
 {% highlight markdown %}
 ---
 author: Kolyn090
