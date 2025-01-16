@@ -33,7 +33,7 @@ buttons:
     description: The Escapists 3D made by me using Unity
   
   - url: /softwares-main/
-    image: /static/img/1-default/not-found.jpg
+    image: /static/img/1-default/my_softwares.png
     alt: My Softwares
     description: My Softwares
 
