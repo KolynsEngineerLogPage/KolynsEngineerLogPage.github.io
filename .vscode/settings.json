@@ -24,6 +24,7 @@
         "endraw",
         "fedimser",
         "fnmatch",
+        "fromarray",
         "gemname",
         "getpixel",
         "Grayscale",

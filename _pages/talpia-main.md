@@ -13,4 +13,8 @@ buttons:
     image: /static/img/2-softwares/talpia/2/thumb.png
     alt: Mascot of talpia.
     description: 2. Adding colors to my pixel drawer.
+  - url: /talpia-3/
+    image: /static/img/2-softwares/talpia/3/thumb.png
+    alt: talpia!
+    description: 3. Let's save images.
 ---
