@@ -31,6 +31,11 @@ buttons:
     image: /static/img/the-escapists3d/The_Escapists_3D-thumb.png
     alt: Page 5
     description: The Escapists 3D made by me using Unity
+
+  - url: /archipelago-main/
+    image: /static/img/archipelago/thumb.png
+    alt: The Archipelago's icon
+    description: What got me into programming
   
   - url: /softwares-main/
     image: /static/img/1-default/my_softwares.png

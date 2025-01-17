@@ -80,7 +80,7 @@ This list is far from exhaustive. You are welcome to write an issue if you have 
 
 <br>
 <br>
- 👾 Happy Gaming 👾
+👾 Happy Gaming 👾
 
 
 **This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
