@@ -10,7 +10,7 @@ buttons:
   
   - url: /talpia-main/
     image: /static/img/2-softwares/talpia/thumb.png
-    alt: Talpia.png
+    alt: talpia.png
     description: The talpia Series.
 
   - url: /software-cyber-spatula/
