@@ -7,6 +7,11 @@ title: Kolyn090's Dev Log
 header: Gaming, Automation, Computer Graphics, and Machine Learning
 permalink: /
 buttons:
+  - url: /softwares-main/
+    image: /static/img/1-default/my_softwares.png
+    alt: My Softwares
+    description: My Softwares
+    
   - url: /egg-inc-main/
     image: /static/img/egg-inc/egg-inc.jpg
     alt: Egg Inc. Main
@@ -36,11 +41,6 @@ buttons:
     image: /static/img/archipelago/thumb.png
     alt: The Archipelago's icon
     description: What got me into programming
-  
-  - url: /softwares-main/
-    image: /static/img/1-default/my_softwares.png
-    alt: My Softwares
-    description: My Softwares
 
   - url: /school-main/
     image: /static/img/3-school/rajang-beam/rajang-beam.jpg
