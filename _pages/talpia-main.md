@@ -1,6 +1,7 @@
 ---
 layout: selector
 permalink: /talpia-main/
+theme: talpia
 title: Making Pixel Art Editor talpia
 buttons_style: image-buttons-grid
 button_style: image-button-square

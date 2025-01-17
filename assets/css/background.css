@@ -71,6 +71,20 @@ body.cat {
     animation: movePattern-long 10s linear infinite;
 }
 
+body.talpia {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-image: 
+        url('/static/img/2-softwares/talpia/talpia.png');
+    background-color: #f7bc79;
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    background-position:  0 0;
+    background-blend-mode: overlay;
+    animation: movePattern-talpia 20s linear infinite;
+}
+
 @keyframes movePattern {
     0% {
         background-position: 0 0, 50px 50px;
@@ -95,5 +109,14 @@ body.cat {
     }
     100% {
         background-position: 100px 100px, 150px 150px;
+    }
+}
+
+@keyframes movePattern-talpia {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 200px 200px;
     }
 }
