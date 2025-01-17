@@ -27,9 +27,9 @@ buttons:
     alt: The Battle Cats Main
     description: AFK The Battle Cats
 
-  - url: /page5/
+  - url: /the-escapists3d-main/
     image: /static/img/the-escapists3d/The_Escapists_3D-thumb.png
-    alt: Page 5
+    alt: Welcome to the Central Perk
     description: The Escapists 3D made by me using Unity
 
   - url: /archipelago-main/
