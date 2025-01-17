@@ -7,10 +7,28 @@
     margin-right: 10px;
 }
 
+.image-buttons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
 .image-button {
     position: relative;
     display: inline-block;
     width: 500px;
+    height: auto;
+}
+
+.image-button-square {
+    position: relative;
+    display: inline-block;
+    width: auto;
     height: auto;
 }
 

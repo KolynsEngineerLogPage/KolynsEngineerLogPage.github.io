@@ -1,6 +1,6 @@
-<div class="image-buttons">
+<div class="{{ page.buttons_style | append: ' image-buttons' }}">
     {% for button in page.buttons %}
-    <div class="image-button">
+    <div class="{{ page.button_style | append: ' image-button' }}">
         <a href="{{ button.url | relative_url }}">
             <img src="{{ button.image | relative_url }}" alt="{{ button.alt }}" class="button-image">
             <div class="overlay">
