@@ -17,4 +17,8 @@ buttons:
     image: /static/img/2-softwares/talpia/3/thumb.png
     alt: talpia!
     description: 3. Let's save images.
+  - url: /talpia-4/
+    image: /static/img/2-softwares/talpia/4/thumb.png
+    alt: Transparent background.
+    description: 4. Generate transparent background.
 ---
