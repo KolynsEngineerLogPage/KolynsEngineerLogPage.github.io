@@ -7,6 +7,11 @@ buttons:
     image: /static/img/2-softwares/nonogram-solver/thumb2.png
     alt: 
     description: Solve Nonogram, import from images.
+  
+  - url: /talpia-main/
+    image: /static/img/2-softwares/talpia/thumb.png
+    alt: Talpia.png
+    description: The talpia Series.
 
   - url: /software-cyber-spatula/
     image: /static/img/1-default/cyber-spatula0.png
