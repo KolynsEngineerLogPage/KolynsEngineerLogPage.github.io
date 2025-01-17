@@ -37,8 +37,8 @@ buttons:
     alt: My Softwares
     description: My Softwares
 
-  - url: /school/
-    image: /static/img/1-default/not-found.jpg
+  - url: /school-main/
+    image: /static/img/3-school/rajang-beam/rajang-beam.jpg
     alt: My School Projects
     description: My School Projects
 ---

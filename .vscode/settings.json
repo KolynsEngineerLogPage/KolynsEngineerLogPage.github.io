@@ -47,6 +47,7 @@
         "pynput",
         "pytesseract",
         "quicktime",
+        "rajang",
         "rescaler",
         "sbenny",
         "scikit",
