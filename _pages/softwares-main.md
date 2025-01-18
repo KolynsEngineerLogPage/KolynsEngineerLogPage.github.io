@@ -22,4 +22,9 @@ buttons:
     image: /static/img/2-softwares/clockdile/clockdile.png
     alt: 
     description: Cute desktop pet! 🐊 Keeps track time & daily water consumption for you.
+
+  - url: /opd-showcase/
+    image: /static/img/2-softwares/opd/appicon.png
+    alt: 
+    description: A completely free open source English Learning Tool based on The New Oxford Picture Dictionary.
 ---
