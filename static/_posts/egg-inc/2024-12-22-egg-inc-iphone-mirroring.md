@@ -36,6 +36,10 @@ On iPhone mirroring, mouse clicks simulate taps on the iPhone. This is great bec
 ## Very Important
 ⚠️ This is **not a tutorial.** I have intentionally omitted many details that are not directly related. In the future, I <u>might</u> write another log about them. **Please do not be surprised if things don’t work after following everything in this blog.** Also, please don't have high expectations: even after optimizations, its efficiency is still terrible compared to manual prestige.
 
+
+📍 Watch the demo on [YouTube](https://youtu.be/qAN05vDVyzs?feature=shared).
+
+
 ## Limitations
 That being said, **if you’re looking for a one-size-fits-all program, you might be out of luck, as this is highly experimental.** You’ll also need at least a basic understanding of programming to follow the materials presented in this article.∂
 
