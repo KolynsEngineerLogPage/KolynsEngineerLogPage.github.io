@@ -60,7 +60,7 @@ Download folder Clockdile.app and double click it to open (need to trust the pro
 
 <br>
 <br>
-If you liked this showcase, consider giving a Star to [this repository](https://github.com/cyberspatula/cyberspatula.github.io).
+If you liked this showcase, consider giving a Star to [this repository](https://github.com/cyberspatula/cyberspatula.github.io) and [the original repo](https://github.com/Kolyn090/Clockdile.git).
 
 
 <br>
