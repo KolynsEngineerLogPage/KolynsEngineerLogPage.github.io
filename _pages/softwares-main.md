@@ -14,7 +14,7 @@ buttons:
     description: The talpia Series.
 
   - url: /software-cyber-spatula/
-    image: /static/img/1-default/cyber-spatula0.png
+    image: /static/img/1-default/cyber-spatula2.png
     alt: Creating a website with GitHub website and Jekyll.
     description: Creating a website like Cyber Spatula. (GitHub Pages & Jekyll)
 
