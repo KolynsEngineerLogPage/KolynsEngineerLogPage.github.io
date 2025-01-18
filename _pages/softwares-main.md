@@ -17,4 +17,9 @@ buttons:
     image: /static/img/1-default/cyber-spatula0.png
     alt: Creating a website with GitHub website and Jekyll.
     description: Creating a website like Cyber Spatula. (GitHub Pages & Jekyll)
+
+  - url: /clockdile-showcase/
+    image: /static/img/2-softwares/clockdile/clockdile.png
+    alt: 
+    description: Cute desktop pet! 🐊 Keeps track time & daily water consumption for you.
 ---
