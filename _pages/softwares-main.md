@@ -27,4 +27,9 @@ buttons:
     image: /static/img/2-softwares/opd/appicon.png
     alt: 
     description: A completely free open source English Learning Tool based on The New Oxford Picture Dictionary.
+
+  - url: /color-picker-showcase/
+    image: /static/img/2-softwares/color-picker/thumb.png
+    alt: 
+    description: An 8-digits hex code color picker, with alpha value.
 ---
