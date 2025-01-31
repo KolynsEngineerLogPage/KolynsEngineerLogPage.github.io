@@ -42,6 +42,11 @@ buttons:
     alt: The Archipelago's icon
     description: What got me into programming
 
+  - url: /useful-tools-main/
+    image: /static/img/4-tools/useful-tools-thumb.jpeg
+    alt: Useful Tools
+    description: Useful Tools
+
   - url: /school-main/
     image: /static/img/3-school/rajang-beam/rajang-beam.jpg
     alt: My School Projects
