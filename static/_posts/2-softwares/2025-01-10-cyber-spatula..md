@@ -45,6 +45,7 @@ If you don't have Ruby installed:
 - [Edit jekyll posts](#edit-jekyll-posts)
 - [Using Cyber Spatula jekyll customization](#step-4)
 - [Maintain your project with Git](#step-5)
+- [Troubleshoot](#troubleshoot)
 
 ## Use other tools for more guidance
 Let's face it, you are going to encounter many problems and so did I when I first started this project. That's why I highly recommend using AI tools like [ChatGPT](https://chatgpt.com/) to suggest possible fixes for you. In this article I will be teaching you what I know about GitHub websites. 
@@ -982,6 +983,15 @@ Alright, that was the end of this tutorial. I hope you have built a jekyll websi
 <br>
 [[Go to top]](#top)
 
+<h1 id="troubleshoot">Troubleshoot</h1>
+Solving `ruby : The term 'bundle' is not recognized as the name of cmdlet...` on Windows.
+- If you are on Windows, your VS code is likely using powershell instead of Command Prompt. It can sometimes encounter unknown issues. In that case you will need to use Command Prompt to run the code. Open windows search by pressing `Win + S`, typing in "cmd" and find Command Prompt. Use that instead of the terminal in VS code.
+
+If you are still getting errors running (Windows),
+- Try checking your system's environment variables by pressing `Win + S`, search for "Environment Variable", look for "Edit the system environment variables". You will be prompted with a menu. Go to "Advanced" -> "Environment Variables..." -> "Systsem variables\Path", from there check if it contains a Path like `C:\RubyXX\bin`; if not, add the path to there. Replace "XX" with your actual Ruby's version.
+
+<br>
+[[Go to top]](#top)
 
 <br>
 <br>
