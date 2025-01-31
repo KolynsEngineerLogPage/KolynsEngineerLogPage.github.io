@@ -769,7 +769,7 @@ if __name__ == '__main__':
 {% endhighlight %}
 
 
-📍 Troubleshot: If you see error like `AttributeError: 'NoneType' object has no attribute 'shape'`. It's very likely that your project is missing the screenshot and template. 
+📍 Troubleshoot: If you see error like `AttributeError: 'NoneType' object has no attribute 'shape'`. It's very likely that your project is missing the screenshot and template. 
 
 
 - Put this image ⬇️ under `research` and name it `research-test2.png`.
