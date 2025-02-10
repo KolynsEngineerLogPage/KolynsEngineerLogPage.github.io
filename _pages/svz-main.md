@@ -20,5 +20,9 @@ buttons:
     image: /static/img/svz/svz-battle.png
     alt: AI SvZ Battle.
     description: Build an AI to play Samurai vs Zombies.
+  - url: /svz-player-hp/
+    image: /static/img/1-default/not-found.jpg
+    alt: SvZ player health bar
+    description: AI step 1 - Reading player health with Computer Graphics.
 categories: Game Tutorial
 ---
