@@ -1,7 +1,7 @@
 ---
 author: Kolyn090
 banner: /static/img/svz/svz-battle.png
-categories: Log
+categories: Tutorial
 custom_class: custom-page-content
 date: 2024-12-31 5:00:00 -0500
 layout: post
@@ -17,7 +17,7 @@ title: Planning a battle AI model in SvZ Defense
 **本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
 
 
-Category: Log
+Category: Tutorial
 
 
 ## Recap
@@ -93,7 +93,13 @@ There are also some other UIs we will be dealing with but don't worry I will be 
 
 
 # Step 3: Make computer 'smart'
+This is the step of machine learning. This very high level idea is to make computer play the game and learn. Remember in step 1 we have feed it with so many data? We are hoping that it can build some connections between them. For that to happen, we will also need a way to measure whether some actions are good in a given situation. This is often called as 'rewards'. 
 
+
+If something good happen we give it a higher reward, we give a lower reward (or even a negative reward) if something bad happens. How to define what is good and what is bad, you ask? This is easy after we have the data: if we want to keep the player's hp high, we will award high hp and punish low hp. Since we have the numeric value for hp, we can just multiply it with some factor and add that to the reward.
+
+
+After training for long enough, we should see the computer to actually pick better actions. 
 
 
 # Step 4: Check if it has really became 'smart'
