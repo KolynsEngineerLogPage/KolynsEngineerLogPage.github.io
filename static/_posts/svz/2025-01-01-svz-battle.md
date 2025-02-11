@@ -103,4 +103,25 @@ After training for long enough, we should see the computer to actually pick bett
 
 
 # Step 4: Check if it has really became 'smart'
+Sometimes it's difficult to verify if the computer is learning. I would say that human observations are enough in our case. If you play this game enough, you will know what actions are good and what are bad. This often apply to most of the other games as well. However, it is important to bear in mind that computers don't think like humans do, so it might also be obscure to draw conclusions!
 
+
+If you really want to, you can write another program that takes totally random actions. Pick a testing level and let your model and random program play the same level and see if the model is performing much better than the other. 
+
+
+In this tutorial I won't be providing code for programmatically tests. However, I might include my own observations so that you could reference.
+
+---
+
+🎉 Well, that's all I wanted to say today. I hope you like this tutorial. Stay tunned for more!
+
+
+<br>
+<br>
+🍯 Happy Coding 🍯
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
