@@ -80,7 +80,16 @@ Since we are using screenshot approach, a lot of data are not directly provided 
 
 
 # Step 2: Design what computer can do
+The next step is to design the possible actions computer can do. In the battle mode, the following image shows all actions we will need, circled in yellow color.
 
+
+![possible-actions](/static/img/svz/possible-actions.png)
+
+
+We will be using Bluestacks's control support to further simplify things. This means that we will be simulating keyboard interactions to trigger actions. Pressing left and right arrow key will move our character (Samurai). Pressing z, x, c, v for deploying units (unfortunately it's missing a unit but shouldn't be a big deal!) Pressing shift and space for casting skills.
+
+
+There are also some other UIs we will be dealing with but don't worry I will be guiding you through them!
 
 
 # Step 3: Make computer 'smart'
