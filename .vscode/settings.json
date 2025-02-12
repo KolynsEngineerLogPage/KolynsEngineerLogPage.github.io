@@ -46,6 +46,7 @@
         "mainloop",
         "makedirs",
         "maxval",
+        "ndarray",
         "ndim",
         "nonogram",
         "nonograms",
