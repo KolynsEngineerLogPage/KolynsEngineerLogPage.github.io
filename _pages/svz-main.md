@@ -24,5 +24,9 @@ buttons:
     image: /static/img/svz/player-hp-banner.png
     alt: SvZ player health bar
     description: AI step 1 - Reading player health with Computer Graphics.
+  - url: /svz-read-digits/
+    image: /static/img/svz/read-digit-banner.png
+    alt: SvZ read level progress and leadership
+    description: AI step 1 - Reading level progress and leadership.
 categories: Game Tutorial
 ---
