@@ -64,17 +64,36 @@ Things are looking very similar as the reading coins amount problem. Except that
 ![pachinko-digits](/static/img/svz/pachinko-digits.png)
 
 
-However, in this case we don't 
+![pachinko-digits2](/static/img/svz/pachinko-digits2.png)
+
+
+where in this case the backgrounds are non-solid and the text have white or black color. 
 
 
 ![samurai-level-progress](/static/img/svz/samurai-level-progress.png)
 
 
+![samurai-level-progress2](/static/img/svz/samurai-level-progress2.png)
+
+
 ![samurai-leadership](/static/img/svz/samurai-leadership.png)
+
+
+![samurai-leadership2](/static/img/svz/samurai-leadership2.png)
 
 
 ![zombie-level-progress](/static/img/svz/zombie-level-progress.png)
 
 
+![zombie-level-progress2](/static/img/svz/zombie-level-progress2.png)
+
+
 ![zombie-leadership](/static/img/svz/zombie-leadership.png)
+
+
+![zombie-leadership2](/static/img/svz/zombie-leadership2.png)
+
+
+If we could come up with some way to convert them to white-background-black-text, we should be able to apply the same algorithm again to read the digits.
+
 
