@@ -314,13 +314,13 @@ self._debug_save('region.png', coin_region)
 Here is `pil_to_cv2`, put this in `extract_coin_amount`.
 {% highlight python %}
 def pil_to_cv2(pil_image):
-    # Ensure it's in RGB mode
+    # ensure it's in RGB mode
     pil_image = pil_image.convert('RGB')
 
-    # Convert PIL to NumPy array (RGB)
+    # convert PIL to NumPy array (RGB)
     rgb_array = np.array(pil_image)
 
-    # Convert RGB to BGR
+    # convert RGB to BGR
     bgr_image = cv2.cvtColor(rgb_array, cv2.COLOR_RGB2BGR)
     return bgr_image
 {% endhighlight %}
@@ -346,10 +346,10 @@ coin_region = make_binary(coin_region, threshold=127)
 self._debug_save('region_binary.png', coin_region)
 
 def make_binary(cv2_img, threshold=127):
-    # Convert to grayscale
+    # convert to grayscale
     grayscale = cv2.cvtColor(cv2_img, cv2.COLOR_BGR2GRAY)
 
-    # Apply binary threshold
+    # apply binary threshold
     _, binary = cv2.threshold(grayscale, threshold, 255, cv2.THRESH_BINARY)
 
     return binary
