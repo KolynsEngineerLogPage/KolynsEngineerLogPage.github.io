@@ -142,3 +142,131 @@ Fair warning: this is going to be more difficult than it looks. Please be patien
 6 . Now we have met every requirement. Apply the template matching algorithm and read the digits.
 
 
+# Step 1
+Since this tutorial is going to be very long and potentially become hard to follow, this time I want to try something different. 
+
+
+![samurai-read-digits-example](/static/img/svz/samurai-read-digits-example.png)
+
+
+![zombie-read-digits-example](/static/img/svz/zombie-read-digits-example.png)
+
+
+Here are the two screenshots I used while I was developing the algorithm. This time I want you to first work with them before moving onto the real game. This ensures that we have the same environment and you will be adapting to your own environment much easier once your understand how it works.
+
+---
+
+Put the two screenshots in your project. Make sure your project have the following structure.
+
+
+{% highlight cmd %}
+ai
+|___ player_hp
+|    |___ ...
+|___ read_digit
+|    |___ debug
+|    |    |___ samurai-read-digits-example.png
+|    |    |___ zombie-read-digits-example.png
+|    |___ digits
+|    |___ digit_recognizer.py
+|    |___ reader.py
+|___ config.toml
+|___ ui_position.py
+{% endhighlight %}
+
+We will be adding more files for debugging purposes via code.
+
+---
+
+In `reader.py`, put
+{% highlight python %}
+import os
+import re
+import cv2
+import time
+import glob
+import numpy as np
+import pytesseract
+from PIL import Image
+from typing import Tuple
+from src.util.screen_getter import get_chosen_region, get_window_with_title
+from src.ai.read_digit.digit_recognizer import Digit_Recognizer
+from src.ai.ui_position import leadership_bound_samurai, level_progress_bound_samurai
+from src.ai.ui_position import leadership_bound_zombie, level_progress_bound_zombie
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
+
+class Reader:
+    def __init__(self, window, bound):
+        self._window = window
+        self._bound = bound
+        self._digit_recognizer = Digit_Recognizer(os.path.join(script_dir, 'digits'))
+        self.debug = False
+{% endhighlight %}
+
+
+In `ui_position.py`, add
+{% highlight python %}
+leadership_bound_samurai = [56, 357, 88, 373]
+level_progress_bound_samurai = [183, 51, 225, 69]
+leadership_bound_zombie = [62, 357, 94, 373]
+level_progress_bound_zombie = [188, 55, 230, 73]
+{% endhighlight %}
+
+
+In `digit_recognizer.py`, put
+{% highlight python %}
+import os
+import cv2
+import glob
+import numpy as np
+
+class Digit_Recognizer:
+    def __init__(self, digits_folder):
+        def load_binary(path):
+            img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+            _, binary_img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+            return binary_img
+
+        self.digit_template = {}
+
+        # search for PNG files under digits folder
+        png_files = glob.glob(os.path.join(digits_folder, "*.png"))
+
+        # extract filenames without extension
+        filenames = [os.path.splitext(os.path.basename(file))[0] for file in png_files]
+
+        for filename in filenames:
+            self.digit_template[filename] = load_binary(f'{digits_folder}/{filename}.png')
+
+    def recognize(self, digit_image):
+        def mse(array1, array2):
+            r = np.mean((array1 - array2) ** 2)
+            return r if r != 0 else 0.001
+
+        similarities = []
+        for key, value in self.digit_template.items():
+            similarities.append(1 / mse(digit_image, value))
+
+        result = 0
+        highest = 0
+        for i in range(len(similarities)):
+            if similarities[i] > highest:
+                highest = similarities[i]
+                result = i
+
+        return list(self.digit_template.keys())[result].split('_')[0]
+{% endhighlight %}
+📍 `Digit_Recognizer` is mostly the same as before, except that I changed the way to load templates. Now you only have to name the template image files correctly (same naming conversion as before) in order to use this class.
+
+
+In `config.toml`, put
+{% highlight toml %}
+[digit_reader]
+side = "samurai"  # samurai / zombie
+{% endhighlight %}
+📍 We won't be using this file today.
+
+---
+
