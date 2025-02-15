@@ -97,3 +97,48 @@ where in this case the backgrounds are non-solid and the text have white or blac
 If we could come up with some way to convert them to white-background-black-text, we should be able to apply the same algorithm again to read the digits.
 
 
+## The Plan
+Fair warning: this is going to be more difficult than it looks. Please be patient and follow each step carefully as you move on.
+
+1 . The first thing we want to do is actually quantize the image (reduce the number of colors). If we got lucky we might even make the background completely solid after this step.
+
+
+![progress_quantize_samurai](/static/img/svz/progress_quantize_samurai.png)
+![progress_quantize_zombie](/static/img/svz/progress_quantize_zombie.png)
+![leadership_quantize_samurai](/static/img/svz/leadership_quantize_samurai.png)
+![leadership_quantize_zombie](/static/img/svz/leadership_quantize_zombie.png)
+
+
+2 . Since we only care about the black and white colors, in this step we can enhance the black and white colors in our images. After enhancing them intensively we will get something like:
+
+
+![progress_enhance_samurai](/static/img/svz/progress_enhance_samurai.png)
+![progress_enhance_zombie](/static/img/svz/progress_enhance_zombie.png)
+![leadership_enhance_samurai](/static/img/svz/leadership_enhance_samurai.png)
+![leadership_enhance_zombie](/static/img/svz/leadership_enhance_zombie.png)
+
+
+3 . We only want to work with white-background-black-text images. After the last step our images are mostly black, white, and gray. Therefore we can just invert the color for the black-background-white-text images. 
+
+
+![progress_converted_samurai](/static/img/svz/progress_converted_samurai.png)
+![progress_converted_zombie](/static/img/svz/progress_converted_zombie.png)
+![leadership_converted_samurai](/static/img/svz/leadership_converted_samurai.png)
+![leadership_converted_zombie](/static/img/svz/leadership_converted_zombie.png)
+
+
+4 . Convert the images to binary and we will end up with something very similar to before.
+
+
+![progress_binary_samurai](/static/img/svz/progress_binary_samurai.png)
+![progress_binary_zombie](/static/img/svz/progress_binary_zombie.png)
+![leadership_binary_samurai](/static/img/svz/leadership_binary_samurai.png)
+![leadership_binary_zombie](/static/img/svz/leadership_binary_zombie.png)
+
+
+5 . On this point forward, we will work with the blobs again but we can't just yet apply the algorithm we have from before. We will want to make sure that the digits blobs are not broken and remove all blobs that are just noises. It doesn't benefit your understanding to explain them here so I will put them in the later parts of the tutorial.
+
+
+6 . Now we have met every requirement. Apply the template matching algorithm and read the digits.
+
+
