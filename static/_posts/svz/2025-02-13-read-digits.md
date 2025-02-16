@@ -851,3 +851,123 @@ filtered_blobs = self._remove_small_blobs(filtered_blobs, 30)
 
 
 # Step 6
+As said in the beginning, this step has no new stuff and we just need to apply template matching algorithm on our images.
+
+
+Add the following in `Reader`.
+{% highlight python %}
+@staticmethod
+def _remove_blob_background(blob_with_bounding_box):
+    blob_mask = blob_with_bounding_box[0]
+    min_x = blob_with_bounding_box[1]
+    max_x = blob_with_bounding_box[2] + 1
+    min_y = blob_with_bounding_box[3]
+    max_y = blob_with_bounding_box[4] + 1
+    return blob_mask[min_y:max_y, min_x:max_x]
+{% endhighlight %}
+
+In `extract()`, add
+{% highlight python %}
+blobs = []
+for blob_with_bounding_box in filtered_blobs:
+    # put the blob to the center of a 24x24 image
+    blob = self._remove_blob_background(blob_with_bounding_box)
+    blobs.append(self._edit_blob_canvas(blob, 24, 24))
+
+if self.debug:
+    os.makedirs('debug_digit', exist_ok=True)
+    self._clear_folder('debug_digit')
+
+count = 0
+for blob in blobs:
+    if blob[0]:  # if blob doesn't exceed our defined size
+        if self.debug:
+            cv2.imwrite(f'debug_digit/{count}.png', blob[1])
+        count += 1
+
+result = ''
+for blob in blobs:
+    if blob[0]:  # if blob doesn't exceed our defined size
+        extracted_text = self._digit_recognizer.recognize(blob[1])
+    else:
+        extracted_text = pytesseract.image_to_string(blob[1], config='--psm 6')
+        match = re.search(r'\d+', extracted_text)
+        if match:
+            extracted_text = match.group()
+        else:
+            extracted_text = '0'
+
+    if extracted_text.isdigit():
+        result += extracted_text
+
+return int(result) if result else 0
+{% endhighlight %}
+
+
+Don't forget that we haven't yet filled the `digits` folder. You can use mine for now. Add these to `digits`.
+
+
+![0](/static/img/svz/read-digits/0.png)
+![1](/static/img/svz/read-digits/1.png)
+![2](/static/img/svz/read-digits/2.png)
+![3](/static/img/svz/read-digits/3.png)
+![4](/static/img/svz/read-digits/4.png)
+![5](/static/img/svz/read-digits/5.png)
+![6](/static/img/svz/read-digits/6.png)
+![7](/static/img/svz/read-digits/7.png)
+![8](/static/img/svz/read-digits/8.png)
+![9](/static/img/svz/read-digits/9.png)
+![percent](/static/img/svz/read-digits/percent.png)
+
+
+Run the driver code with 'leadership_bound_samurai'. You should see the result:
+{% highlight cmd %}
+2
+{% endhighlight %}
+
+Run with 'level_progress_bound_samurai':
+{% highlight cmd %}
+0
+{% endhighlight %}
+
+
+After you confirmed the result, change the top three lines in `extract()` to
+{% highlight python %}
+def extract(self):
+    region = get_chosen_region(self._window, self._bound)
+    # region = Image.open('debug/samurai-read-digits-example.png')
+    # region = region.crop(self._bound)
+{% endhighlight %}
+
+
+Next, change the driver code.
+{% highlight python %}
+if __name__ == '__main__':
+    chosen_window = get_window_with_title('BlueStacks App Player')
+    reader = Reader(chosen_window, leadership_bound_samurai)
+    reader.debug = True
+    while True:
+        print(reader.extract())
+        time.sleep(0.5)
+{% endhighlight %}
+
+
+Open the game, play as Samurai. Check if the program is really reading the leadership value. If not, your bounding box is very likely to be different from mine. The easiest fix is to use the same setup as mine. In `window_rescaler.py`, make sure your boundary looks like this:
+{% highlight python %}
+top, bottom, left, right = 0, 482, 0, 819
+{% endhighlight %}
+If not, adjust the values and run `window_rescaler.py`. If the problem still persists or you want to use your own setup, you will have to use `mouse_coordinator.py` to read the boundary for leadership and level progress. Good luck!
+
+
+<br>
+🎉 That's the end of this tutorial! It should work for both samurai and zombie side as long as your bounding boxes are correct. Stay tunned for more!
+
+<br>
+<br>
+🍯 Happy Coding 🍯
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**

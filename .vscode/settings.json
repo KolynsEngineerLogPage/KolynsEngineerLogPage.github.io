@@ -41,6 +41,7 @@
         "imread",
         "imwrite",
         "installables",
+        "isdigit",
         "itemconfig",
         "judgements",
         "Kolyn",
