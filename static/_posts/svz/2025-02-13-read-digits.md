@@ -270,3 +270,76 @@ side = "samurai"  # samurai / zombie
 
 ---
 
+In class `Reader`, add function
+{% highlight python %}
+def extract(self):
+    # region = get_chosen_region(self._window, self._bound)
+    region = Image.open('debug/samurai-read-digits-example.png')
+    region = region.crop(self._bound)
+    processed_image = self._process_image(region)
+{% endhighlight %}
+🤓 We will be using the example image for now and will be later changed to reading from emulator.
+
+---
+
+Now write the function to process the image. This will be steps 1 - 4. Let's start with step 1: quantize the image. Create a new function in `Reader`.
+{% highlight python %}
+@staticmethod
+def _process_image(img):
+    def rescale_and_quantize(image: Image.Image, scaling_factor=2, quantize_factor=3) -> Image.Image:
+        new_size = (image.width * scaling_factor, image.height * scaling_factor)
+        image = image.resize(new_size, Image.Resampling.BILINEAR)
+        return image.quantize(colors=quantize_factor, method=Image.Quantize.FASTOCTREE)
+
+    img = rescale_and_quantize(img, 2, 6)
+    if self.debug:
+        img.save('debug/quantized.png')
+    return img
+{% endhighlight %}
+🤓 The `rescale_and_quantize()` function rescales and quantizes a given PIL image. I decided to scale up by a factor of 2 because I found out that it increases the chance of successful recognitions. I also set quantize factor to 6. That's also from experience. In the real life scenario, you will often need to try out different values in order for things to work.
+
+
+Now let's test the code.
+{% highlight python %}
+if __name__ == '__main__':
+    reader = Reader(None, leadership_bound_samurai)  # or 'level_progress_bound_samurai' for bound
+    reader.debug = True
+    reader.extract()
+{% endhighlight %}
+Run this code and verify that you have quantized.png
+
+
+![leadership_quantize_samurai](/static/img/svz/leadership_quantize_samurai.png) if you used bound leadership_bound_samurai.
+
+
+![leadership_quantize_samurai](/static/img/svz/progress_quantize_samurai.png) if you used bound level_progress_bound_samurai.
+
+
+You can also test out the zombies side, but remember to change your test image path if you decide to do that.
+
+
+🎉 Congratulations on finishing up step 1.
+
+
+# Step 2
+In this step we will enhance the black and white colors. We will enhance it to the extend that the resulting image will only contain white, black, and gray colors. In `_process_image()`, add
+{% highlight python %}
+def enhance_black_and_white(image: Image.Image, factor=5) -> np.ndarray:
+    grayscale = image.convert("L")
+    img_array = np.array(grayscale, dtype=np.float32)
+    img_array /= 255.0  # normalize
+    img_array = (img_array - 0.5) * factor + 0.5  # increase contrast
+    img_array = np.clip(img_array, 0, 1)  # keep values in valid range
+    img_array = (img_array * 255).astype(np.uint8)  # convert back to 255 scale
+
+    return img_array
+
+img = rescale_and_quantize(img, 2, 6)
+if self.debug:
+    img.save('debug/quantized.png')
+img = enhance_black_and_white(img, 5)
+if self.debug:
+    img.save('debug/enhance_black_and_white.png')
+return img
+{% endhighlight %}
+
