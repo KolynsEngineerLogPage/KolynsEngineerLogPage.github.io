@@ -358,3 +358,62 @@ Run the driver code again and verify you have a new debug image.
 
 
 # Step 3
+This step is going to be a little tough. By this point we have images that are most white-background-black-text and black-background-white-text, but we only want white-background-black-text images. So the current task is really just to **figure out if an image is black-background-white-text and invert it if yes**. 
+
+
+To identify whether it has black-background, we can take the colors from <u>the first row and the first column</u> and calculate their mean. If it's below the threshold the background would be black otherwise white.
+
+
+Here is the code. Add it to `_process_image()`
+{% highlight python %}
+def get_background_color(image: np.ndarray) -> Tuple[int, int, int]:
+    # extract first row and first column
+    first_row = image[0, :]  # all pixels in the first row
+    first_col = image[:, 0]  # all pixels in the first column
+
+    # combine both sets of pixels
+    combined_pixels = np.hstack((first_row, first_col))
+
+    # calculate the average color
+    avg_color = np.mean(combined_pixels, axis=0).astype(int)
+
+    # determine if it's closer to white (255, 255, 255) or black (0, 0, 0)
+    threshold = np.array([127, 127, 127])
+    # set to (255, 255, 255) if closer to white
+    # otherwise (0, 0, 0)
+    binary_color = (255, 255, 255) if np.all(avg_color > threshold) else (0, 0, 0)
+
+    return binary_color
+
+def convert_to_white_bg(image: np.ndarray) -> np.ndarray:
+    bg_color = get_background_color(image)
+    if bg_color != (255, 255, 255):
+        image = cv2.bitwise_not(image)
+    return image
+
+img = rescale_and_quantize(img, 2, 6)
+if self.debug:
+    img.save('debug/quantized.png')
+img = enhance_black_and_white(img, 5)
+if self.debug:
+    img.save('debug/enhance_black_and_white.png')
+img = convert_to_white_bg(img)
+if self.debug:
+    img.save('debug/convert_to_white_bg.png')
+return img
+{% endhighlight %}
+🤓 `get_background_color()` calculates the mean of the colors in the first row and first column in the image. `convert_to_white_bg()` inverts the image color if it's black background.
+
+
+Verify you have the debug image.
+
+
+![leadership_converted_samurai](/static/img/svz/leadership_converted_samurai.png) if you used bound leadership_bound_samurai.
+
+
+![progress_converted_samurai](/static/img/svz/progress_converted_samurai.png) if you used bound level_progress_bound_samurai.
+
+<br>
+🎉 Great! Onto step 4.
+
+
