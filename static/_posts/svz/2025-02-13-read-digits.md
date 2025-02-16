@@ -513,3 +513,31 @@ I want you to pay attention to their x-values. I hope you will agree with me tha
 
 ---
 
+Ok, that was the most important problem I wanted to mention in this step. We still have other problems though, but not as hard to understand as that one.
+
+
+Here is the plan:
+
+
+1 . Read the blobs with bounding box. We have done this before.
+
+
+2 . Although unlikely, we need to remove all blobs that touches the edge of the image. These blobs are nearly impossible to be digits and will mess up the result if they exist.
+
+
+3 . We want to remove noises from the image. These are small blobs that are not very likely to be part of digits or just insignificant.
+
+
+4 . We want to merge the blobs. Just like discussed previously.
+
+
+5 . By this point each blob should represent a digit (or text). We want to filter out blobs that don't meet the minimum height.
+
+
+6 . We want to remove small blobs that are not likely to be valid by their area.
+
+
+After we finish all these steps, we can treat the image the same as before and apply template matching.
+
+---
+
