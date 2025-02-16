@@ -541,3 +541,313 @@ After we finish all these steps, we can treat the image the same as before and a
 
 ---
 
+Let's start by finding the blobs along with their bounding boxes. We have already discussed the code before so I won't explain again. If you want to review please read [this](/svz-pachinko-coins/). Add the following to `Reader`.
+{% highlight python %}
+def _find_blobs_with_bounding_box(self, binary_img):
+    result = []
+
+    # visited array to track processed pixels
+    visited = np.zeros_like(binary_img, dtype=np.uint8)
+
+    # iterate through each pixel in the binary image
+    h, w = binary_img.shape
+    for y in range(h):
+        for x in range(w):
+            if binary_img[y, x] == 0 and visited[y, x] == 0:
+                # extract the blob using DFS and get its bounding box
+                blob_mask, min_x, max_x, min_y, max_y = self._dfs(x, y, binary_img, visited)
+                # append the blob mask and bounding box to the list
+                result.append((blob_mask, min_x, max_x, min_y, max_y))
+
+    # sort blobs by their x-coordinate (left-to-right order)
+    result.sort(key=lambda b: b[1])  # sort by min_x
+
+    # return only the blobs
+    return result
+
+@staticmethod
+def _dfs(x, y, binary_img, visited):
+    assert binary_img[y, x] == 0, "starting position is not black"
+
+    directions = [(-1, -1), (-1, 0), (-1, 1),
+                    (0, -1), (0, 1),
+                    (1, -1), (1, 0), (1, 1)]
+
+    h, w = binary_img.shape
+    stack = [(x, y)]
+    min_x, max_x, min_y, max_y = x, x, y, y  # track bounding box
+
+    # create a white background to store the blob
+    blob_mask = np.full_like(binary_img, 255, dtype=np.uint8)
+
+    while stack:
+        cx, cy = stack.pop()
+        if 0 <= cx < w and 0 <= cy < h and binary_img[cy, cx] == 0 and visited[cy, cx] == 0:
+            # mark the pixel as visited
+            visited[cy, cx] = 1
+            # paint position (cx, cy) in blob_mask
+            blob_mask[cy, cx] = 0
+
+            # update bounding box
+            min_x, max_x = min(min_x, cx), max(max_x, cx)
+            min_y, max_y = min(min_y, cy), max(max_y, cy)
+
+            # push all nearby 8 neighbors
+            for dx, dy in directions:
+                nx = cx + dx
+                ny = cy + dy
+                stack.append((nx, ny))
+
+    return blob_mask, min_x, max_x, min_y, max_y
+{% endhighlight %}
+
+Next, use them in the function `extract()`.
+{% highlight python %}
+def extract(self):
+    region = get_chosen_region(self._window, self._bound)
+    processed_image = self._process_image(region)
+
+    blobs_with_bounding_box = self._find_blobs_with_bounding_box(processed_image)
+{% endhighlight %}
+
+---
+
+Next, we'll be removing all blobs that touches the edge of the image. To visualize:
+
+
+![edge-touching-example](/static/img/svz/edge-touching-example.png)
+
+
+All red blobs will be removed. All black blobs will be preserved.
+
+
+The code is surprisingly short since we have the bounding boxes.
+{% highlight python %}
+@staticmethod
+def _remove_edge_touching_blobs(blobs, image_width, image_height):
+    # keep only blobs that do not touch any of the image boundaries
+    filtered_blobs = [
+        (blob_mask, min_x, max_x, min_y, max_y)
+        for blob_mask, min_x, max_x, min_y, max_y in blobs
+        if min_x > 0 and min_y > 0 and max_x < image_width and max_y < image_height
+    ]
+
+    return filtered_blobs
+{% endhighlight %}
+
+Add this to `extract()`.
+{% highlight python %}
+height, width = processed_image.shape[:2]
+filtered_blobs = self._remove_edge_touching_blobs(blobs_with_bounding_box, width, height)
+{% endhighlight %}
+
+---
+
+Next, we want to remove all the noises (tiny blobs) from the image. Since each blobs is a np array of 0s and 1s, this is also quite easy.
+{% highlight python %}
+@staticmethod
+def _remove_small_blobs(blobs, min_size):
+    # keep only blobs with at least `min_size` black pixels (0)
+    filtered_blobs = [
+        (blob_mask, min_x, max_x, min_y, max_y)
+        for blob_mask, min_x, max_x, min_y, max_y in blobs
+        if np.sum(blob_mask == 0) >= min_size
+    ]
+
+    return filtered_blobs
+{% endhighlight %}
+🤓 We get the sum of the 0s (black colors) in a blob and compare that with our threshold.
+
+
+Add this to `extract()`.
+{% highlight python %}
+# removes small blobs that aren't likely to be part of digits
+filtered_blobs = self._remove_small_blobs(filtered_blobs, 7)
+{% endhighlight %}
+
+---
+
+Here comes the challenge part: **merging the blobs**. 
+
+
+First of all, add a new function in `Reader`.
+{% highlight python %}
+def _merge_blobs(self, blobs, max_digit_width=23):
+{% endhighlight %}
+
+Inside `_merge_blobs()`, add
+{% highlight python %}
+def get_merge_to(merge_list, blob):
+    for i in range(len(merge_list)):
+        x1i = blob[1]
+        x1a = blob[2]
+        x2i = merge_list[i][1]
+        x2a = merge_list[i][2]
+
+        if x1i <= x2i <= x1a <= x2a:
+            if x2a - x1i <= max_digit_width:
+                return i
+        elif x2i <= x1i <= x2a <= x1a:
+            if x1a - x2i <= max_digit_width:
+                return i
+        elif x2i <= x1i <= x1a <= x2a:
+            if x2a - x2i <= max_digit_width:
+                return i
+        elif x1i <= x2i <= x2a <= x1a:
+            if x1a - x1i <= max_digit_width:
+                return i
+
+    return -1
+{% endhighlight %}
+🤓 This function determines the first mergable blob from the list for a given blob. This is also the code interpretation for the four situations we stated in the beginning of this step.
+
+
+Inside `_merge_blobs()`, add another function
+{% highlight python %}
+def merge_blobs(blob1, blob2):
+    def crop_and_paste_blob(mask, blob_mask, min_x, max_x, min_y, max_y):
+        # Step 1: Crop out the relevant blob region from its original mask
+        cropped_blob = blob_mask[min_y:max_y + 1, min_x:max_x + 1]
+
+        # Step 2: Compute position where the blob should be placed in merged_mask
+        y_offset = min_y  # adjust for new coordinate system
+        x_offset = min_x
+
+        # ensure pasting does not go out of bounds
+        paste_y1 = max(0, y_offset)
+        paste_x1 = max(0, x_offset)
+        paste_y2 = min(paste_y1 + cropped_blob.shape[0], mask.shape[0])
+        paste_x2 = min(paste_x1 + cropped_blob.shape[1], mask.shape[1])
+
+        # ensure cropping of `cropped_blob` to match pasting area
+        crop_y1 = 0
+        crop_x1 = 0
+        crop_y2 = paste_y2 - paste_y1
+        crop_x2 = paste_x2 - paste_x1
+
+        # Step 3: Paste the cropped blob into merged_mask, keeping black pixels (0)
+        mask[paste_y1:paste_y2, paste_x1:paste_x2] = np.minimum(
+            mask[paste_y1:paste_y2, paste_x1:paste_x2],
+            cropped_blob[crop_y1:crop_y2, crop_x1:crop_x2]
+        )
+
+        return mask
+
+    # extract masks and bounding boxes
+    mask1, min_x1, max_x1, min_y1, max_y1 = blob1
+    mask2, min_x2, max_x2, min_y2, max_y2 = blob2
+
+    # compute new bounding box that encloses both blobs
+    new_min_x = min(min_x1, min_x2)
+    new_max_x = max(max_x1, max_x2)
+    new_min_y = min(min_y1, min_y2)
+    new_max_y = max(max_y1, max_y2)
+
+    # create an empty white mask (255) of the new size
+    merged_mask = np.ones(mask1.shape[:2], dtype=np.uint8) * 255
+    merged_mask = crop_and_paste_blob(merged_mask, mask1, min_x1, max_x1, min_y1, max_y1)
+    merged_mask = crop_and_paste_blob(merged_mask, mask2, min_x2, max_x2, min_y2, max_y2)
+
+    return merged_mask, new_min_x, new_max_x, new_min_y, new_max_y
+{% endhighlight %}
+🤓 This is the actual function that does the merging. Basically, it creates a new image, then copy-and-pastes `blob1` and `blob2` into it. 
+
+
+Before we continue, add this function in `Reader`.
+{% highlight python %}
+@staticmethod
+def _clear_folder(path):
+    files = glob.glob(os.path.join(path, '*'))
+    for file in files:
+        try:
+            os.remove(file)
+        except Exception as e:
+            print(f"Error deleting {file}: {e}")
+{% endhighlight %}
+This function clears out all files under the given path. We will be using it for debugging purposes.
+
+
+Go back to `_merge_blobs()`, add
+{% highlight python %}
+if self.debug:
+    os.makedirs('debug/merged', exist_ok=True)
+    self._clear_folder('debug/merged')
+
+# [(blob_mask, min_x, max_x, min_y, max_y)]
+merged = []
+processed = 0
+while processed < len(blobs):
+    curr = blobs[processed]
+
+    merge_to = get_merge_to(merged, curr)
+    if merge_to != -1:
+        # merge curr to merged
+        merged[merge_to] = merge_blobs(merged[merge_to], curr)
+        if self.debug:
+            cv2.imwrite(f'debug/merged/{processed}.png', merged[merge_to][0])
+    else:
+        # add curr to merged
+        merged.append(curr)
+
+    processed += 1
+
+return merged
+{% endhighlight %}
+🤓 We created a specific folder to store the images of merged blobs. After that, we iterate through all blobs and merge all mergable blobs. In each step, if the current blob has no mergable, add it to `merged` list, otherwise merge them and add that to `merged`. Repeat until we reach the count of blobs.
+
+
+Don't forget to use this function in `extract()`.
+{% highlight python %}
+# merge blobs (digits could be 'cut off' and we need to merge them)
+filtered_blobs = self._merge_blobs(filtered_blobs)
+{% endhighlight %}
+
+
+If you run the driver code now, you should expect to see a new debug image.
+
+
+![debug2](/static/img/svz/debug2.png) if you used bound 'leadership_bound_samurai'
+
+
+The image won't be saved to `merged` if you used bound 'level_progress_bound_samurai' because the digit in this image is connected.
+
+
+---
+
+The rest of this step is easy. Now we will remove all blobs that don't meet the height requirement. 
+
+
+Add the following in `Reader`.
+{% highlight python %}
+@staticmethod
+def _filter_out_blob_masks_not_meeting_height(blobs, min_height=15):
+    filtered_blobs = [
+        (blob_mask, min_x, max_x, min_y, max_y)
+        for blob_mask, min_x, max_x, min_y, max_y in blobs
+        if max_y - min_y >= min_height
+    ]
+
+    return filtered_blobs
+{% endhighlight %}
+🤓 Since we have bounding boxes, this is simple to do. The `max_y` subtracts `min_y` is the height of the blob.
+
+
+Use this function in `extract()`.
+{% highlight python %}
+# removes blobs that aren't likely to be digits
+filtered_blobs = self._filter_out_blob_masks_not_meeting_height(filtered_blobs)
+{% endhighlight %}
+
+---
+
+The end of this step. We don't need to add new function. Add the following in `extract()`.
+{% highlight python %}
+# removes blobs that aren't likely to be digits
+filtered_blobs = self._remove_small_blobs(filtered_blobs, 30)
+{% endhighlight %}
+
+<br>
+🎉 Almost there!
+
+
+# Step 6
