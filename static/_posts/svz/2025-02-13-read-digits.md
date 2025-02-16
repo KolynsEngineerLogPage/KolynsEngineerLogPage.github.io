@@ -317,7 +317,7 @@ Run this code and verify that you have quantized.png
 
 You can also test out the zombies side, but remember to change your test image path if you decide to do that.
 
-
+<br>
 🎉 Congratulations on finishing up step 1.
 
 
@@ -326,13 +326,13 @@ In this step we will enhance the black and white colors. We will enhance it to t
 {% highlight python %}
 def enhance_black_and_white(image: Image.Image, factor=5) -> np.ndarray:
     grayscale = image.convert("L")
-    img_array = np.array(grayscale, dtype=np.float32)
-    img_array /= 255.0  # normalize
-    img_array = (img_array - 0.5) * factor + 0.5  # increase contrast
-    img_array = np.clip(img_array, 0, 1)  # keep values in valid range
-    img_array = (img_array * 255).astype(np.uint8)  # convert back to 255 scale
+    image_array = np.array(grayscale, dtype=np.float32)
+    image_array /= 255.0  # normalize
+    image_array = (image_array - 0.5) * factor + 0.5  # increase contrast
+    image_array = np.clip(image_array, 0, 1)  # keep values in valid range
+    image_array = (image_array * 255).astype(np.uint8)  # convert back to 255 scale
 
-    return img_array
+    return image_array
 
 img = rescale_and_quantize(img, 2, 6)
 if self.debug:
@@ -342,4 +342,19 @@ if self.debug:
     img.save('debug/enhance_black_and_white.png')
 return img
 {% endhighlight %}
+🤓 `enhance_black_and_white()` takes a PIL image and returns a cv2 image. Notice that we will be working with cv2 images on this point forward. It first converts the image to grayscale and normalize the image to the range between 0 and 1. After that it increases the contrast by the given factor. In the end it converts the range back to between 0 and 255.
 
+
+Run the driver code again and verify you have a new debug image.
+
+
+![leadership_enhance_samurai](/static/img/svz/leadership_enhance_samurai.png) if you used bound leadership_bound_samurai.
+
+
+![leadership_enhance_samurai](/static/img/svz/progress_enhance_samurai.png) if you used bound level_progress_bound_samurai.
+
+<br>
+🎉 Good job completing step 2!
+
+
+# Step 3

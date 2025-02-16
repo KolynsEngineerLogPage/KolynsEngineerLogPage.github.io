@@ -75,6 +75,7 @@
         "scikit",
         "screenshoter",
         "skopt",
+        "splitext",
         "sqsize",
         "startswith",
         "staticmethod",
