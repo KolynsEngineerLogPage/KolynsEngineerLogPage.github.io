@@ -417,3 +417,38 @@ Verify you have the debug image.
 🎉 Great! Onto step 4.
 
 
+# Step 4
+This step is quite easy and we have done it before. Convert the image to binary. Add the following to `_process_image()`.
+{% highlight python %}
+def convert_to_binary(image: np.ndarray, threshold=30) -> np.ndarray:
+    _, binary_array = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY)
+    return binary_array
+
+img = rescale_and_quantize(img, 2, 6)
+if self.debug:
+    img.save('debug/quantized.png')
+img = enhance_black_and_white(img, 5)
+if self.debug:
+    img.save('debug/enhance_black_and_white.png')
+img = convert_to_white_bg(img)
+if self.debug:
+    img.save('debug/convert_to_white_bg.png')
+img = convert_to_binary(img, 30)
+if self.debug:
+    img.save('debug/convert_to_binary.png')
+return img
+{% endhighlight %}
+
+
+Again, verify you have the debug image.
+
+
+![leadership_binary_samurai](/static/img/svz/leadership_binary_samurai.png) if you used bound leadership_bound_samurai.
+
+
+![progress_binary_samurai](/static/img/svz/progress_binary_samurai.png) if you used bound level_progress_bound_samurai.
+
+<br>
+🎉 Things are looking well.
+
+
