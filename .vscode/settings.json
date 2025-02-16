@@ -37,6 +37,7 @@
         "Grayscale",
         "Hayabusa",
         "hexcode",
+        "hstack",
         "imread",
         "imwrite",
         "installables",

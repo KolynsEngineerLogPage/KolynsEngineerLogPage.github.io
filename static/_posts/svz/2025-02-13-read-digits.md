@@ -452,3 +452,64 @@ Again, verify you have the debug image.
 🎉 Things are looking well.
 
 
+# Step 5
+🌶️ Be warned: this step is very long and complex, make sure you follow carefully.
+
+
+At the first glance, it looks like that we can apply template matching algorithm on our current image. However, that's not true. Since the background was not solid, the digits are often read 'broken'. Here is what I mean by that.
+
+
+Zoom in our '2' here and you will find out that it's made with 2 blobs.
+
+
+![leadership_binary_samurai_x3](/static/img/svz/leadership_binary_samurai_x3.png)
+
+
+![leadership_binary_samurai_x3_colored](/static/img/svz/leadership_binary_samurai_x3_colored.png)
+
+
+See the problem here? This means that instead digit '2'. It will be two blobs that makes no sense after you apply dfs. To visualize the problem:
+
+
+![leadership_binary_samurai_x3_problem](/static/img/svz/leadership_binary_samurai_x3_problem.png)
+
+---
+
+The solution: **merge the blobs that belong to the same digit.** Since we have the bounding box of each blobs, we can determine whether two blobs belong to the same digit by comparing their x values. It's easier to explain with pictures. Let's say we have two blobs that can form as a digit.
+
+
+**Situation 1:** 
+
+
+![merge-blobs-situation1](/static/img/svz/merge-blobs-situation1.png)
+
+
+**Situation 2:** 
+
+
+![merge-blobs-situation2](/static/img/svz/merge-blobs-situation2.png)
+
+
+
+**Situation 3:** 
+
+
+![merge-blobs-situation3](/static/img/svz/merge-blobs-situation3.png)
+
+
+**Situation 4:** 
+
+
+![merge-blobs-situation4](/static/img/svz/merge-blobs-situation4.png)
+
+
+I want you to pay attention to their x-values. I hope you will agree with me that there's overlaps in the x-values in all above situations. **Whenever an overlap in x-value occurs, we want to merge two blobs.**
+
+
+![merge-blobs-2](/static/img/svz/merge-blobs-2.png)
+
+
+🧑‍🔬 BTW, here is our '2' example. Can you see which situation is this?
+
+---
+
