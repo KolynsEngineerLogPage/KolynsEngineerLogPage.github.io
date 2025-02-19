@@ -28,5 +28,9 @@ buttons:
     image: /static/img/svz/read-digit-banner.png
     alt: SvZ read level progress and leadership
     description: AI step 1 - Reading level progress and leadership.
+  - url: /svz-read-cd/
+    image: /static/img/svz/read-cd-banner.png
+    alt: SvZ read allies and skills cooldown
+    description: AI step 1 - Reading allies and skills cooldown.
 categories: Game Tutorial
 ---
