@@ -32,5 +32,9 @@ buttons:
     image: /static/img/svz/read-cd-banner.png
     alt: SvZ read allies and skills cooldown
     description: AI step 1 - Reading allies and skills cooldown.
+  - url: /svz-region-watcher/
+    image: /static/img/svz/region-watcher-banner.png
+    alt: SvZ use region watcher to observe if game is in battle mode
+    description: AI step 1 - Testing whether game is in battle mode.
 categories: Game Tutorial
 ---
