@@ -93,8 +93,101 @@ I have provided a testing image this time as well. Drag this image under `debug`
 
 ![battle_scene](/static/img/svz/battle_scene.png)
 
-
+<br>
 🎉 Now that the preparation works are done, we can get into making a region watcher.
 
 
 # Step 2
+In `region_watcher.py`, add
+{% highlight python %}
+import cv2
+import time
+import threading
+import numpy as np
+from src.util.screen_getter import get_chosen_region_cv2
+
+
+class Region_Watcher:
+    def __init__(self, window, template_path: str,
+                 region_bound, interval: float, callback,
+                 threshold: float, name: str):
+        self._window = window
+        self._template = cv2.imread(template_path, cv2.IMREAD_UNCHANGED)
+        self._region_bound = region_bound
+        self._has_begun = False
+        self._threshold = threshold
+        self.debug = False
+        self.name = name
+
+        def work():
+            while True:
+                if self._has_begun and self._trigger():
+                    callback()
+                time.sleep(interval)
+
+        self._thread = threading.Thread(target=work)
+{% endhighlight %}
+🤓 It looks like we have a lot things going on here. Don't worry, let me explain... First of all, the parameters. `window` is the emulator window. `template_path` is the path to the template. `region_bound` is the bound to be observed. `interval` is the time interval for which a check is performed. `callback` is a function that is called after the program noticed a change in the observing area. `threshold` is the tolerance of the observation. This makes sure that it won't react to some tiny changes. `name` is the name of this observer. This is for debugging purposes. 
+
+
+The next important thing is the `work()` function. This is the function that performs checks every x times. We put it in a thread and it will continuously do its job until it's been told to stop.
+
+---
+
+Next, add the following in `Region_Watcher` class.
+{% highlight python %}
+def begin(self):
+    self._has_begun = True
+    self._thread.start()
+
+def is_match(self):
+    return self._trigger()
+{% endhighlight %}
+
+---
+
+Here is the `trigger()` function.
+{% highlight python %}
+def _trigger(self):
+    region = get_chosen_region_cv2(self._window, self._region_bound)
+    if self.debug:
+        cv2.imwrite(f'debug/{self.name}.png', region)
+    return self._exists_template_rgb(self._template, region, self._threshold)
+{% endhighlight %}
+
+Actually, let's make a small change in this so that we use the testing example. (This is for testing and we'll come back later to change this.)
+
+{% highlight python %}
+def _trigger(self):
+    # region = get_chosen_region_cv2(self._window, self._region_bound)
+    region = cv2.imread('debug/battle_scene.png', cv2.IMREAD_UNCHANGED)
+    if self.debug:
+        cv2.imwrite(f'debug/{self.name}.png', region)
+    return self._exists_template_rgb(self._template, region, self._threshold)
+{% endhighlight %}
+
+---
+
+Finally, add this function in `Region_Watcher`.
+{% highlight python %}
+@staticmethod
+def _exists_template_rgb(template, image, threshold=0.97):
+    if template.shape != image.shape:
+        raise ValueError("Images must have the same dimensions for comparison.")
+
+    # compute Mean Squared Error (MSE)
+    mse = np.mean((template.astype(np.float32) - image.astype(np.float32)) ** 2)
+
+    # normalize to range [0,1], where 1.0 means identical
+    similarity = 1 - (mse / (255 ** 2))
+
+    return similarity > threshold
+{% endhighlight %}
+I hope you'll find this function sound familiar because we have already discussed MSE (mean squared error) [before](/svz-pachinko-coins/). This is the exact same idea but this time the range of the final result is [0, 1]. We'll be using this function to check if any change has occurred.
+
+
+<br>
+🎉 Well done. Now we have a general region watch that can work in many scenarios.
+
+
+# Step 3
