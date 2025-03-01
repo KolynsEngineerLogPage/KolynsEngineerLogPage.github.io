@@ -191,3 +191,81 @@ I hope you'll find this function sound familiar because we have already discusse
 
 
 # Step 3
+Now, this last step is to create the region watcher for pause button. Add the following in `pause_watcher.py`.
+{% highlight python %}
+import os
+from src.ai.ui_position import pause_bound
+from src.ai.region_watchers.region_watcher import Region_Watcher
+from src.util.screen_getter import get_window_with_title
+
+
+class Pause_Watcher(Region_Watcher):
+    def __init__(self, window, callback, interval=1):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        super().__init__(window, os.path.join(script_dir, 'templates/pause.png'),
+                         pause_bound, interval, callback, 0.97, 'pause_region')
+
+if __name__ == '__main__':
+    def work():
+        print('Is in battle.')
+
+    pause_watcher = Pause_Watcher(None, work)
+    pause_watcher.debug = True
+    pause_watcher.begin()
+{% endhighlight %}
+
+After you run this code and stop, you should see a new debug image that look exactly to your pause button template.
+
+
+![pause_region](/static/img/svz/pause.png)
+
+
+Also, you should see this message every second.
+{% highlight cmd %}
+Is in battle.
+{% endhighlight %}
+You can change this to other values. Or, like said before, 5 is a good value.
+
+---
+
+If you got this to work, now you can put this to the actual emulator test.
+
+First of all, change the driver code to
+{% highlight python %}
+if __name__ == '__main__':
+    chosen_window = get_window_with_title('BlueStacks App Player')
+
+    def work():
+        print('Is in battle.')
+
+    pause_watcher = Pause_Watcher(chosen_window, work)
+    pause_watcher.debug = True
+    pause_watcher.begin()
+{% endhighlight %}
+
+
+Next change the `trigger()` back to reading screenshot from emulator window.
+{% highlight python %}
+def _trigger(self):
+    region = get_chosen_region_cv2(self._window, self._region_bound)
+    if self.debug:
+        cv2.imwrite(f'debug/{self.name}.png', region)
+    return self._exists_template_rgb(self._template, region, self._threshold)
+{% endhighlight %}
+
+
+Very good, now open the emulator and play SvZ Defense and run this program. See if your program prints "Is in battle." only in the battle mode. If not, look back and check if you have missed anything in this tutorial. Or if your observing bound and the template are really matching.
+
+<br>
+🎉 Excellent, now we can observe whether we are in the battle mode. This is going to be useful for our model's training. 
+
+
+<br>
+<br>
+🍯 Happy Coding 🍯
+
+
+**This article, completely original, is copyrighted by its author, me. Please do not reproduce it.**
+
+
+**本文为原创作品，作者 Kolyn090 拥有其著作权，受法律保护。严禁复制、转载、仿冒或以任何形式使用。**
