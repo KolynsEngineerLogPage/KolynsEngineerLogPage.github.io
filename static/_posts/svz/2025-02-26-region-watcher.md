@@ -51,3 +51,50 @@ To sum up, our tasks are:
 😎 Let's go!
 
 
+# Step 1
+As usual, we will add a new folder that contain the structure of today's code. Add a new folder `region_watchers` under `ai`.
+{% highlight python %}
+ai
+|___ player_hp
+|    |___ ...
+|___ read_digit
+|    |___ ...
+|___ read_cd
+|    |___ ...
+|___ region_watchers
+|    |___ debug
+|    |___ templates
+|    |___ pause_watcher.py
+|    |___ region_watcher.py
+|___ config.toml
+|___ ui_position.py
+{% endhighlight %}
+
+Here, I used the world "watcher" instead of "observer". They mean the same thing.
+
+---
+
+Next add the following line in `ui_position.py`.
+{% highlight python %}
+pause_bound = [12, 44, 69, 79]
+{% endhighlight %}
+This is the bound for the pause button in battle mode. Yours could be different. If that's the case you can use `mouse_coordinates.py` to get the correct bound. The expected image is below.
+
+
+![pause](/static/img/svz/pause.png)
+
+
+Now drag the above image under the `templates` folder.
+
+---
+
+I have provided a testing image this time as well. Drag this image under `debug` folder.
+
+
+![battle_scene](/static/img/svz/battle_scene.png)
+
+
+🎉 Now that the preparation works are done, we can get into making a region watcher.
+
+
+# Step 2
