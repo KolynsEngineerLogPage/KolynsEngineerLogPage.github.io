@@ -4,6 +4,8 @@ permalink: /credits/
 title: Credits
 ---
 
+# KELP (formerly CyberSpatula)
+
 # Credits
 
 I would like to express my gratitude to the following individuals and teams for their resource contributions to this site:
@@ -22,7 +24,8 @@ I would like to express my gratitude to the following individuals and teams for 
 - RenanFlippy - [The Battle Cats title](https://tcrf.net/File:The_Battle_Cats-title.jpg)
 - [GitHub Pages](https://pages.github.com/) - Hosting platform
 - [Jekyll](https://jekyllrb.com/) - Static site generator
-- zihunbiantaoti - Logo font
+- Annyantroman - Logo font
+<!-- - zihunbiantaoti - Logo font -->
 
 ## Special Thanks
 - ChatGPT

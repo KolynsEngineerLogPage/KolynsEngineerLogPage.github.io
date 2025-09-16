@@ -22,10 +22,10 @@ buttons:
     alt: Samurai VS Zombies Main
     description: SvZ Defense with ML
 
-  - url: /pvz2-main/
-    image: /static/img/pvz2/pvz2-main-menu.png
-    alt: Use AI to beat PvZ2
-    description: AI PvZ2
+  # - url: /pvz2-main/
+  #   image: /static/img/pvz2/pvz2-main-menu.png
+  #   alt: Use AI to beat PvZ2
+  #   description: AI PvZ2
 
   - url: /battle-cats-main/
     image: /static/img/battle-cats/The_Battle_Cats-title.jpg
@@ -37,10 +37,10 @@ buttons:
     alt: Welcome to the Central Perk
     description: The Escapists 3D made by me using Unity
 
-  - url: /archipelago-main/
-    image: /static/img/archipelago/thumb.png
-    alt: The Archipelago's icon
-    description: What got me into programming
+  # - url: /archipelago-main/
+  #   image: /static/img/archipelago/thumb.png
+  #   alt: The Archipelago's icon
+  #   description: What got me into programming
 
   - url: /useful-tools-main/
     image: /static/img/4-tools/useful-tools-thumb.jpeg
