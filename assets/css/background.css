@@ -1,4 +1,4 @@
-body {
+/* body {
     position: relative;
     margin: 0;
     padding: 0;
@@ -6,6 +6,21 @@ body {
         url('/static/img/1-default/soybean.png'),
         url('/static/img/1-default/soybean.png');
     background-color: #cc9b6d;
+    background-size: 100px 100px, 100px 100px;
+    background-repeat: repeat, repeat;
+    background-position:  0 0, 50px 50px;
+    background-blend-mode: overlay, overlay;
+    animation: movePattern 10s linear infinite;
+} */
+
+body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background-image: 
+        url('/static/img/1-default/kelp.png'),
+        url('/static/img/1-default/kelp.png');
+    background-color: #32b617;
     background-size: 100px 100px, 100px 100px;
     background-repeat: repeat, repeat;
     background-position:  0 0, 50px 50px;
