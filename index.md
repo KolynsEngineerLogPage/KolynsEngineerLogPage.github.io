@@ -47,8 +47,8 @@ buttons:
     alt: Useful Tools
     description: Useful Tools
 
-  - url: /school-main/
-    image: /static/img/3-school/rajang-beam/rajang-beam.jpg
-    alt: My School Projects
-    description: My School Projects
+  # - url: /school-main/
+  #   image: /static/img/3-school/rajang-beam/rajang-beam.jpg
+  #   alt: My School Projects
+  #   description: My School Projects
 ---

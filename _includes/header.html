@@ -1,10 +1,10 @@
 <header class="site-header" role="banner">
 
-  <div class="wrapper">
+  <div>
     {%- assign default_paths = site.pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
-    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
-      <img src="/static/img/1-default/kelp-logo.png" alt="{{ site.title }}" class="site-logo">
+    <a class="my-site-title" rel="author" href="{{ "/" | relative_url }}">
+      <img src="/static/img/1-default/logo-banner.png" alt="{{ site.title }}" class="site-logo">
       <span class="sr-only">{{ site.title }}</span>
     </a>
 
